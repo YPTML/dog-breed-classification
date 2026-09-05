@@ -1,0 +1,32 @@
+{
+  "model_name": "mobilenet_v2_transfer",
+  "task": "dog_breed_classification",
+  "num_classes": 120,
+  "input_height": 224,
+  "input_width": 224,
+  "input_channels": 3,
+  "input_dtype": "float32",
+  "input_pixel_range": "[0,255]",
+  "preprocessing": "MobileNetV2 preprocess_input inside model",
+  "output": "120-class softmax",
+  "backbone": "MobileNetV2",
+  "backbone_weights": "ImageNet",
+  "backbone_frozen": true,
+  "validation_accuracy": 0.8239,
+  "internal_test_accuracy": 0.8201,
+  "production_model": true,
+  "compression_used_for_production": false,
+  "sha256": "4695eae55c8464c1a6be3f147828f901259fb2c2541c23c2e36e8b4eb95d5f3d",
+  "file_size_bytes": 11475537,
+  "tensorflow_version": "2.21.0",
+  "keras_version": "3.15.1",
+  "model_selection_rationale": {
+    "selected_model": "Original dense MobileNetV2 transfer model (outputs/mobilenet_transfer/checkpoints/best_mobilenet_transfer.keras)",
+    "experimental_compression_evaluated": "Manual magnitude pruning at 50% classifier sparsity (outputs/compression_manual/pruned_50.keras)",
+    "original_validation_accuracy": 0.8239,
+    "pruned_validation_accuracy": 0.8043,
+    "accuracy_drop_pp": 1.96,
+    "pruned_zip_size_reduction_pct": 2.39,
+    "decision": "Pruned model rejected for production because it causes a 1.96 percentage point drop in validation accuracy with negligible size reduction (2.39%). Original unpruned model selected."
+  }
+}

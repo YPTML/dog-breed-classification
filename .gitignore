@@ -1,0 +1,52 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+*.pyc
+*.pyo
+*.pyd
+
+# Virtual environments
+.venv/
+venv/
+env/
+ENV/
+env.bak/
+venv.bak/
+
+# Raw and processed datasets (large files)
+data/
+
+# Intermediate outputs, training checkpoints, history, plots, and code review logs
+outputs/*
+!outputs/deployment_ready/
+!outputs/deployment_ready/dog_breed_model.keras
+!outputs/deployment_ready/class_names.json
+!outputs/deployment_ready/model_manifest.json
+!outputs/deployment_ready/README.txt
+
+# Jupyter Notebook checkpoints
+.ipynb_checkpoints/
+
+# Testing and type checking caches
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+
+# Editor and IDE configurations
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Operating System files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Logs and environment variables
+*.log
+.env
+.env.*

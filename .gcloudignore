@@ -1,0 +1,35 @@
+# This file specifies files that are *not* uploaded to Google Cloud
+# using build triggers or gcloud commands (e.g. gcloud app deploy).
+
+.gcloudignore
+.git
+.gitignore
+
+# Python virtual environment
+.venv/
+env/
+venv/
+ENV/
+
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Jupyter Notebook checkpoints
+.ipynb_checkpoints/
+
+# Raw and processed datasets (large files)
+data/
+
+# Source and test scripts (training & evaluation only; runtime does not import src)
+src/
+
+# Training checkpoints, evaluations, and intermediate artifacts
+outputs/*
+!outputs/deployment_ready/
+!outputs/deployment_ready/dog_breed_model.keras
+!outputs/deployment_ready/class_names.json
+!outputs/deployment_ready/model_manifest.json
+!outputs/deployment_ready/README.txt

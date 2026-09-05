@@ -1,0 +1,3 @@
+# Historical Linux cloud server only; not needed on local Windows.
+-r requirements.txt
+gunicorn==26.2.0

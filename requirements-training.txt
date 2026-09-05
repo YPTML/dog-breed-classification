@@ -1,0 +1,5 @@
+# Historical ML workflows only; not needed to run or test the local application.
+-r requirements.txt
+pandas==3.0.5
+scikit-learn==1.9.0
+matplotlib==3.11.1

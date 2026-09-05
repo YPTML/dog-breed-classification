@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dog Breed Recognition</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <header class="app-header">
+        <div class="header-container">
+            <h1 class="app-title">Dog Breed Recognition</h1>
+            <p class="app-subtitle">Upload a dog image to predict its breed.</p>
+        </div>
+    </header>
+
+    <main class="main-container">
+        <!-- Upload Card -->
+        <section class="card upload-card" aria-labelledby="uploadHeading">
+            <h2 id="uploadHeading" class="visually-hidden">Upload Image</h2>
+            
+            <div class="upload-area">
+                <label for="imageInput" class="file-label" id="fileLabel">
+                    <span class="upload-icon" aria-hidden="true">📷</span>
+                    <span class="upload-text">Choose an image or drop it here</span>
+                    <span class="upload-hint">JPEG, PNG, WEBP · Up to 9.94 MiB / 20 megapixels</span>
+                </label>
+                <input
+                    type="file"
+                    id="imageInput"
+                    name="image"
+                    class="visually-hidden"
+                    accept="image/jpeg,image/png,image/webp"
+                    aria-describedby="fileHint"
+                />
+                <span id="fileHint" class="visually-hidden">Choose one dog image up to 20 megapixels. The server validates the image bytes and uses the first frame of animated images. The 9.94 MiB file limit reserves space within the 10 MiB total upload request limit.</span>
+            </div>
+
+            <!-- Image Preview Section -->
+            <div id="previewContainer" class="preview-container hidden">
+                <div class="preview-wrapper">
+                    <img id="imagePreview" alt="Dog image preview" />
+                </div>
+                <p id="previewMessage" class="preview-message"></p>
+                <p id="fileNameDisplay" class="file-name-display"></p>
+            </div>
+
+            <!-- Action Button -->
+            <div class="action-container">
+                <button type="button" id="predictBtn" class="btn btn-primary" disabled>
+                    Predict Breed
+                </button>
+                <button type="button" id="resetBtn" class="btn btn-secondary" disabled>Clear image</button>
+            </div>
+            <p id="statusMessage" class="visually-hidden" role="status" aria-live="polite" aria-atomic="true"></p>
+            <noscript><p class="error-container">Enable JavaScript to preview images and request predictions.</p></noscript>
+
+            <!-- Loading Indicator -->
+            <div id="loadingIndicator" class="loading-container hidden" aria-hidden="true">
+                <div class="spinner" aria-hidden="true"></div>
+                <p class="loading-text">Predicting...</p>
+            </div>
+
+            <!-- Error Message Box -->
+            <div id="errorContainer" class="error-container hidden" role="alert" aria-live="assertive">
+                <span class="error-icon" aria-hidden="true">⚠️</span>
+                <p id="errorMessage" class="error-message"></p>
+            </div>
+        </section>
+
+        <!-- Prediction Results Card -->
+        <section id="resultContainer" class="card result-card hidden" aria-labelledby="resultHeading">
+            <h2 id="resultHeading" class="section-heading">Prediction Results</h2>
+
+            <!-- Top-1 Result Display -->
+            <div id="top1Container" class="top1-card">
+                <div class="top1-badge">Top-1 Prediction</div>
+                <div class="top1-details">
+                    <div class="top1-breed-group">
+                        <span class="label">Predicted Breed</span>
+                        <h3 id="top1Breed" class="top1-breed"></h3>
+                    </div>
+                    <div class="top1-confidence-group">
+                        <span class="label">Confidence</span>
+                        <span id="top1Confidence" class="top1-confidence"></span>
+                    </div>
+                </div>
+            </div>
+            <p class="result-note">This model compares 120 dog breeds. Confidence is a model score; it does not confirm that an image contains a dog.</p>
+
+            <!-- Top-5 Results Table / List -->
+            <div id="top5Container" class="top5-section">
+                <h3 class="top5-title">Top-5 Predictions</h3>
+                <div class="top5-table-wrapper">
+                    <table class="top5-table">
+                        <caption class="visually-hidden">Five most likely dog breeds, ordered by confidence</caption>
+                        <thead>
+                            <tr>
+                                <th scope="col" class="col-rank">Rank</th>
+                                <th scope="col" class="col-breed">Breed</th>
+                                <th scope="col" class="col-confidence">Confidence</th>
+                                <th scope="col" class="col-bar">Distribution</th>
+                            </tr>
+                        </thead>
+                        <tbody id="top5TableBody">
+                            <!-- Populated dynamically by JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="app-footer">
+        <p>Dog Breed Recognition System &bull; Local Deployment</p>
+    </footer>
+
+    <script src="{{ url_for('static', filename='app.js') }}"></script>
+</body>
+</html>
