@@ -1,5 +1,5 @@
 ================================================================================
-Dog Breed Recognition System - Deployment Artifact (Task 6.3)
+Dog Breed Recognition System - Deployment Artifact (Task 25)
 ================================================================================
 
 Production Model:
@@ -58,4 +58,21 @@ Model Choice & Compression Documentation:
   with negligible size benefits. The production artifact is the original, dense,
   unpruned MobileNetV2 transfer learning model. Compression artifacts are preserved in
   outputs/compression_manual/ for audit and experimental evidence.
+
+Open-Set / OOD Decision Layer:
+  The classifier remains exactly 120 dog-breed classes; `not_dog` is not a
+  training label. Runtime decisions are configured in ood_config.json and
+  ood_thresholds.json. The states are DOG, UNCERTAIN, and NOT_DOG.
+  The shipped MSP baseline is marked calibrated=false until disjoint ID/OOD
+  calibration data is supplied.
+
+Deployment Package:
+  Required runtime files: dog_breed_model.keras, class_names.json,
+  ood_config.json, and ood_thresholds.json.
+  The selected production OOD method is MSP, so no embedding centroid or
+  Mahalanobis covariance artifact is required. If the method changes to
+  embedding_cosine, package class_centroids.npy; if it changes to
+  embedding_mahalanobis, package both class_centroids.npy and covariance.npy.
+  All runtime paths are resolved relative to the application root. The raw
+  dataset is not a deployment input and is excluded by .gcloudignore.
 ================================================================================

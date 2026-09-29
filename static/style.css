@@ -187,6 +187,24 @@ body {
     color: var(--text-muted);
 }
 
+.result-note.decision-note-not-dog,
+.result-note.decision-note-uncertain {
+    padding: 0.85rem 1rem;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    font-weight: 600;
+}
+
+.result-note.decision-note-not-dog {
+    background-color: #f8fafc;
+}
+
+.result-note.decision-note-uncertain {
+    background-color: #fffbeb;
+    border-color: #fcd34d;
+    color: #92400e;
+}
+
 /* Action Button */
 .action-container {
     text-align: center;

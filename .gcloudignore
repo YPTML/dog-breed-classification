@@ -23,13 +23,31 @@ __pycache__/
 # Raw and processed datasets (large files)
 data/
 
-# Source and test scripts (training & evaluation only; runtime does not import src)
-src/
+# Runtime inference modules. app.py imports src.inference and src.ood at
+# startup, so source modules required by inference stay in the deployment.
 
 # Training checkpoints, evaluations, and intermediate artifacts
 outputs/*
+!outputs/deployment_oe_v2/
+!outputs/deployment_oe_v2/dog_breed_model_oe_v2.keras
+!outputs/deployment_oe_v2/class_centroids.npy
+!outputs/deployment_oe_v2/class_names.json
+!outputs/deployment_oe_v2/model_manifest.json
+!outputs/deployment_oe_v2/ood_calibration.json
 !outputs/deployment_ready/
 !outputs/deployment_ready/dog_breed_model.keras
 !outputs/deployment_ready/class_names.json
+!outputs/deployment_ready/ood_config.json
+!outputs/deployment_ready/ood_thresholds.json
 !outputs/deployment_ready/model_manifest.json
 !outputs/deployment_ready/README.txt
+
+# Secrets, local audit scratch space, and transient files
+.env
+.env.*
+credentials.json
+*credentials*.json
+*service-account*.json
+*service_account*.json
+_audit_tmp/
+*.log

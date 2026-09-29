@@ -1,14 +1,26 @@
 import io
 import json
 import logging
+import os
+from collections.abc import Mapping
 from pathlib import Path
-import warnings
 
 from flask import Flask, Request, request, jsonify, render_template
 import numpy as np
 import tensorflow as tf
-from PIL import Image, ImageOps, UnidentifiedImageError
+from PIL import Image, UnidentifiedImageError
 from werkzeug.exceptions import RequestEntityTooLarge
+
+from src.inference.oe_v2_predictor import (
+    OEV2Predictor,
+    LOCKED_DETECTOR,
+    LOCKED_T_UNCERTAIN,
+    LOCKED_T_NOT_DOG,
+    NOT_DOG_MESSAGE,
+    UNCERTAIN_MESSAGE,
+    EXPECTED_NUM_CLASSES,
+)
+from src.inference.preprocessing import preprocess_image as preprocess_inference_image
 
 # Configure logging
 logging.basicConfig(
@@ -34,110 +46,50 @@ app.config.update(
     MAX_CONTENT_LENGTH=10 * 1024 * 1024,  # Entire multipart request, not just file bytes.
     MAX_FORM_MEMORY_SIZE=128 * 1024,
     MAX_FORM_PARTS=10,
-    TRUSTED_HOSTS=["127.0.0.1", "localhost"],
+    # Keep the local app host-restricted, but allow the App Engine host when
+    # this same package is started by the production WSGI entrypoint.
+    TRUSTED_HOSTS=None if os.environ.get("GAE_ENV") else ["127.0.0.1", "localhost"],
 )
 MAX_IMAGE_PIXELS = 20_000_000  # Local decode budget; Pillow's own limit stays enabled.
 IMAGE_SIZE = (224, 224)
-NUM_CLASSES = 120
+NUM_CLASSES = EXPECTED_NUM_CLASSES
 ALLOWED_IMAGE_FORMATS = ("JPEG", "PNG", "WEBP")
 
 BASE_DIR = Path(__file__).resolve().parent
-MODEL_PATH = BASE_DIR / "outputs" / "deployment_ready" / "dog_breed_model.keras"
-CLASS_NAMES_PATH = BASE_DIR / "outputs" / "deployment_ready" / "class_names.json"
+DEPLOYMENT_OE_V2_DIR = BASE_DIR / "outputs" / "deployment_oe_v2"
+DEPLOYMENT_READY_DIR = BASE_DIR / "outputs" / "deployment_ready"
 
-# ---------------------------------------------------------------------------
-# Load Class Mapping
-# ---------------------------------------------------------------------------
-if not CLASS_NAMES_PATH.exists():
-    raise RuntimeError(f"Class names mapping not found at {CLASS_NAMES_PATH}")
-
-def unique_json_object(pairs):
-    """Reject duplicate JSON keys rather than silently discarding a mapping entry."""
-    result = {}
-    for key, value in pairs:
-        if key in result:
-            raise RuntimeError("Duplicate class mapping index.")
-        result[key] = value
-    return result
-
-
-with open(CLASS_NAMES_PATH, "r", encoding="utf-8") as f:
-    raw_class_mapping = json.load(f, object_pairs_hook=unique_json_object)
-
-if isinstance(raw_class_mapping, dict):
-    if set(raw_class_mapping) != {str(i) for i in range(NUM_CLASSES)}:
-        raise RuntimeError("Class mapping must use canonical indices 0..119.")
-    class_names = {int(k): v for k, v in raw_class_mapping.items()}
-elif isinstance(raw_class_mapping, list):
-    class_names = dict(enumerate(raw_class_mapping))
-else:
-    raise RuntimeError(
-        f"Unsupported format in {CLASS_NAMES_PATH}: must be dict or list."
-    )
-
-# Validate class mapping integrity: exactly 120 classes spanning indices 0..119 and 120 unique breeds
-if len(class_names) != NUM_CLASSES or set(class_names) != set(range(NUM_CLASSES)):
-    raise RuntimeError(
-        f"Invalid class mapping: expected 120 consecutive classes (0..119), "
-        f"got {len(class_names)} classes."
-    )
-
-if any(not isinstance(name, str) or not name.strip() for name in class_names.values()):
-    raise RuntimeError("Class mapping must contain non-empty breed names.")
-
-if len(set(class_names.values())) != NUM_CLASSES:
-    raise RuntimeError(
-        f"Invalid class mapping: expected 120 unique breed names, "
-        f"got {len(set(class_names.values()))} unique breeds."
-    )
-
-logger.info(f"Loaded {len(class_names)} classes from {CLASS_NAMES_PATH.name}")
-
-# ---------------------------------------------------------------------------
-# Load Model Once at Startup
-# ---------------------------------------------------------------------------
-if not MODEL_PATH.exists():
-    raise RuntimeError(f"Production model file not found at {MODEL_PATH}")
-
-logger.info("Loading production model...")
-model = tf.keras.models.load_model(
-    MODEL_PATH,
-    custom_objects={"preprocess_input": tf.keras.applications.mobilenet_v2.preprocess_input},
-    compile=False,  # Inference needs weights, not optimizer or training configuration.
-    safe_mode=True,
+MODEL_PATH = (
+    DEPLOYMENT_OE_V2_DIR / "dog_breed_model_oe_v2.keras"
+    if (DEPLOYMENT_OE_V2_DIR / "dog_breed_model_oe_v2.keras").exists()
+    else BASE_DIR / "outputs" / "models" / "oe_v2" / "stage_a_best.keras"
 )
-logger.info("Production model successfully loaded.")
-
-# Startup Validation
-EXPECTED_MODEL_NAME = "mobilenet_v2_transfer"
-EXPECTED_INPUT_SHAPE = (None, 224, 224, 3)
-EXPECTED_OUTPUT_SHAPE = (None, 120)
-
-if model.name != EXPECTED_MODEL_NAME:
-    raise RuntimeError(
-        f"Model name mismatch: expected '{EXPECTED_MODEL_NAME}', got '{model.name}'"
-    )
-
-if model.input_shape != EXPECTED_INPUT_SHAPE:
-    raise RuntimeError(
-        f"Input shape mismatch: expected {EXPECTED_INPUT_SHAPE}, got {model.input_shape}"
-    )
-
-if model.output_shape != EXPECTED_OUTPUT_SHAPE:
-    raise RuntimeError(
-        f"Output shape mismatch: expected {EXPECTED_OUTPUT_SHAPE}, got {model.output_shape}"
-    )
-
-if model.output_shape[-1] != len(class_names):
-    raise RuntimeError(
-        f"Model output dimension ({model.output_shape[-1]}) does not match "
-        f"class mapping size ({len(class_names)})"
-    )
-
-logger.info(
-    f"Startup validation passed: name={model.name}, "
-    f"input_shape={model.input_shape}, output_shape={model.output_shape}"
+CENTROIDS_PATH = (
+    DEPLOYMENT_OE_V2_DIR / "class_centroids.npy"
+    if (DEPLOYMENT_OE_V2_DIR / "class_centroids.npy").exists()
+    else BASE_DIR / "outputs" / "calibration" / "oe_v2" / "class_centroids.npy"
 )
+CLASS_NAMES_PATH = (
+    DEPLOYMENT_OE_V2_DIR / "class_names.json"
+    if (DEPLOYMENT_OE_V2_DIR / "class_names.json").exists()
+    else DEPLOYMENT_READY_DIR / "class_names.json"
+)
+
+# ---------------------------------------------------------------------------
+# Load Predictor at Startup
+# ---------------------------------------------------------------------------
+logger.info("Initializing Outlier Exposure V2 predictor...")
+oe_v2_predictor = OEV2Predictor(
+    model_path=MODEL_PATH,
+    centroids_path=CENTROIDS_PATH,
+    class_names_path=CLASS_NAMES_PATH,
+    verify_integrity=True,
+)
+predictor = oe_v2_predictor
+model = oe_v2_predictor.raw_model
+class_names = oe_v2_predictor.class_names
+logger.info("Outlier Exposure V2 predictor loaded successfully.")
+
 
 # ---------------------------------------------------------------------------
 # Image Preprocessing Helper
@@ -146,69 +98,109 @@ def preprocess_uploaded_image(file_bytes: bytes) -> np.ndarray:
     """
     Decodes raw uploaded image bytes, converts to RGB, resizes to 224x224,
     and returns a float32 NumPy array with shape (1, 224, 224, 3) in [0, 255].
-    Verify structure and fully decode the first frame; reject oversized dimensions.
     
     IMPORTANT:
     MobileNetV2 preprocess_input is already embedded INSIDE the model architecture.
     Do NOT apply / 255.0 or external mobilenet_v2.preprocess_input in this function.
     """
-    with warnings.catch_warnings():
-        warnings.simplefilter("error", Image.DecompressionBombWarning)
-        with Image.open(io.BytesIO(file_bytes), formats=ALLOWED_IMAGE_FORMATS) as source:
-            if source.width * source.height > MAX_IMAGE_PIXELS:
-                raise ValueError("Image dimensions exceed the local decode limit.")
-            source.verify()
-        # verify() invalidates the decoder; reopening is required for full decoding.
-        with Image.open(io.BytesIO(file_bytes), formats=ALLOWED_IMAGE_FORMATS) as source:
-            source.load()
-            ImageOps.exif_transpose(source, in_place=True)
-            with source.convert("RGB") as rgb:
-                with rgb.resize(IMAGE_SIZE, Image.Resampling.BILINEAR) as resized:
-                    return np.asarray(resized, dtype=np.float32)[None, ...]
+    return preprocess_inference_image(file_bytes, max_image_pixels=MAX_IMAGE_PIXELS)
+
 
 # ---------------------------------------------------------------------------
-# Prediction Helper
+# Prediction Helpers
 # ---------------------------------------------------------------------------
 def predict_image(image_array: np.ndarray):
-    """
-    Executes inference using the preloaded model on the batch array (1, 224, 224, 3).
-    Verifies absence of NaNs/Infs and validates probability sum ~ 1.0.
-    Returns (top1_dict, top5_list).
-    """
-    if (not isinstance(image_array, np.ndarray)
-            or image_array.shape != (1, *IMAGE_SIZE, 3)
-            or image_array.dtype != np.float32):
-        raise ValueError("Expected float32 image batch with shape (1, 224, 224, 3).")
-    if (not np.isfinite(image_array).all()
-            or np.any(image_array < 0) or np.any(image_array > 255)):
-        raise ValueError("Image pixels must be finite values in [0, 255].")
-
-    predictions = np.asarray(model(image_array, training=False))
-    if predictions.shape != (1, NUM_CLASSES):
-        raise RuntimeError("Model prediction shape must be (1, 120).")
-    if not np.isfinite(predictions).all():
-        raise RuntimeError("Model predictions contain non-finite values.")
-    if np.any(predictions < 0) or np.any(predictions > 1):
-        raise RuntimeError("Model probabilities must lie in [0, 1].")
-
-    prob_sum = float(np.sum(predictions[0]))
-    if abs(prob_sum - 1.0) > 1e-3:
-        raise RuntimeError(
-            f"Invalid probability distribution: softmax sum is {prob_sum:.6f}, expected approx 1.0"
-        )
-
-    # Stable descending order makes ties deterministic and Top-1 match Top-5[0].
-    top5_indices = np.argsort(-predictions[0], kind="stable")[:5]
-    top5 = [
-        {
-            "index": int(idx),
-            "breed": class_names[int(idx)],
-            "confidence": float(predictions[0][idx]),
+    """Legacy inference helper returning (top1_dict, top5_list)."""
+    res = predictor.predict(image_array)
+    top5 = res.get("top5", [])
+    if top5:
+        top1 = dict(top5[0])
+    else:
+        top1 = {
+            "index": 0,
+            "breed": res.get("breed", ""),
+            "confidence": float(res.get("confidence") or 0.0),
         }
-        for idx in top5_indices
-    ]
+    return top1, top5
 
-    return dict(top5[0]), top5
+
+def predict_image_with_ood(image_array: np.ndarray) -> dict:
+    """Run model inference and tri-state decision for image array."""
+    res = predictor.predict(image_array)
+    return _api_prediction_response(res)
+
+
+def _api_prediction_response(result: Mapping) -> dict:
+    """Translate a predictor result into the public OE V2 API contract."""
+    if not isinstance(result, Mapping):
+        raise TypeError("predictor result must be a mapping")
+
+    state = str(result.get("final_status", result.get("status", result.get("decision", "")))).upper()
+    if state not in ("DOG", "UNCERTAIN", "NOT_DOG"):
+        raise ValueError(f"unsupported predictor decision: {state}")
+
+    ood_score = float(result.get("raw_ood_score", result.get("ood_score", 0.0)))
+    t_uncertain = float(result.get("T_uncertain", result.get("t_uncertain", LOCKED_T_UNCERTAIN)))
+    t_not_dog = float(result.get("T_not_dog", result.get("t_not_dog", LOCKED_T_NOT_DOG)))
+
+    # Resolve breed
+    breed = result.get("top1_breed", result.get("breed"))
+    if breed is None and isinstance(result.get("prediction"), Mapping):
+        breed = result["prediction"].get("breed")
+
+    # Resolve confidence
+    confidence = result.get("top1_confidence", result.get("confidence"))
+    if confidence is None and isinstance(result.get("prediction"), Mapping):
+        confidence = result["prediction"].get("confidence")
+    confidence = float(confidence) if confidence is not None else 0.0
+
+    # Resolve top5
+    top5 = list(result.get("top5_predictions", result.get("top5", [])))
+
+    # Resolve margin
+    margin = result.get("probability_margin", result.get("margin"))
+    if margin is None:
+        if len(top5) >= 2:
+            margin = float(top5[0].get("confidence", 0.0) - top5[1].get("confidence", 0.0))
+        else:
+            margin = float(confidence)
+    else:
+        margin = float(margin)
+
+    payload = {
+        "status": state,
+        "final_status": state,
+        "decision": state,
+        "breed": breed,
+        "top1_breed": breed,
+        "confidence": confidence,
+        "top1_confidence": confidence,
+        "top5": top5,
+        "top5_predictions": top5,
+        "probability_margin": margin,
+        "margin": margin,
+        "ood_score": ood_score,
+        "raw_ood_score": ood_score,
+        "T_uncertain": t_uncertain,
+        "t_uncertain": t_uncertain,
+        "T_not_dog": t_not_dog,
+        "t_not_dog": t_not_dog,
+        "is_dog": True if state == "DOG" else (None if state == "UNCERTAIN" else False),
+        "prediction": {
+            "breed": breed,
+            "confidence": confidence,
+        },
+    }
+
+    if state == "UNCERTAIN":
+        payload["message"] = result.get("message", UNCERTAIN_MESSAGE)
+    elif state == "NOT_DOG":
+        payload["message"] = result.get("message", NOT_DOG_MESSAGE)
+
+    if "model" in result:
+        payload["model"] = result["model"]
+    return payload
+
 
 # ---------------------------------------------------------------------------
 # Flask Routes & Error Handlers
@@ -240,31 +232,29 @@ def add_response_headers(response):
 
 @app.route("/", methods=["GET"])
 def index():
-    """
-    Renders the main web interface for dog breed prediction.
-    """
+    """Renders the main web interface for dog breed prediction."""
     return render_template("index.html")
 
 
 @app.route("/health", methods=["GET"])
 def health():
-    """
-    Health check endpoint. Confirms model is loaded and backend is operational.
-    Does not run inference.
-    """
+    """Health check endpoint. Reports operational status and OE V2 detector metadata."""
     return jsonify({
         "status": "ok",
         "model_loaded": True,
-        "model_name": model.name,
+        "ood_detector_loaded": True,
         "num_classes": len(class_names),
+        "detector": LOCKED_DETECTOR,
+        "model_version": "oe_v2",
     }), 200
 
 
 @app.route("/predict", methods=["POST"])
 def predict():
-    """
-    Inference endpoint. Receives multipart/form-data with field name 'image'.
-    Performs in-memory preprocessing and model inference, returning JSON predictions.
+    """Inference endpoint. Receives multipart/form-data with field name 'image'.
+
+    Performs in-memory preprocessing and model inference through the OE V2
+    predictor, returning the public three-state JSON contract.
     """
     if "image" not in request.files:
         return jsonify({"error": "Missing image file"}), 400
@@ -277,22 +267,25 @@ def predict():
         file_bytes = file.read()
         if not file_bytes:
             return jsonify({"error": "Empty image file"}), 400
-
-        image_array = preprocess_uploaded_image(file_bytes)
     except (UnidentifiedImageError, ValueError, OSError, SyntaxError,
             Image.DecompressionBombWarning, Image.DecompressionBombError):
         logger.info("Rejected invalid, unsupported, or oversized image.")
         return jsonify({"error": "Invalid or unsupported image"}), 400
 
     try:
-        top1, top5 = predict_image(image_array)
-        return jsonify({
-            "model": model.name,
-            "prediction": top1,
-            "top5": top5,
-        }), 200
+        result = predictor.predict(file_bytes)
+    except (UnidentifiedImageError, ValueError, OSError, SyntaxError,
+            Image.DecompressionBombWarning, Image.DecompressionBombError):
+        logger.info("Rejected invalid, unsupported, or oversized image.")
+        return jsonify({"error": "Invalid or unsupported image"}), 400
     except Exception:
         logger.exception("Inference execution failed.")
+        return jsonify({"error": "Inference failed"}), 500
+
+    try:
+        return jsonify(_api_prediction_response(result)), 200
+    except Exception:
+        logger.exception("Prediction response formatting failed.")
         return jsonify({"error": "Inference failed"}), 500
 
 
@@ -309,7 +302,6 @@ def handle_bad_request(error):
 
 @app.errorhandler(500)
 def handle_internal_error(error):
-    # Flask records the exception server-side; never return its text to the client.
     return jsonify({"error": "Prediction failed. Please try again."}), 500
 
 
@@ -318,6 +310,6 @@ if __name__ == "__main__":
         host="127.0.0.1",
         port=5000,
         debug=False,
-        threaded=False,  # One personal user; bound simultaneous decode/inference memory.
+        threaded=False,
         use_reloader=False,
     )

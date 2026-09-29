@@ -1,0 +1,18 @@
+{
+  "model_version": "oe_v2",
+  "model_sha256": "e4508564a9389250e265cae6ea6fed0e1a0edf8497d62cd9c8a44342bdd45e61",
+  "centroid_sha256": "d4588ee2cff5d8cbe3b670ca99507ae97f7f07b75822d1e247200e7c481e85cb",
+  "class_count": 120,
+  "embedding_dimension": 1280,
+  "detector": "cosine",
+  "T_uncertain": 0.343358,
+  "T_not_dog": 0.457513,
+  "source_checkpoint": "outputs/models/oe_v2/stage_a_best.keras",
+  "locked_operating_point": "BALANCED",
+  "files": {
+    "model_file": "dog_breed_model_oe_v2.keras",
+    "centroids_file": "class_centroids.npy",
+    "class_names_file": "class_names.json",
+    "calibration_file": "ood_calibration.json"
+  }
+}

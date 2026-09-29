@@ -3,6 +3,7 @@ import sys
 import unittest
 import numpy as np
 from PIL import Image
+from tests.response_assertions import assert_three_state_response
 
 from app import (
     app,
@@ -25,7 +26,8 @@ class TestFlaskBackend(unittest.TestCase):
         data = response.get_json()
         self.assertEqual(data.get("status"), "ok")
         self.assertIs(data.get("model_loaded"), True)
-        self.assertEqual(data.get("model_name"), "mobilenet_v2_transfer")
+        self.assertEqual(data.get("model_version"), "oe_v2")
+        self.assertEqual(data.get("detector"), "cosine")
         self.assertEqual(data.get("num_classes"), 120)
 
     def test_02_predict_missing_image_field(self):
@@ -68,7 +70,7 @@ class TestFlaskBackend(unittest.TestCase):
         self.assertEqual(data.get("error"), "Invalid or unsupported image")
 
     def test_05_predict_valid_synthetic_jpeg(self):
-        """Test POST /predict with valid synthetic JPEG returns 200 and Top-1/Top-5."""
+        """Synthetic JPEG obeys the three-state API without forcing a breed."""
         # Generate synthetic 300x300 RGB image
         np.random.seed(42)
         raw_pixels = np.random.randint(0, 256, size=(300, 300, 3), dtype=np.uint8)
@@ -85,44 +87,7 @@ class TestFlaskBackend(unittest.TestCase):
         self.assertEqual(response.status_code, 200)
         data = response.get_json()
 
-        # Check model metadata
-        self.assertEqual(data.get("model"), "mobilenet_v2_transfer")
-
-        # Check Top-1 structure and validity
-        top1 = data.get("prediction")
-        self.assertIsNotNone(top1)
-        self.assertIn("index", top1)
-        self.assertIn("breed", top1)
-        self.assertIn("confidence", top1)
-        self.assertIsInstance(top1["index"], int)
-        self.assertIn(top1["index"], range(120))
-        self.assertEqual(top1["breed"], class_names[top1["index"]])
-        self.assertGreaterEqual(top1["confidence"], 0.0)
-        self.assertLessEqual(top1["confidence"], 1.0)
-
-        # Check Top-5 structure and validity
-        top5 = data.get("top5")
-        self.assertIsNotNone(top5)
-        self.assertIsInstance(top5, list)
-        self.assertEqual(len(top5), 5)
-
-        prev_conf = 1.0
-        for entry in top5:
-            self.assertIn("index", entry)
-            self.assertIn("breed", entry)
-            self.assertIn("confidence", entry)
-            self.assertIsInstance(entry["index"], int)
-            self.assertIn(entry["index"], range(120))
-            self.assertEqual(entry["breed"], class_names[entry["index"]])
-            self.assertGreaterEqual(entry["confidence"], 0.0)
-            self.assertLessEqual(entry["confidence"], 1.0)
-            # Descending confidence order
-            self.assertLessEqual(entry["confidence"], prev_conf + 1e-6)
-            prev_conf = entry["confidence"]
-
-        # Top-1 should match the highest top-5 entry
-        self.assertEqual(top1["index"], top5[0]["index"])
-        self.assertEqual(top1["breed"], top5[0]["breed"])
+        assert_three_state_response(self, data, class_names)
 
     def test_06_predict_grayscale_image(self):
         """Test POST /predict with grayscale image converts to RGB and returns 200."""
@@ -139,8 +104,7 @@ class TestFlaskBackend(unittest.TestCase):
         )
         self.assertEqual(response.status_code, 200)
         data = response.get_json()
-        self.assertIn("prediction", data)
-        self.assertEqual(len(data.get("top5", [])), 5)
+        assert_three_state_response(self, data, class_names)
 
     def test_07_predict_rgba_png(self):
         """Test POST /predict with RGBA PNG converts to RGB and returns 200."""
@@ -157,8 +121,7 @@ class TestFlaskBackend(unittest.TestCase):
         )
         self.assertEqual(response.status_code, 200)
         data = response.get_json()
-        self.assertIn("prediction", data)
-        self.assertEqual(len(data.get("top5", [])), 5)
+        assert_three_state_response(self, data, class_names)
 
     def test_08_preprocessing_invariants(self):
         """Verify preprocessing returns shape (1, 224, 224, 3), dtype float32, range [0, 255]."""

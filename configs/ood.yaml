@@ -1,0 +1,18 @@
+# Runtime OOD policy for the existing 120-class classifier.
+# Scores are oriented so larger values mean more likely OOD.
+ood:
+  method: msp
+  temperature: 1.0
+  score_definition: 1_minus_max_softmax_probability
+  decision_states: [DOG, UNCERTAIN, NOT_DOG]
+  uncertain:
+    enabled: true
+  thresholds:
+    # These values are exported to the deployment artifact and can be replaced
+    # by src.ood.calibration after an ID/OOD calibration split is available.
+    uncertain: 0.55
+    not_dog: 0.80
+    breed_confidence: 0.45
+  calibration:
+    target_id_acceptance: 0.95
+    calibrated: false

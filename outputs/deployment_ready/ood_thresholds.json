@@ -1,0 +1,10 @@
+{
+  "method": "msp",
+  "score_definition": "1_minus_max_softmax_probability",
+  "ood_threshold": 0.8,
+  "uncertain_threshold": 0.55,
+  "breed_confidence_threshold": 0.45,
+  "calibrated": false,
+  "target_id_acceptance": 0.95,
+  "calibration_date": null
+}

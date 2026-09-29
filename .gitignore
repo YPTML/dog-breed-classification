@@ -1,10 +1,11 @@
-# Byte-compiled / optimized / DLL files
+# Python bytecode and build artifacts
 __pycache__/
 *.py[cod]
 *$py.class
-*.pyc
-*.pyo
 *.pyd
+build/
+dist/
+*.egg-info/
 
 # Virtual environments
 .venv/
@@ -14,39 +15,65 @@ ENV/
 env.bak/
 venv.bak/
 
-# Raw and processed datasets (large files)
-data/
+# Raw and processed datasets stay local
+/data/
 
-# Intermediate outputs, training checkpoints, history, plots, and code review logs
-outputs/*
-!outputs/deployment_ready/
-!outputs/deployment_ready/dog_breed_model.keras
-!outputs/deployment_ready/class_names.json
-!outputs/deployment_ready/model_manifest.json
-!outputs/deployment_ready/README.txt
+# Generated ML artifacts are local by default. Only the two explicitly
+# whitelisted inference bundles are version-controlled.
+/outputs/*
+!/outputs/deployment_ready/
+/outputs/deployment_ready/*
+!/outputs/deployment_ready/dog_breed_model.keras
+!/outputs/deployment_ready/class_names.json
+!/outputs/deployment_ready/ood_config.json
+!/outputs/deployment_ready/ood_thresholds.json
+!/outputs/deployment_ready/model_manifest.json
+!/outputs/deployment_ready/README.txt
+!/outputs/deployment_oe_v2/
+/outputs/deployment_oe_v2/*
+!/outputs/deployment_oe_v2/dog_breed_model_oe_v2.keras
+!/outputs/deployment_oe_v2/class_centroids.npy
+!/outputs/deployment_oe_v2/class_names.json
+!/outputs/deployment_oe_v2/model_manifest.json
+!/outputs/deployment_oe_v2/ood_calibration.json
 
-# Jupyter Notebook checkpoints
-.ipynb_checkpoints/
+# Local audit scratch space and generated reports
+/_audit_tmp/
 
-# Testing and type checking caches
+# Experiment trackers, caches, temporary files, and logs
+wandb/
+runs/
+logs/
+cache/
+tmp/
+temp/
+*.log
+
+# Test, lint, type-checking, and notebook caches
 .pytest_cache/
 .mypy_cache/
 .ruff_cache/
+.ipynb_checkpoints/
 .coverage
 htmlcov/
 
-# Editor and IDE configurations
+# Editors and IDEs
 .vscode/
 .idea/
 *.swp
 *.swo
 
-# Operating System files
+# Operating-system files
 .DS_Store
 Thumbs.db
 desktop.ini
 
-# Logs and environment variables
-*.log
+# Secrets and credentials
 .env
 .env.*
+credentials.json
+*credentials*.json
+*service-account*.json
+*service_account*.json
+*.pem
+*.key

@@ -20,15 +20,21 @@ import json
 import os
 from pathlib import Path
 import shutil
+import sys
 from typing import Any, Dict, Tuple
 
 import numpy as np
 import tensorflow as tf
 
+# Make both ``python -m src.prepare_deployment_artifact`` and
+# ``python src/prepare_deployment_artifact.py`` resolve project imports.
+PROJECT_ROOT: Path = Path(__file__).resolve().parents[1]
+if str(PROJECT_ROOT) not in sys.path:
+    sys.path.insert(0, str(PROJECT_ROOT))
+
 from src.label_encoder import NUM_CLASSES, fit_label_encoder
 
 # Project paths
-PROJECT_ROOT: Path = Path(__file__).resolve().parents[1]
 SOURCE_MODEL_PATH: Path = (
     PROJECT_ROOT
     / "outputs"
@@ -41,6 +47,13 @@ DEPLOY_MODEL_PATH: Path = OUTPUT_DIR / "dog_breed_model.keras"
 CLASS_NAMES_PATH: Path = OUTPUT_DIR / "class_names.json"
 MANIFEST_PATH: Path = OUTPUT_DIR / "model_manifest.json"
 README_PATH: Path = OUTPUT_DIR / "README.txt"
+OOD_CONFIG_PATH: Path = OUTPUT_DIR / "ood_config.json"
+OOD_THRESHOLDS_PATH: Path = OUTPUT_DIR / "ood_thresholds.json"
+CLASS_CENTROIDS_PATH: Path = OUTPUT_DIR / "class_centroids.npy"
+COVARIANCE_PATH: Path = OUTPUT_DIR / "covariance.npy"
+
+EMBEDDING_METHODS = {"embedding_cosine", "embedding_mahalanobis"}
+MAHALANOBIS_METHODS = {"embedding_mahalanobis"}
 
 # Model specifications
 IMAGE_HEIGHT: int = 224
@@ -135,6 +148,67 @@ def export_and_verify_class_names(output_path: Path) -> Dict[str, str]:
         json.dump(class_mapping, f, indent=2, ensure_ascii=False)
 
     return class_mapping
+
+
+def verify_ood_artifacts(config_path: Path, thresholds_path: Path) -> Dict[str, Any]:
+    """Validate the external OOD policy shipped beside the 120-class model."""
+    if not config_path.is_file() or not thresholds_path.is_file():
+        raise FileNotFoundError(
+            "OOD deployment artifacts are required: ood_config.json and ood_thresholds.json"
+        )
+    with config_path.open(encoding="utf-8") as handle:
+        config = json.load(handle)
+    with thresholds_path.open(encoding="utf-8") as handle:
+        thresholds = json.load(handle)
+    if not isinstance(config, dict) or not isinstance(thresholds, dict):
+        raise ValueError("OOD artifacts must contain JSON objects")
+    method = str(config.get("method", "")).strip().lower()
+    if method not in {"msp", "entropy", "energy", "embedding_cosine", "embedding_mahalanobis"}:
+        raise ValueError("Unsupported OOD method in deployment config")
+    threshold_method = str(thresholds.get("method", "")).strip().lower()
+    if threshold_method != method:
+        raise ValueError(
+            "OOD config and threshold artifacts must use the same method: "
+            f"{method!r} vs {threshold_method!r}"
+        )
+    required = {"uncertain", "not_dog", "breed_confidence"}
+    if set(config.get("thresholds", {})) < required:
+        raise ValueError("OOD config is missing a required decision threshold")
+    for key in required:
+        value = float(config["thresholds"][key])
+        if not np.isfinite(value):
+            raise ValueError(f"OOD threshold {key} is not finite")
+    flat_required = {
+        "ood_threshold",
+        "uncertain_threshold",
+        "breed_confidence_threshold",
+    }
+    if not flat_required.issubset(thresholds):
+        raise ValueError("OOD threshold artifact is missing a required threshold")
+    flat_values = {key: float(thresholds[key]) for key in flat_required}
+    if not all(np.isfinite(value) for value in flat_values.values()):
+        raise ValueError("OOD threshold artifact contains a non-finite value")
+    if flat_values["uncertain_threshold"] > flat_values["ood_threshold"]:
+        raise ValueError("uncertain_threshold must be <= ood_threshold")
+    if not 0 <= flat_values["breed_confidence_threshold"] <= 1:
+        raise ValueError("breed_confidence_threshold must be in [0, 1]")
+    required_artifacts = [config_path, thresholds_path]
+    if method in EMBEDDING_METHODS:
+        required_artifacts.append(CLASS_CENTROIDS_PATH)
+    if method in MAHALANOBIS_METHODS:
+        required_artifacts.append(COVARIANCE_PATH)
+    missing = [path.name for path in required_artifacts if not path.is_file()]
+    if missing:
+        raise FileNotFoundError(
+            "Missing deployment artifact(s) for OOD method "
+            f"{method!r}: {', '.join(missing)}"
+        )
+    return {
+        "config": config,
+        "thresholds": thresholds,
+        "method": method,
+        "required_artifacts": required_artifacts,
+    }
 
 
 def load_and_verify_model(
@@ -246,8 +320,19 @@ def create_model_manifest(
     output_path: Path,
     sha256_hash: str,
     file_size_bytes: int,
+    required_artifacts: list[Path] | None = None,
 ) -> Dict[str, Any]:
     """Generate model_manifest.json containing deployment metadata and compression decision."""
+    runtime_artifacts = required_artifacts or [
+        DEPLOY_MODEL_PATH,
+        CLASS_NAMES_PATH,
+        OOD_CONFIG_PATH,
+        OOD_THRESHOLDS_PATH,
+    ]
+    relative_runtime_artifacts = [
+        path.resolve().relative_to(PROJECT_ROOT.resolve()).as_posix()
+        for path in runtime_artifacts
+    ]
     manifest_data = {
         "model_name": "mobilenet_v2_transfer",
         "task": "dog_breed_classification",
@@ -259,6 +344,19 @@ def create_model_manifest(
         "input_pixel_range": "[0,255]",
         "preprocessing": "MobileNetV2 preprocess_input inside model",
         "output": "120-class softmax",
+        "open_set": {
+            "enabled": True,
+            "classifier_classes": NUM_CLASSES,
+            "not_dog_training_class": False,
+            "config": OOD_CONFIG_PATH.name,
+            "thresholds": OOD_THRESHOLDS_PATH.name,
+            "decision_states": ["DOG", "UNCERTAIN", "NOT_DOG"],
+        },
+        "deployment": {
+            "runtime_artifacts": relative_runtime_artifacts,
+            "dataset_packaged": False,
+            "paths_are_relative_to": ".",
+        },
         "backbone": "MobileNetV2",
         "backbone_weights": "ImageNet",
         "backbone_frozen": True,
@@ -291,7 +389,7 @@ def create_model_manifest(
 def create_readme(output_path: Path) -> None:
     """Generate README.txt documenting artifact usage, preprocessing rules, and model selection."""
     readme_content = f"""================================================================================
-Dog Breed Recognition System - Deployment Artifact (Task 6.3)
+Dog Breed Recognition System - Deployment Artifact (Task 25)
 ================================================================================
 
 Production Model:
@@ -350,6 +448,23 @@ Model Choice & Compression Documentation:
   with negligible size benefits. The production artifact is the original, dense,
   unpruned MobileNetV2 transfer learning model. Compression artifacts are preserved in
   outputs/compression_manual/ for audit and experimental evidence.
+
+Open-Set / OOD Decision Layer:
+  The classifier remains exactly 120 dog-breed classes; `not_dog` is not a
+  training label. Runtime decisions are configured in ood_config.json and
+  ood_thresholds.json. The states are DOG, UNCERTAIN, and NOT_DOG.
+  The shipped MSP baseline is marked calibrated=false until disjoint ID/OOD
+  calibration data is supplied.
+
+Deployment Package:
+  Required runtime files: dog_breed_model.keras, class_names.json,
+  ood_config.json, and ood_thresholds.json.
+  The selected production OOD method is MSP, so no embedding centroid or
+  Mahalanobis covariance artifact is required. If the method changes to
+  embedding_cosine, package class_centroids.npy; if it changes to
+  embedding_mahalanobis, package both class_centroids.npy and covariance.npy.
+  All runtime paths are resolved relative to the application root. The raw
+  dataset is not a deployment input and is excluded by .gcloudignore.
 ================================================================================
 """
     output_path.parent.mkdir(parents=True, exist_ok=True)
@@ -407,12 +522,28 @@ def main() -> None:
     print(f"  Confidence:           {model_meta['confidence']:.4f}")
     print("  Synthetic inference:  PASS")
 
-    # 4. Generate manifest
-    print("\n[Step 4/5] Generating model_manifest.json...")
+    # 4. Verify the required OOD artifacts before writing the manifest so the
+    # manifest cannot advertise a package with missing method-specific state.
+    print("\n[Step 4] Verifying open-set/OOD deployment artifacts...")
+    ood_meta = verify_ood_artifacts(OOD_CONFIG_PATH, OOD_THRESHOLDS_PATH)
+    print(f"  OOD method:           {ood_meta['method']}")
+    print(
+        "  Required OOD files:   "
+        + ", ".join(path.name for path in ood_meta["required_artifacts"])
+    )
+    print("  OOD artifact validation: PASS")
+
+    # 5. Generate manifest
+    print("\n[Step 5] Generating model_manifest.json...")
     manifest_meta = create_model_manifest(
         MANIFEST_PATH,
         sha256_hash=copy_meta["dest_sha256"],
         file_size_bytes=copy_meta["dest_size"],
+        required_artifacts=[
+            DEPLOY_MODEL_PATH,
+            CLASS_NAMES_PATH,
+            *ood_meta["required_artifacts"],
+        ],
     )
     print(f"  Manifest written:     {MANIFEST_PATH}")
     print(f"  Validation accuracy:  {manifest_meta['validation_accuracy']}")
@@ -420,14 +551,21 @@ def main() -> None:
     print(f"  Production model:     {manifest_meta['production_model']}")
     print(f"  Compression for prod: {manifest_meta['compression_used_for_production']}")
 
-    # 5. Generate README
-    print("\n[Step 5/5] Generating README.txt...")
+    # 6. Generate README
+    print("\n[Step 6] Generating README.txt...")
     create_readme(README_PATH)
     print(f"  README written:       {README_PATH}")
 
     # Final sanity check of artifacts
     print("\n[Verification] Checking all deployment artifacts on disk...")
-    for path in (DEPLOY_MODEL_PATH, CLASS_NAMES_PATH, MANIFEST_PATH, README_PATH):
+    final_artifacts = [
+        DEPLOY_MODEL_PATH,
+        CLASS_NAMES_PATH,
+        MANIFEST_PATH,
+        README_PATH,
+        *ood_meta["required_artifacts"],
+    ]
+    for path in dict.fromkeys(final_artifacts):
         exists = path.is_file()
         size = path.stat().st_size if exists else 0
         print(f"  {path.name:25s} -> Exists: {'YES' if exists else 'NO'} ({size:,} bytes)")

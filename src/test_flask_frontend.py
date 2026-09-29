@@ -7,6 +7,7 @@ import numpy as np
 from PIL import Image
 
 from app import app, class_names
+from tests.response_assertions import assert_three_state_response
 
 
 class PageStructure(HTMLParser):
@@ -103,24 +104,7 @@ class TestFlaskFrontend(unittest.TestCase):
         data = response.get_json()
 
         # Validate prediction response contract
-        self.assertIn("model", data)
-        self.assertEqual(data["model"], "mobilenet_v2_transfer")
-
-        self.assertIn("prediction", data)
-        top1 = data["prediction"]
-        self.assertIn("index", top1)
-        self.assertIn("breed", top1)
-        self.assertIn("confidence", top1)
-        self.assertEqual(top1["breed"], class_names[top1["index"]])
-
-        self.assertIn("top5", data)
-        top5 = data["top5"]
-        self.assertEqual(len(top5), 5)
-        for rank_item in top5:
-            self.assertIn("index", rank_item)
-            self.assertIn("breed", rank_item)
-            self.assertIn("confidence", rank_item)
-            self.assertEqual(rank_item["breed"], class_names[rank_item["index"]])
+        assert_three_state_response(self, data, class_names)
 
     def test_06_accessible_markup(self):
         """Controls and announcements have resolvable, unique semantic references."""

@@ -360,3 +360,88 @@ test("missing DOM element fails initialization safely", () => {
     assert.equal(h.errors.length, 1);
     assert.equal(h.elements.predictBtn.listeners.click, undefined);
 });
+
+test("OE V2 DOG response contract renders breed, confidence, and Top-5", async () => {
+    const h = harness();
+    h.select(file());
+    const pending = h.click();
+    h.respond(0, {
+        status: "DOG",
+        final_status: "DOG",
+        breed: "golden_retriever",
+        confidence: 0.95,
+        top5: [
+            { rank: 1, breed: "golden_retriever", confidence: 0.95, index: 45 },
+            { rank: 2, breed: "labrador_retriever", confidence: 0.03, index: 56 }
+        ],
+        probability_margin: 0.92,
+        ood_score: 0.20,
+        T_uncertain: 0.343358,
+        T_not_dog: 0.457513
+    });
+    await pending;
+    assert.equal(hidden(h.elements.resultContainer), false);
+    assert.equal(hidden(h.elements.top1Container), false);
+    assert.equal(hidden(h.elements.top5Container), false);
+    assert.equal(h.elements.top1Breed.textContent, "Golden Retriever");
+    assert.equal(h.elements.top1Confidence.textContent, "95.00%");
+    assert.equal(h.elements.top5TableBody.children.length, 2);
+    assert.match(h.elements.resultNote.textContent, /Confidence is a model score/);
+});
+
+test("OE V2 UNCERTAIN response contract renders likely breed, confidence, Top-5, and OOD warning", async () => {
+    const h = harness();
+    h.select(file());
+    const pending = h.click();
+    h.respond(0, {
+        status: "UNCERTAIN",
+        final_status: "UNCERTAIN",
+        breed: "eskimo_dog",
+        confidence: 0.398673,
+        top5: [
+            { rank: 1, breed: "eskimo_dog", confidence: 0.398673, index: 43 },
+            { rank: 2, breed: "siberian_husky", confidence: 0.210076, index: 101 }
+        ],
+        probability_margin: 0.188597,
+        ood_score: 0.416950,
+        T_uncertain: 0.343358,
+        T_not_dog: 0.457513,
+        message: "The image is ambiguous or outside the reliable dog-breed region."
+    });
+    await pending;
+    assert.equal(hidden(h.elements.resultContainer), false);
+    assert.equal(hidden(h.elements.top1Container), false);
+    assert.equal(hidden(h.elements.top5Container), false);
+    assert.equal(h.elements.top1Breed.textContent, "Eskimo Dog");
+    assert.equal(h.elements.top1Confidence.textContent, "39.87%");
+    assert.equal(h.elements.top5TableBody.children.length, 2);
+    assert.match(h.elements.resultNote.textContent, /⚠️ Outlier Warning/);
+    assert.match(h.elements.resultNote.textContent, /0\.4169|0\.4170/);
+    assert.equal(h.elements.resultNote.classList.contains("decision-note-uncertain"), true);
+});
+
+test("OE V2 NOT_DOG response contract suppresses breed and Top-5 while retaining message", async () => {
+    const h = harness();
+    h.select(file());
+    const pending = h.click();
+    h.respond(0, {
+        status: "NOT_DOG",
+        final_status: "NOT_DOG",
+        breed: "tabby_cat",
+        confidence: 0.15,
+        top5: [
+            { rank: 1, breed: "tabby_cat", confidence: 0.15, index: 10 }
+        ],
+        probability_margin: 0.05,
+        ood_score: 0.58,
+        T_uncertain: 0.343358,
+        T_not_dog: 0.457513,
+        message: "No dog was confidently detected."
+    });
+    await pending;
+    assert.equal(hidden(h.elements.resultContainer), false);
+    assert.equal(hidden(h.elements.top1Container), true);
+    assert.equal(hidden(h.elements.top5Container), true);
+    assert.equal(h.elements.resultNote.textContent, "No dog was confidently detected.");
+    assert.equal(h.elements.resultNote.classList.contains("decision-note-not-dog"), true);
+});

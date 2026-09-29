@@ -1,0 +1,746 @@
+{
+  "0": {
+    "class_id": 0,
+    "breed": "affenpinscher",
+    "count": 64,
+    "weight": 1.1014364919354838
+  },
+  "1": {
+    "class_id": 1,
+    "breed": "afghan_hound",
+    "count": 93,
+    "weight": 0.7579778009018384
+  },
+  "2": {
+    "class_id": 2,
+    "breed": "african_hunting_dog",
+    "count": 69,
+    "weight": 1.0216222533894344
+  },
+  "3": {
+    "class_id": 3,
+    "breed": "airedale",
+    "count": 85,
+    "weight": 0.8293168880455408
+  },
+  "4": {
+    "class_id": 4,
+    "breed": "american_staffordshire_terrier",
+    "count": 59,
+    "weight": 1.1947785675232367
+  },
+  "5": {
+    "class_id": 5,
+    "breed": "appenzeller",
+    "count": 62,
+    "weight": 1.1369667013527576
+  },
+  "6": {
+    "class_id": 6,
+    "breed": "australian_terrier",
+    "count": 81,
+    "weight": 0.8702708084428514
+  },
+  "7": {
+    "class_id": 7,
+    "breed": "basenji",
+    "count": 88,
+    "weight": 0.8010447214076246
+  },
+  "8": {
+    "class_id": 8,
+    "breed": "basset",
+    "count": 66,
+    "weight": 1.0680596285434996
+  },
+  "9": {
+    "class_id": 9,
+    "breed": "beagle",
+    "count": 84,
+    "weight": 0.839189708141321
+  },
+  "10": {
+    "class_id": 10,
+    "breed": "bedlington_terrier",
+    "count": 72,
+    "weight": 0.9790546594982079
+  },
+  "11": {
+    "class_id": 11,
+    "breed": "bernese_mountain_dog",
+    "count": 91,
+    "weight": 0.7746366536689118
+  },
+  "12": {
+    "class_id": 12,
+    "breed": "black-and-tan_coonhound",
+    "count": 62,
+    "weight": 1.1369667013527576
+  },
+  "13": {
+    "class_id": 13,
+    "breed": "blenheim_spaniel",
+    "count": 81,
+    "weight": 0.8702708084428514
+  },
+  "14": {
+    "class_id": 14,
+    "breed": "bloodhound",
+    "count": 68,
+    "weight": 1.036646110056926
+  },
+  "15": {
+    "class_id": 15,
+    "breed": "bluetick",
+    "count": 68,
+    "weight": 1.036646110056926
+  },
+  "16": {
+    "class_id": 16,
+    "breed": "border_collie",
+    "count": 58,
+    "weight": 1.2153781979977754
+  },
+  "17": {
+    "class_id": 17,
+    "breed": "border_terrier",
+    "count": 73,
+    "weight": 0.9656429518338489
+  },
+  "18": {
+    "class_id": 18,
+    "breed": "borzoi",
+    "count": 60,
+    "weight": 1.1748655913978494
+  },
+  "19": {
+    "class_id": 19,
+    "breed": "boston_bull",
+    "count": 70,
+    "weight": 1.0070276497695851
+  },
+  "20": {
+    "class_id": 20,
+    "breed": "bouvier_des_flandres",
+    "count": 69,
+    "weight": 1.0216222533894344
+  },
+  "21": {
+    "class_id": 21,
+    "breed": "boxer",
+    "count": 60,
+    "weight": 1.1748655913978494
+  },
+  "22": {
+    "class_id": 22,
+    "breed": "brabancon_griffon",
+    "count": 54,
+    "weight": 1.3054062126642771
+  },
+  "23": {
+    "class_id": 23,
+    "breed": "briard",
+    "count": 54,
+    "weight": 1.3054062126642771
+  },
+  "24": {
+    "class_id": 24,
+    "breed": "brittany_spaniel",
+    "count": 58,
+    "weight": 1.2153781979977754
+  },
+  "25": {
+    "class_id": 25,
+    "breed": "bull_mastiff",
+    "count": 60,
+    "weight": 1.1748655913978494
+  },
+  "26": {
+    "class_id": 26,
+    "breed": "cairn",
+    "count": 85,
+    "weight": 0.8293168880455408
+  },
+  "27": {
+    "class_id": 27,
+    "breed": "cardigan",
+    "count": 61,
+    "weight": 1.1556054997355896
+  },
+  "28": {
+    "class_id": 28,
+    "breed": "chesapeake_bay_retriever",
+    "count": 66,
+    "weight": 1.0680596285434996
+  },
+  "29": {
+    "class_id": 29,
+    "breed": "chihuahua",
+    "count": 57,
+    "weight": 1.236700622524052
+  },
+  "30": {
+    "class_id": 30,
+    "breed": "chow",
+    "count": 74,
+    "weight": 0.9525937227550131
+  },
+  "31": {
+    "class_id": 31,
+    "breed": "clumber",
+    "count": 64,
+    "weight": 1.1014364919354838
+  },
+  "32": {
+    "class_id": 32,
+    "breed": "cocker_spaniel",
+    "count": 59,
+    "weight": 1.1947785675232367
+  },
+  "33": {
+    "class_id": 33,
+    "breed": "collie",
+    "count": 70,
+    "weight": 1.0070276497695851
+  },
+  "34": {
+    "class_id": 34,
+    "breed": "curly-coated_retriever",
+    "count": 58,
+    "weight": 1.2153781979977754
+  },
+  "35": {
+    "class_id": 35,
+    "breed": "dandie_dinmont",
+    "count": 71,
+    "weight": 0.9928441617446615
+  },
+  "36": {
+    "class_id": 36,
+    "breed": "dhole",
+    "count": 61,
+    "weight": 1.1556054997355896
+  },
+  "37": {
+    "class_id": 37,
+    "breed": "dingo",
+    "count": 64,
+    "weight": 1.1014364919354838
+  },
+  "38": {
+    "class_id": 38,
+    "breed": "doberman",
+    "count": 59,
+    "weight": 1.1947785675232367
+  },
+  "39": {
+    "class_id": 39,
+    "breed": "english_foxhound",
+    "count": 69,
+    "weight": 1.0216222533894344
+  },
+  "40": {
+    "class_id": 40,
+    "breed": "english_setter",
+    "count": 66,
+    "weight": 1.0680596285434996
+  },
+  "41": {
+    "class_id": 41,
+    "breed": "english_springer",
+    "count": 60,
+    "weight": 1.1748655913978494
+  },
+  "42": {
+    "class_id": 42,
+    "breed": "entlebucher",
+    "count": 92,
+    "weight": 0.7662166900420757
+  },
+  "43": {
+    "class_id": 43,
+    "breed": "eskimo_dog",
+    "count": 53,
+    "weight": 1.3300365185636032
+  },
+  "44": {
+    "class_id": 44,
+    "breed": "flat-coated_retriever",
+    "count": 58,
+    "weight": 1.2153781979977754
+  },
+  "45": {
+    "class_id": 45,
+    "breed": "french_bulldog",
+    "count": 56,
+    "weight": 1.2587845622119815
+  },
+  "46": {
+    "class_id": 46,
+    "breed": "german_shepherd",
+    "count": 55,
+    "weight": 1.2816715542521995
+  },
+  "47": {
+    "class_id": 47,
+    "breed": "german_short-haired_pointer",
+    "count": 60,
+    "weight": 1.1748655913978494
+  },
+  "48": {
+    "class_id": 48,
+    "breed": "giant_schnauzer",
+    "count": 55,
+    "weight": 1.2816715542521995
+  },
+  "49": {
+    "class_id": 49,
+    "breed": "golden_retriever",
+    "count": 54,
+    "weight": 1.3054062126642771
+  },
+  "50": {
+    "class_id": 50,
+    "breed": "gordon_setter",
+    "count": 65,
+    "weight": 1.0844913151364763
+  },
+  "51": {
+    "class_id": 51,
+    "breed": "great_dane",
+    "count": 60,
+    "weight": 1.1748655913978494
+  },
+  "52": {
+    "class_id": 52,
+    "breed": "great_pyrenees",
+    "count": 89,
+    "weight": 0.7920442189198985
+  },
+  "53": {
+    "class_id": 53,
+    "breed": "greater_swiss_mountain_dog",
+    "count": 66,
+    "weight": 1.0680596285434996
+  },
+  "54": {
+    "class_id": 54,
+    "breed": "groenendael",
+    "count": 66,
+    "weight": 1.0680596285434996
+  },
+  "55": {
+    "class_id": 55,
+    "breed": "ibizan_hound",
+    "count": 73,
+    "weight": 0.9656429518338489
+  },
+  "56": {
+    "class_id": 56,
+    "breed": "irish_setter",
+    "count": 70,
+    "weight": 1.0070276497695851
+  },
+  "57": {
+    "class_id": 57,
+    "breed": "irish_terrier",
+    "count": 66,
+    "weight": 1.0680596285434996
+  },
+  "58": {
+    "class_id": 58,
+    "breed": "irish_water_spaniel",
+    "count": 62,
+    "weight": 1.1369667013527576
+  },
+  "59": {
+    "class_id": 59,
+    "breed": "irish_wolfhound",
+    "count": 81,
+    "weight": 0.8702708084428514
+  },
+  "60": {
+    "class_id": 60,
+    "breed": "italian_greyhound",
+    "count": 74,
+    "weight": 0.9525937227550131
+  },
+  "61": {
+    "class_id": 61,
+    "breed": "japanese_spaniel",
+    "count": 84,
+    "weight": 0.839189708141321
+  },
+  "62": {
+    "class_id": 62,
+    "breed": "keeshond",
+    "count": 65,
+    "weight": 1.0844913151364763
+  },
+  "63": {
+    "class_id": 63,
+    "breed": "kelpie",
+    "count": 69,
+    "weight": 1.0216222533894344
+  },
+  "64": {
+    "class_id": 64,
+    "breed": "kerry_blue_terrier",
+    "count": 66,
+    "weight": 1.0680596285434996
+  },
+  "65": {
+    "class_id": 65,
+    "breed": "komondor",
+    "count": 54,
+    "weight": 1.3054062126642771
+  },
+  "66": {
+    "class_id": 66,
+    "breed": "kuvasz",
+    "count": 57,
+    "weight": 1.236700622524052
+  },
+  "67": {
+    "class_id": 67,
+    "breed": "labrador_retriever",
+    "count": 67,
+    "weight": 1.0521184400577757
+  },
+  "68": {
+    "class_id": 68,
+    "breed": "lakeland_terrier",
+    "count": 80,
+    "weight": 0.881149193548387
+  },
+  "69": {
+    "class_id": 69,
+    "breed": "leonberg",
+    "count": 85,
+    "weight": 0.8293168880455408
+  },
+  "70": {
+    "class_id": 70,
+    "breed": "lhasa",
+    "count": 72,
+    "weight": 0.9790546594982079
+  },
+  "71": {
+    "class_id": 71,
+    "breed": "malamute",
+    "count": 65,
+    "weight": 1.0844913151364763
+  },
+  "72": {
+    "class_id": 72,
+    "breed": "malinois",
+    "count": 58,
+    "weight": 1.2153781979977754
+  },
+  "73": {
+    "class_id": 73,
+    "breed": "maltese_dog",
+    "count": 93,
+    "weight": 0.7579778009018384
+  },
+  "74": {
+    "class_id": 74,
+    "breed": "mexican_hairless",
+    "count": 64,
+    "weight": 1.1014364919354838
+  },
+  "75": {
+    "class_id": 75,
+    "breed": "miniature_pinscher",
+    "count": 81,
+    "weight": 0.8702708084428514
+  },
+  "76": {
+    "class_id": 76,
+    "breed": "miniature_poodle",
+    "count": 63,
+    "weight": 1.1189196108550947
+  },
+  "77": {
+    "class_id": 77,
+    "breed": "miniature_schnauzer",
+    "count": 62,
+    "weight": 1.1369667013527576
+  },
+  "78": {
+    "class_id": 78,
+    "breed": "newfoundland",
+    "count": 73,
+    "weight": 0.9656429518338489
+  },
+  "79": {
+    "class_id": 79,
+    "breed": "norfolk_terrier",
+    "count": 66,
+    "weight": 1.0680596285434996
+  },
+  "80": {
+    "class_id": 80,
+    "breed": "norwegian_elkhound",
+    "count": 76,
+    "weight": 0.927525466893039
+  },
+  "81": {
+    "class_id": 81,
+    "breed": "norwich_terrier",
+    "count": 62,
+    "weight": 1.1369667013527576
+  },
+  "82": {
+    "class_id": 82,
+    "breed": "old_english_sheepdog",
+    "count": 70,
+    "weight": 1.0070276497695851
+  },
+  "83": {
+    "class_id": 83,
+    "breed": "otterhound",
+    "count": 55,
+    "weight": 1.2816715542521995
+  },
+  "84": {
+    "class_id": 84,
+    "breed": "papillon",
+    "count": 77,
+    "weight": 0.9154796816087138
+  },
+  "85": {
+    "class_id": 85,
+    "breed": "pekinese",
+    "count": 60,
+    "weight": 1.1748655913978494
+  },
+  "86": {
+    "class_id": 86,
+    "breed": "pembroke",
+    "count": 73,
+    "weight": 0.9656429518338489
+  },
+  "87": {
+    "class_id": 87,
+    "breed": "pomeranian",
+    "count": 89,
+    "weight": 0.7920442189198985
+  },
+  "88": {
+    "class_id": 88,
+    "breed": "pug",
+    "count": 75,
+    "weight": 0.9398924731182796
+  },
+  "89": {
+    "class_id": 89,
+    "breed": "redbone",
+    "count": 58,
+    "weight": 1.2153781979977754
+  },
+  "90": {
+    "class_id": 90,
+    "breed": "rhodesian_ridgeback",
+    "count": 70,
+    "weight": 1.0070276497695851
+  },
+  "91": {
+    "class_id": 91,
+    "breed": "rottweiler",
+    "count": 61,
+    "weight": 1.1556054997355896
+  },
+  "92": {
+    "class_id": 92,
+    "breed": "saint_bernard",
+    "count": 67,
+    "weight": 1.0521184400577757
+  },
+  "93": {
+    "class_id": 93,
+    "breed": "saluki",
+    "count": 80,
+    "weight": 0.881149193548387
+  },
+  "94": {
+    "class_id": 94,
+    "breed": "samoyed",
+    "count": 87,
+    "weight": 0.8102521319985169
+  },
+  "95": {
+    "class_id": 95,
+    "breed": "schipperke",
+    "count": 69,
+    "weight": 1.0216222533894344
+  },
+  "96": {
+    "class_id": 96,
+    "breed": "scotch_terrier",
+    "count": 66,
+    "weight": 1.0680596285434996
+  },
+  "97": {
+    "class_id": 97,
+    "breed": "scottish_deerhound",
+    "count": 101,
+    "weight": 0.6979399552858512
+  },
+  "98": {
+    "class_id": 98,
+    "breed": "sealyham_terrier",
+    "count": 70,
+    "weight": 1.0070276497695851
+  },
+  "99": {
+    "class_id": 99,
+    "breed": "shetland_sheepdog",
+    "count": 61,
+    "weight": 1.1556054997355896
+  },
+  "100": {
+    "class_id": 100,
+    "breed": "shih-tzu",
+    "count": 89,
+    "weight": 0.7920442189198985
+  },
+  "101": {
+    "class_id": 101,
+    "breed": "siberian_husky",
+    "count": 76,
+    "weight": 0.927525466893039
+  },
+  "102": {
+    "class_id": 102,
+    "breed": "silky_terrier",
+    "count": 72,
+    "weight": 0.9790546594982079
+  },
+  "103": {
+    "class_id": 103,
+    "breed": "soft-coated_wheaten_terrier",
+    "count": 57,
+    "weight": 1.236700622524052
+  },
+  "104": {
+    "class_id": 104,
+    "breed": "staffordshire_bullterrier",
+    "count": 63,
+    "weight": 1.1189196108550947
+  },
+  "105": {
+    "class_id": 105,
+    "breed": "standard_poodle",
+    "count": 63,
+    "weight": 1.1189196108550947
+  },
+  "106": {
+    "class_id": 106,
+    "breed": "standard_schnauzer",
+    "count": 58,
+    "weight": 1.2153781979977754
+  },
+  "107": {
+    "class_id": 107,
+    "breed": "sussex_spaniel",
+    "count": 62,
+    "weight": 1.1369667013527576
+  },
+  "108": {
+    "class_id": 108,
+    "breed": "tibetan_mastiff",
+    "count": 55,
+    "weight": 1.2816715542521995
+  },
+  "109": {
+    "class_id": 109,
+    "breed": "tibetan_terrier",
+    "count": 85,
+    "weight": 0.8293168880455408
+  },
+  "110": {
+    "class_id": 110,
+    "breed": "toy_poodle",
+    "count": 64,
+    "weight": 1.1014364919354838
+  },
+  "111": {
+    "class_id": 111,
+    "breed": "toy_terrier",
+    "count": 63,
+    "weight": 1.1189196108550947
+  },
+  "112": {
+    "class_id": 112,
+    "breed": "vizsla",
+    "count": 56,
+    "weight": 1.2587845622119815
+  },
+  "113": {
+    "class_id": 113,
+    "breed": "walker_hound",
+    "count": 55,
+    "weight": 1.2816715542521995
+  },
+  "114": {
+    "class_id": 114,
+    "breed": "weimaraner",
+    "count": 68,
+    "weight": 1.036646110056926
+  },
+  "115": {
+    "class_id": 115,
+    "breed": "welsh_springer_spaniel",
+    "count": 63,
+    "weight": 1.1189196108550947
+  },
+  "116": {
+    "class_id": 116,
+    "breed": "west_highland_white_terrier",
+    "count": 65,
+    "weight": 1.0844913151364763
+  },
+  "117": {
+    "class_id": 117,
+    "breed": "whippet",
+    "count": 76,
+    "weight": 0.927525466893039
+  },
+  "118": {
+    "class_id": 118,
+    "breed": "wire-haired_fox_terrier",
+    "count": 66,
+    "weight": 1.0680596285434996
+  },
+  "119": {
+    "class_id": 119,
+    "breed": "yorkshire_terrier",
+    "count": 66,
+    "weight": 1.0680596285434996
+  },
+  "120": {
+    "class_id": 120,
+    "breed": "american_bulldog",
+    "count": 140,
+    "weight": 0.5035138248847926
+  },
+  "121": {
+    "class_id": 121,
+    "breed": "american_pit_bull_terrier",
+    "count": 140,
+    "weight": 0.5035138248847926
+  },
+  "122": {
+    "class_id": 122,
+    "breed": "havanese",
+    "count": 140,
+    "weight": 0.5035138248847926
+  },
+  "123": {
+    "class_id": 123,
+    "breed": "shiba_inu",
+    "count": 140,
+    "weight": 0.5035138248847926
+  }
+}

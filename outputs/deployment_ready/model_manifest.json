@@ -9,6 +9,28 @@
   "input_pixel_range": "[0,255]",
   "preprocessing": "MobileNetV2 preprocess_input inside model",
   "output": "120-class softmax",
+  "open_set": {
+    "enabled": true,
+    "classifier_classes": 120,
+    "not_dog_training_class": false,
+    "config": "ood_config.json",
+    "thresholds": "ood_thresholds.json",
+    "decision_states": [
+      "DOG",
+      "UNCERTAIN",
+      "NOT_DOG"
+    ]
+  },
+  "deployment": {
+    "runtime_artifacts": [
+      "outputs/deployment_ready/dog_breed_model.keras",
+      "outputs/deployment_ready/class_names.json",
+      "outputs/deployment_ready/ood_config.json",
+      "outputs/deployment_ready/ood_thresholds.json"
+    ],
+    "dataset_packaged": false,
+    "paths_are_relative_to": "."
+  },
   "backbone": "MobileNetV2",
   "backbone_weights": "ImageNet",
   "backbone_frozen": true,

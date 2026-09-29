@@ -1,81 +1,84 @@
-# Dog Breed Recognition System — Cloud Deployment Guide
+# Dog Breed Classification — Deployment Guide
 
-> Historical reference only. This project now targets local personal use on Windows.
-> Follow [README.md](README.md) and `run_local.bat`. Cloud configuration and old sizing
-> measurements below are retained as history and are not required for local startup.
-> Gunicorn has moved to the optional `requirements-cloud.txt`; no cloud action is needed.
+The deployable runtime is rooted at the repository root. Runtime paths are resolved relative to `app.py`, so the WSGI service does not depend on the caller's working directory.
 
-## Deployment Target
-* **Platform:** Google Cloud Platform (GCP)
-* **Service:** Google App Engine (GAE)
-* **Environment:** Standard Environment
-* **Runtime:** `python311` (Python 3.11)
-* **Instance Class:** `F2` (768 MB RAM, 1.2 GHz CPU)
-  * *Rationale:* TensorFlow 2.21 + Keras 3.15 + MobileNetV2 model footprint consumes ~399.3 MB RSS on startup and ~495.6 MB RSS upon inference, exceeding the 384 MB limit of F1. F2 ensures stable operation without Out-Of-Memory (OOM) crashes.
-* **Entrypoint:** `gunicorn -b :$PORT app:app`
+## Target
 
----
+- Platform: Google Cloud App Engine standard environment
+- Runtime: Python 3.11
+- Instance class: F2
+- Entrypoint: `gunicorn -b :$PORT app:app`
 
-## Required Runtime Artifacts
-The application requires the following files at runtime:
-1. `app.py` — Flask application module defining `app` and REST endpoints (`/`, `/health`, `/predict`).
-2. `outputs/deployment_ready/dog_breed_model.keras` — Production MobileNetV2 model artifact (~10.94 MB, SHA256: `4695eae55c8464c1a6be3f147828f901259fb2c2541c23c2e36e8b4eb95d5f3d`).
-3. `outputs/deployment_ready/class_names.json` — 120-class mapping index-to-breed.
-4. `templates/index.html` — Web UI template.
-5. `static/style.css` — Web UI stylesheet.
-6. `static/app.js` — Client-side interaction logic.
-7. `requirements.txt` — Production Python dependencies.
-8. `app.yaml` — App Engine configuration.
+The F2 setting is the current project configuration, not a production capacity guarantee. Validate memory, latency, concurrency, and cost in the target Google Cloud project before serving traffic.
 
----
+## Required Runtime Files
 
-## Pre-deployment Preparation
-Install dependencies in the deployment environment:
-```bash
-pip install -r requirements-cloud.txt
-```
+- `app.py`
+- `src/inference/` and imported `src/` modules
+- `templates/index.html`
+- `static/app.js` and `static/style.css`
+- `requirements.txt`
+- `app.yaml`
+- `outputs/deployment_oe_v2/dog_breed_model_oe_v2.keras`
+- `outputs/deployment_oe_v2/class_centroids.npy`
+- `outputs/deployment_oe_v2/class_names.json`
+- `outputs/deployment_oe_v2/model_manifest.json`
+- `outputs/deployment_oe_v2/ood_calibration.json`
 
-Verify WSGI entrypoint and app initialization:
-```bash
+The active runtime uses a 120-class OE V2 model and cosine distance to 120 class centroids. Startup verifies the model and centroid SHA-256 values and rejects missing, altered, or shape-incompatible artifacts.
+
+The `outputs/deployment_ready/` bundle is retained in the repository as the baseline deployment artifact and provenance record. It is not selected while the active OE V2 bundle is present.
+
+## Local Pre-deployment Checks
+
+```powershell
+python -m pip install -r requirements.txt
+python -m pip check
 python -c "import app; assert app.app is not None; print('Entrypoint OK')"
+python -m unittest tests.test_oe_v2_deployment
+python -m unittest src.test_deployment_smoke src.test_flask_backend src.test_flask_frontend
 ```
 
----
+These checks load the shipped model but do not train or modify it.
 
-## Future Deployment Commands (Documentation Only)
-> [!IMPORTANT]
-> The following commands are documented for future deployment stages (Task 8.2+).
-> **DO NOT execute them during Task 8.1 preparation.**
+## Git LFS
 
-1. Authenticate with Google Cloud:
-   ```bash
-   gcloud auth login
-   ```
+The Keras files are stored through Git LFS. Before deployment from a fresh clone:
 
-2. Set target Google Cloud project:
-   ```bash
-   gcloud config set project <PROJECT_ID>
-   ```
+```powershell
+git lfs install
+git lfs pull
+git lfs ls-files
+```
 
-3. Initialize App Engine application (if not already created in the project):
-   ```bash
-   gcloud app create --region=<REGION>
-   ```
+Do not deploy unresolved LFS pointer files.
 
-4. Deploy the application:
-   ```bash
-   gcloud app deploy app.yaml
-   ```
+## App Engine Deployment
 
-5. View the live application:
-   ```bash
-   gcloud app browse
-   ```
+Authenticate and select an existing Google Cloud project:
 
----
+```powershell
+gcloud auth login
+gcloud config set project <PROJECT_ID>
+```
 
-## Source Packaging & File Inclusion (.gcloudignore)
-The `.gcloudignore` file ensures only essential production files are uploaded:
-* **Included:** `app.py`, `app.yaml`, `requirements.txt`, `templates/`, `static/`, and `outputs/deployment_ready/`.
-* **Excluded:** `.venv/`, `data/` (Kaggle dataset ~1.5 GB), `src/` (training/pipeline scripts), non-production checkpoints/outputs in `outputs/*`, and `.git/`.
-* **Total Estimated Upload Size:** ~11.0 MB.
+Create an App Engine application only if the selected project does not already have one:
+
+```powershell
+gcloud app create --region=<REGION>
+```
+
+Deploy and open the service:
+
+```powershell
+gcloud app deploy app.yaml
+gcloud app browse
+```
+
+Deployment creates billable cloud resources. Review the selected account, project, region, service limits, and model redistribution terms before running these commands.
+
+## Packaging Policy
+
+`.gcloudignore` excludes Git metadata, virtual environments, datasets, caches, logs, temporary audit files, credentials, and non-deployment experiment outputs. It explicitly includes both deployment bundles; the application selects `outputs/deployment_oe_v2/` when present.
+
+Uploaded images are processed in memory and are not written to disk by the Flask application.

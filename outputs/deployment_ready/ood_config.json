@@ -1,0 +1,19 @@
+{
+  "schema_version": 1,
+  "method": "msp",
+  "temperature": 1.0,
+  "score_definition": "1_minus_max_softmax_probability",
+  "decision_states": ["DOG", "UNCERTAIN", "NOT_DOG"],
+  "thresholds": {
+    "uncertain": 0.55,
+    "not_dog": 0.8,
+    "breed_confidence": 0.45
+  },
+  "calibration": {
+    "calibrated": false,
+    "target_id_acceptance": 0.95,
+    "source": "baseline_policy",
+    "calibration_date": null
+  },
+  "notes": "Baseline MSP policy. Replace thresholds with outputs from src.ood.calibration after building disjoint ID/OOD calibration data."
+}

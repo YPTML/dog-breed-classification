@@ -1,0 +1,369 @@
+{
+  "schema_version": 1,
+  "audit_target": "v3_new_breeds",
+  "source_directory": "data/new_breeds_v3",
+  "total_images": 800,
+  "expected_images_per_breed": 200,
+  "total_breeds": 4,
+  "breeds": [
+    "american_bulldog",
+    "american_pit_bull_terrier",
+    "havanese",
+    "shiba_inu"
+  ],
+  "validation_summary": {
+    "total_evaluated": 800,
+    "valid_count": 800,
+    "invalid_count": 0,
+    "non_zero_file_size_count": 800,
+    "width_gt_zero_count": 800,
+    "height_gt_zero_count": 800,
+    "rgb_convertible_count": 800,
+    "corrupted_image_count": 0
+  },
+  "aggregate_metrics": {
+    "width": {
+      "count": 800,
+      "min": 119.0,
+      "max": 500.0,
+      "mean": 427.51125,
+      "median": 500.0,
+      "std": 89.7599430338361,
+      "p25": 334.0,
+      "p50": 500.0,
+      "p75": 500.0,
+      "p95": 500.0
+    },
+    "height": {
+      "count": 800,
+      "min": 174.0,
+      "max": 500.0,
+      "mean": 391.40375,
+      "median": 375.0,
+      "std": 85.95899159446613,
+      "p25": 333.0,
+      "p50": 375.0,
+      "p75": 500.0,
+      "p95": 500.0
+    },
+    "file_size_bytes": {
+      "count": 800,
+      "min": 3889.0,
+      "max": 269394.0,
+      "mean": 110646.5675,
+      "median": 110096.5,
+      "std": 56006.62873451181,
+      "p25": 79189.5,
+      "p50": 110096.5,
+      "p75": 145753.0,
+      "p95": 206678.94999999998
+    },
+    "aspect_ratio": {
+      "count": 800,
+      "min": 0.544,
+      "max": 1.845018450184502,
+      "mean": 1.1486926880672015,
+      "median": 1.3333333333333333,
+      "std": 0.34276147936607565,
+      "p25": 0.75,
+      "p50": 1.3333333333333333,
+      "p75": 1.4970059880239521,
+      "p95": 1.5060240963855422
+    },
+    "orientation": {
+      "landscape": 494,
+      "portrait": 287,
+      "square": 19
+    }
+  },
+  "breed_breakdown": {
+    "american_bulldog": {
+      "count": 200,
+      "width": {
+        "count": 200,
+        "min": 291.0,
+        "max": 500.0,
+        "mean": 443.195,
+        "median": 500.0,
+        "std": 72.29119569491156,
+        "p25": 375.0,
+        "p50": 500.0,
+        "p75": 500.0,
+        "p95": 500.0
+      },
+      "height": {
+        "count": 200,
+        "min": 281.0,
+        "max": 500.0,
+        "mean": 408.825,
+        "median": 376.0,
+        "std": 77.44704239026821,
+        "p25": 334.0,
+        "p50": 376.0,
+        "p75": 500.0,
+        "p95": 500.0
+      },
+      "file_size": {
+        "count": 200,
+        "min": 38020.0,
+        "max": 252841.0,
+        "mean": 119695.115,
+        "median": 115941.0,
+        "std": 39143.20601537098,
+        "p25": 87212.5,
+        "p50": 115941.0,
+        "p75": 146323.25,
+        "p95": 187198.0
+      },
+      "aspect_ratio": {
+        "count": 200,
+        "min": 0.65,
+        "max": 1.7793594306049823,
+        "mean": 1.1522748311515039,
+        "median": 1.3297872340425532,
+        "std": 0.36606745257996476,
+        "p25": 0.75,
+        "p50": 1.3297872340425532,
+        "p75": 1.4970059880239521,
+        "p95": 1.5017276312457033
+      },
+      "orientation": {
+        "landscape": 119,
+        "portrait": 80,
+        "square": 1
+      },
+      "validation_status_counts": {
+        "VALID": 200
+      }
+    },
+    "american_pit_bull_terrier": {
+      "count": 200,
+      "width": {
+        "count": 200,
+        "min": 119.0,
+        "max": 500.0,
+        "mean": 361.665,
+        "median": 333.0,
+        "std": 104.92441458021102,
+        "p25": 300.0,
+        "p50": 333.0,
+        "p75": 500.0,
+        "p95": 500.0
+      },
+      "height": {
+        "count": 200,
+        "min": 174.0,
+        "max": 500.0,
+        "mean": 338.805,
+        "median": 332.0,
+        "std": 95.37346053803438,
+        "p25": 266.25,
+        "p50": 332.0,
+        "p75": 379.0,
+        "p95": 500.0
+      },
+      "file_size": {
+        "count": 200,
+        "min": 3889.0,
+        "max": 247569.0,
+        "mean": 76967.54,
+        "median": 72999.0,
+        "std": 69069.37461182344,
+        "p25": 11864.25,
+        "p50": 72999.0,
+        "p75": 132509.75,
+        "p95": 207110.05
+      },
+      "aspect_ratio": {
+        "count": 200,
+        "min": 0.5466666666666666,
+        "max": 1.7667844522968197,
+        "mean": 1.1101137955697415,
+        "median": 1.2220009955201592,
+        "std": 0.3139247120664659,
+        "p25": 0.75,
+        "p50": 1.2220009955201592,
+        "p75": 1.3333333333333333,
+        "p95": 1.5017276312457033
+      },
+      "orientation": {
+        "landscape": 117,
+        "portrait": 79,
+        "square": 4
+      },
+      "validation_status_counts": {
+        "VALID": 200
+      }
+    },
+    "havanese": {
+      "count": 200,
+      "width": {
+        "count": 200,
+        "min": 318.0,
+        "max": 500.0,
+        "mean": 457.44,
+        "median": 500.0,
+        "std": 68.2240895871832,
+        "p25": 379.5,
+        "p50": 500.0,
+        "p75": 500.0,
+        "p95": 500.0
+      },
+      "height": {
+        "count": 200,
+        "min": 307.0,
+        "max": 500.0,
+        "mean": 408.835,
+        "median": 375.0,
+        "std": 71.98088478894935,
+        "p25": 333.0,
+        "p50": 375.0,
+        "p75": 500.0,
+        "p95": 500.0
+      },
+      "file_size": {
+        "count": 200,
+        "min": 28584.0,
+        "max": 269394.0,
+        "mean": 120800.745,
+        "median": 113806.5,
+        "std": 53675.96707046809,
+        "p25": 82167.0,
+        "p50": 113806.5,
+        "p75": 158089.5,
+        "p95": 213593.69999999978
+      },
+      "aspect_ratio": {
+        "count": 200,
+        "min": 0.636,
+        "max": 1.6286644951140066,
+        "mean": 1.175302378963346,
+        "median": 1.3333333333333333,
+        "std": 0.3295135271145468,
+        "p25": 0.759,
+        "p50": 1.3333333333333333,
+        "p75": 1.5015015015015014,
+        "p95": 1.5060240963855422
+      },
+      "orientation": {
+        "landscape": 132,
+        "portrait": 60,
+        "square": 8
+      },
+      "validation_status_counts": {
+        "VALID": 200
+      }
+    },
+    "shiba_inu": {
+      "count": 200,
+      "width": {
+        "count": 200,
+        "min": 221.0,
+        "max": 500.0,
+        "mean": 447.745,
+        "median": 500.0,
+        "std": 73.83000728023802,
+        "p25": 375.0,
+        "p50": 500.0,
+        "p75": 500.0,
+        "p95": 500.0
+      },
+      "height": {
+        "count": 200,
+        "min": 271.0,
+        "max": 500.0,
+        "mean": 409.15,
+        "median": 375.0,
+        "std": 74.77631643775989,
+        "p25": 334.0,
+        "p50": 375.0,
+        "p75": 500.0,
+        "p95": 500.0
+      },
+      "file_size": {
+        "count": 200,
+        "min": 36459.0,
+        "max": 266278.0,
+        "mean": 125122.87,
+        "median": 118164.5,
+        "std": 42828.349973622615,
+        "p25": 93763.0,
+        "p50": 118164.5,
+        "p75": 145893.75,
+        "p95": 215922.84999999998
+      },
+      "aspect_ratio": {
+        "count": 200,
+        "min": 0.544,
+        "max": 1.845018450184502,
+        "mean": 1.1570797465842149,
+        "median": 1.3333333333333333,
+        "std": 0.3557089774203797,
+        "p25": 0.75,
+        "p50": 1.3333333333333333,
+        "p75": 1.4970059880239521,
+        "p95": 1.5062515924726094
+      },
+      "orientation": {
+        "landscape": 126,
+        "portrait": 68,
+        "square": 6
+      },
+      "validation_status_counts": {
+        "VALID": 200
+      }
+    }
+  },
+  "exact_duplicates": {
+    "total_unique_sha256": 800,
+    "within_breed_duplicates": 0,
+    "cross_breed_duplicates": 0
+  },
+  "perceptual_duplicates": {
+    "hash_type": "dHash_64bit_lanczos",
+    "hamming_threshold_used": 4,
+    "total_families": 800,
+    "multi_item_families": 0,
+    "near_duplicate_pairs_le_2": 0,
+    "near_duplicate_pairs_le_4": 0,
+    "near_duplicate_pairs_le_6": 0,
+    "minimum_internal_hamming_distance": 9
+  },
+  "cross_dataset_leakage": {
+    "new_vs_old_train": {
+      "old_split_count": 8181,
+      "exact_sha256_overlap_count": 0,
+      "exact_sha256_overlap_files": [],
+      "perceptual_overlap_hamming_le_2": 0,
+      "perceptual_overlap_hamming_le_4": 0,
+      "minimum_observed_hamming_distance": 5
+    },
+    "new_vs_old_val": {
+      "old_split_count": 1018,
+      "exact_sha256_overlap_count": 0,
+      "exact_sha256_overlap_files": [],
+      "perceptual_overlap_hamming_le_2": 0,
+      "perceptual_overlap_hamming_le_4": 0,
+      "minimum_observed_hamming_distance": 9
+    },
+    "new_vs_old_test": {
+      "old_split_count": 1017,
+      "exact_sha256_overlap_count": 0,
+      "exact_sha256_overlap_files": [],
+      "perceptual_overlap_hamming_le_2": 0,
+      "perceptual_overlap_hamming_le_4": 0,
+      "minimum_observed_hamming_distance": 8
+    }
+  },
+  "contact_sheets": {
+    "directory": "outputs/reports/v3_new_breeds_contact_sheets",
+    "files": [
+      "american_bulldog.png",
+      "american_pit_bull_terrier.png",
+      "havanese.png",
+      "shiba_inu.png"
+    ],
+    "grid_layout": "20x10"
+  },
+  "audit_verdict": "V3_NEW_BREEDS_AUDIT_READY"
+}

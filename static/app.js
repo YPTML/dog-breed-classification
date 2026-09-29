@@ -4,7 +4,8 @@ document.addEventListener("DOMContentLoaded", () => {
         "imageInput", "fileLabel", "predictBtn", "resetBtn", "previewContainer",
         "imagePreview", "previewMessage", "fileNameDisplay", "loadingIndicator",
         "errorContainer", "errorMessage", "statusMessage", "resultContainer",
-        "top1Breed", "top1Confidence", "top5TableBody"
+        "top1Container", "top1Breed", "top1Confidence", "resultNote",
+        "top5Container", "top5TableBody"
     ];
     const elements = ids.map(id => document.getElementById(id));
     if (elements.some(element => !element)) {
@@ -14,11 +15,13 @@ document.addEventListener("DOMContentLoaded", () => {
     const [imageInput, fileLabel, predictBtn, resetBtn, previewContainer,
         imagePreview, previewMessage, fileNameDisplay, loadingIndicator,
         errorContainer, errorMessage, statusMessage, resultContainer,
-        top1Breed, top1Confidence, top5TableBody] = elements;
+        top1Container, top1Breed, top1Confidence, resultNote,
+        top5Container, top5TableBody] = elements;
 
     // Flask limits the entire multipart request, including headers and boundary.
     const MAX_FILE_SIZE = 10 * 1024 * 1024 - 64 * 1024;
     const REQUEST_TIMEOUT_MS = 60_000;
+    const DEFAULT_RESULT_NOTE = "The model compares 120 dog breeds and applies a separate OOD check before showing a breed.";
     let selectedFile = null;
     let previewObjectUrl = null;
     let previewLoader = null;
@@ -42,8 +45,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
     function clearResults() {
         resultContainer.classList.add("hidden");
+        top1Container.classList.remove("hidden");
+        top5Container.classList.remove("hidden");
         top1Breed.textContent = "";
         top1Confidence.textContent = "";
+        resultNote.textContent = DEFAULT_RESULT_NOTE;
+        resultNote.classList.remove("decision-note-not-dog");
+        resultNote.classList.remove("decision-note-uncertain");
         top5TableBody.replaceChildren();
     }
 
@@ -177,15 +185,46 @@ document.addEventListener("DOMContentLoaded", () => {
             && Number.isFinite(item.confidence) && item.confidence >= 0 && item.confidence <= 1;
     }
 
+    function getStatus(data) {
+        if (!data) return "";
+        let s = (data.final_status || data.status || "").toUpperCase();
+        if ((s === "SUCCESS" || !["DOG", "UNCERTAIN", "NOT_DOG"].includes(s)) && data.decision) {
+            s = String(data.decision).toUpperCase();
+        }
+        return s;
+    }
+
     function validResponse(data) {
-        if (!data || !validPrediction(data.prediction) || !Array.isArray(data.top5)
-                || data.top5.length !== 5 || !data.top5.every(validPrediction)) return false;
-        const top5 = data.top5;
-        return new Set(top5.map(item => item.index)).size === 5
-            && top5.every((item, index) => index === 0 || item.confidence <= top5[index - 1].confidence)
-            && top5[0].index === data.prediction.index
-            && top5[0].breed === data.prediction.breed
-            && top5[0].confidence === data.prediction.confidence;
+        if (!data) return false;
+        const status = getStatus(data);
+        if (["DOG", "UNCERTAIN", "NOT_DOG"].includes(status)) {
+            const breed = data.breed || data.top1_breed || (data.prediction && data.prediction.breed);
+            const confidence = data.confidence !== undefined ? data.confidence : (data.prediction && data.prediction.confidence);
+            if (typeof breed === "string" && breed.trim().length > 0
+                && Number.isFinite(confidence) && confidence >= 0 && confidence <= 1
+                && Array.isArray(data.top5)) {
+                if (data.top5.length > 0) {
+                    if (!data.top5.every(validPrediction)) return false;
+                    if (new Set(data.top5.map(item => item.index)).size !== data.top5.length) return false;
+                    if (!data.top5.every((item, idx) => idx === 0 || item.confidence <= data.top5[idx - 1].confidence)) return false;
+                }
+                return true;
+            }
+            return (data.breed === null || data.breed === undefined || typeof data.prediction === "string") && Array.isArray(data.top5);
+        }
+        if (data.status === "success" && ["DOG", "UNCERTAIN", "NOT_DOG"].includes(data.decision)) {
+            return true;
+        }
+        if (data.prediction && validPrediction(data.prediction) && Array.isArray(data.top5)
+            && data.top5.length === 5 && data.top5.every(validPrediction)) {
+            const top5 = data.top5;
+            return new Set(top5.map(item => item.index)).size === 5
+                && top5.every((item, index) => index === 0 || item.confidence <= top5[index - 1].confidence)
+                && top5[0].index === data.prediction.index
+                && top5[0].breed === data.prediction.breed
+                && top5[0].confidence === data.prediction.confidence;
+        }
+        return false;
     }
 
     function renderPredictions(data) {
@@ -193,9 +232,30 @@ document.addEventListener("DOMContentLoaded", () => {
             showError("The server returned an invalid prediction response. Please try again.");
             return;
         }
-        top1Breed.textContent = formatBreedName(data.prediction.breed);
-        top1Confidence.textContent = `${(data.prediction.confidence * 100).toFixed(2)}%`;
-        const rows = data.top5.map((item, index) => {
+        resultContainer.classList.remove("hidden");
+        const status = getStatus(data);
+
+        if (status === "NOT_DOG") {
+            top1Container.classList.add("hidden");
+            top5Container.classList.add("hidden");
+            resultNote.textContent = data.message || "No dog was confidently detected.";
+            resultNote.classList.remove("decision-note-uncertain");
+            resultNote.classList.add("decision-note-not-dog");
+            statusMessage.textContent = resultNote.textContent;
+            return;
+        }
+
+        const breed = data.breed || data.top1_breed || (data.prediction && data.prediction.breed) || "";
+        const confidence = data.confidence !== undefined ? data.confidence : (data.prediction && data.prediction.confidence) || 0;
+        const oodScore = (data.ood_score !== undefined && data.ood_score !== null) ? Number(data.ood_score) : null;
+
+        top1Container.classList.remove("hidden");
+        top5Container.classList.remove("hidden");
+
+        top1Breed.textContent = formatBreedName(breed);
+        top1Confidence.textContent = `${(confidence * 100).toFixed(2)}%`;
+
+        const rows = (data.top5 || []).map((item, index) => {
             const row = document.createElement("tr");
             for (const [className, value] of [
                 ["col-rank", String(index + 1)],
@@ -209,7 +269,7 @@ document.addEventListener("DOMContentLoaded", () => {
             }
             const barCell = document.createElement("td");
             barCell.className = "col-bar";
-            barCell.setAttribute("aria-hidden", "true"); // Confidence is already available as text.
+            barCell.setAttribute("aria-hidden", "true");
             const track = document.createElement("div");
             track.className = "progress-track";
             const fill = document.createElement("div");
@@ -221,7 +281,20 @@ document.addEventListener("DOMContentLoaded", () => {
             return row;
         });
         top5TableBody.replaceChildren(...rows);
-        resultContainer.classList.remove("hidden");
+
+        if (status === "UNCERTAIN") {
+            const oodDetails = (oodScore !== null) ? ` (OOD score: ${oodScore.toFixed(4)})` : "";
+            resultNote.textContent = "⚠️ Outlier Warning: " + (data.message || "The image is ambiguous or outside the reliable dog-breed region.") + oodDetails;
+            resultNote.classList.remove("decision-note-not-dog");
+            resultNote.classList.add("decision-note-uncertain");
+            statusMessage.textContent = `Prediction uncertain: ${top1Breed.textContent}, ${top1Confidence.textContent} confidence. Warning: ambiguous or outlier image.`;
+            return;
+        }
+
+        // DOG
+        resultNote.textContent = "Confidence is a model score for one of the 120 supported dog breeds.";
+        resultNote.classList.remove("decision-note-not-dog");
+        resultNote.classList.remove("decision-note-uncertain");
         statusMessage.textContent = `Prediction complete: ${top1Breed.textContent}, ${top1Confidence.textContent} confidence. Top five results are available below.`;
     }
 
