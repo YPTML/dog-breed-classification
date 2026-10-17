@@ -1,0 +1,47 @@
+[
+  {
+    "name": "full_pipeline",
+    "command": ".venv/Scripts/python.exe -u -m unittest tests.test_full_pipeline -v",
+    "exit_code": 0,
+    "started_at": "2026-10-03T08:18:42.0876255+07:00",
+    "finished_at": "2026-10-03T10:15:46.7226404+07:00",
+    "elapsed_seconds": 7024.635,
+    "log": "outputs/ood_fixture_coverage/full_pipeline.log"
+  },
+  {
+    "name": "test_discovery",
+    "command": ".venv/Scripts/python.exe -u -m unittest discover -s tests -p test_*.py -v",
+    "exit_code": 0,
+    "started_at": "2026-10-03T10:15:46.7648008+07:00",
+    "finished_at": "2026-10-03T10:21:01.2532958+07:00",
+    "elapsed_seconds": 314.488,
+    "log": "outputs/ood_fixture_coverage/test_discovery.log"
+  },
+  {
+    "name": "local_app",
+    "command": ".venv/Scripts/python.exe -u -m unittest src.test_local_app -v",
+    "exit_code": 0,
+    "started_at": "2026-10-03T10:21:01.2560391+07:00",
+    "finished_at": "2026-10-03T10:21:26.8620167+07:00",
+    "elapsed_seconds": 25.606,
+    "log": "outputs/ood_fixture_coverage/local_app.log"
+  },
+  {
+    "name": "frontend",
+    "command": "node --test src/test_frontend_behavior.js",
+    "exit_code": 0,
+    "started_at": "2026-10-03T10:21:26.8642109+07:00",
+    "finished_at": "2026-10-03T10:21:29.6134188+07:00",
+    "elapsed_seconds": 2.749,
+    "log": "outputs/ood_fixture_coverage/frontend.log"
+  },
+  {
+    "name": "all_fixtures",
+    "command": ".venv/Scripts/python.exe -u outputs/ood_fixture_coverage/evaluate_all_fixtures.py",
+    "exit_code": 0,
+    "started_at": "2026-10-03T10:21:29.6153244+07:00",
+    "finished_at": "2026-10-03T10:21:47.9386171+07:00",
+    "elapsed_seconds": 18.323,
+    "log": "outputs/ood_fixture_coverage/all_fixtures.log"
+  }
+]

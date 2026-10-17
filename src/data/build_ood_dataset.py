@@ -157,6 +157,10 @@ def _safe_target_name(path: Path, used: set[str], digest: str) -> str:
     name = f"{stem}{suffix}"
     if name.casefold() in used:
         name = f"{stem}__{digest[:12]}{suffix}"
+        counter = 2
+        while name.casefold() in used:
+            name = f"{stem}__{digest[:12]}_{counter}{suffix}"
+            counter += 1
     used.add(name.casefold())
     return name
 
@@ -208,14 +212,14 @@ def _relative_path(root: Path, path: Path) -> str:
     return path.resolve().relative_to(root.resolve()).as_posix()
 
 
-def _ood_rows(root: Path) -> list[dict]:
+def _ood_rows(root: Path, destination: Path, hard_destination: Path) -> list[dict]:
     """Create manifest rows from materialized OOD output folders."""
     rows = []
     seen_digests: dict[str, str] = {}
     for split_root, split, allowed in (
-        (root / "data/ood/calibration", "calibration", REGULAR_OOD_CATEGORIES),
-        (root / "data/ood/test", "test", REGULAR_OOD_CATEGORIES),
-        (root / "data/ood_hard", "hard", HARD_OOD_CATEGORIES),
+        (destination / "calibration", "calibration", REGULAR_OOD_CATEGORIES),
+        (destination / "test", "test", REGULAR_OOD_CATEGORIES),
+        (hard_destination, "hard", HARD_OOD_CATEGORIES),
     ):
         for path in _image_files(split_root):
             relative = path.relative_to(split_root)
@@ -235,7 +239,10 @@ def _ood_rows(root: Path) -> list[dict]:
     return sorted(rows, key=lambda row: row["path"])
 
 
-def _merge_manifest(root: Path, ood_rows: list[dict], destination: Path) -> None:
+def _merge_manifest(
+    root: Path, ood_rows: list[dict], destination: Path,
+    *, ood_root: Path, ood_hard_root: Path,
+) -> None:
     """Replace OOD rows while preserving the project's ID metadata."""
     existing: list[dict] = []
     if destination.is_file():
@@ -253,7 +260,7 @@ def _merge_manifest(root: Path, ood_rows: list[dict], destination: Path) -> None
         import json
         classes_data = json.loads(classes_path.read_text(encoding="utf-8"))
         classes = set(classes_data.values()) if isinstance(classes_data, dict) else set(classes_data)
-        validate_manifest(rows, root, classes)
+        validate_manifest(rows, root, classes, ood_root=ood_root, ood_hard_root=ood_hard_root)
     else:
         _validate_ood_only_rows(rows, root)
     destination.parent.mkdir(parents=True, exist_ok=True)
@@ -358,6 +365,8 @@ def build_ood_dataset(
         mixed = _collect_mixed_candidates(regular_source)
         regular = [candidate for candidate in mixed if not candidate.hard]
         hard = [candidate for candidate in mixed if candidate.hard]
+        if hard_input.exists():
+            hard.extend(_collect_candidates(hard_input, hard=True))
     else:
         regular = _collect_candidates(regular_source, hard=False) if regular_source.exists() else []
         hard = _collect_candidates(hard_input, hard=True) if hard_input.exists() else []
@@ -370,12 +379,15 @@ def build_ood_dataset(
 
     output_root = _resolve_from_root(root, destination, "data/ood")
     hard_output = _resolve_from_root(root, hard_destination, "data/ood_hard")
+    for output in (output_root, hard_output):
+        if not output.resolve().is_relative_to(root):
+            raise ValueError(f"OOD destination must be inside the project root: {output}")
     split_candidates = _split_regular(candidates, calibration_fraction, seed)
     hard_candidates = [candidate for candidate in candidates if candidate.hard]
     _copy_candidates(split_candidates, output_root, hard_candidates, hard_output)
-    ood_rows = _ood_rows(root)
+    ood_rows = _ood_rows(root, output_root, hard_output)
     manifest = _resolve_from_root(root, manifest_path, "metadata/dataset_manifest.csv")
-    _merge_manifest(root, ood_rows, manifest)
+    _merge_manifest(root, ood_rows, manifest, ood_root=output_root, ood_hard_root=hard_output)
     report = _resolve_from_root(root, report_path, "outputs/reports/OOD_DATASET_REPORT.md")
     _write_report(root, report, seed=seed, fraction=calibration_fraction,
                   source=regular_source, hard_source=hard_input, records=ood_rows,

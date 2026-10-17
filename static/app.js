@@ -187,40 +187,40 @@ document.addEventListener("DOMContentLoaded", () => {
 
     function getStatus(data) {
         if (!data) return "";
-        let s = (data.final_status || data.status || "").toUpperCase();
-        if ((s === "SUCCESS" || !["DOG", "UNCERTAIN", "NOT_DOG"].includes(s)) && data.decision) {
-            s = String(data.decision).toUpperCase();
+        const rawStatus = data.final_status || data.status || "";
+        if (typeof rawStatus !== "string") return "";
+        let s = rawStatus.toUpperCase();
+        if ((s === "SUCCESS" || !s) && typeof data.decision === "string") {
+            s = data.decision.toUpperCase();
         }
         return s;
     }
 
     function validResponse(data) {
-        if (!data) return false;
+        if (!data || typeof data !== "object" || Array.isArray(data)) return false;
+        if ([data.final_status, data.status, data.decision]
+            .some(value => value != null && typeof value !== "string")) return false;
+        if (data.ood_score != null && !Number.isFinite(data.ood_score)) return false;
+        const top5 = data.top5;
+        if (!Array.isArray(top5) || top5.length > 5 || !top5.every(validPrediction)) return false;
+        if (new Set(top5.map(item => item.index)).size !== top5.length) return false;
+        if (!top5.every((item, index) => index === 0 || item.confidence <= top5[index - 1].confidence)) return false;
+
         const status = getStatus(data);
-        if (["DOG", "UNCERTAIN", "NOT_DOG"].includes(status)) {
+        // Only NOT_DOG can omit breed results. DOG and UNCERTAIN must have a
+        // usable top prediction that agrees with the first ranked result.
+        if (status === "NOT_DOG") return true;
+        if (["DOG", "UNCERTAIN"].includes(status)) {
             const breed = data.breed || data.top1_breed || (data.prediction && data.prediction.breed);
             const confidence = data.confidence !== undefined ? data.confidence : (data.prediction && data.prediction.confidence);
-            if (typeof breed === "string" && breed.trim().length > 0
+            return typeof breed === "string" && breed.trim().length > 0
                 && Number.isFinite(confidence) && confidence >= 0 && confidence <= 1
-                && Array.isArray(data.top5)) {
-                if (data.top5.length > 0) {
-                    if (!data.top5.every(validPrediction)) return false;
-                    if (new Set(data.top5.map(item => item.index)).size !== data.top5.length) return false;
-                    if (!data.top5.every((item, idx) => idx === 0 || item.confidence <= data.top5[idx - 1].confidence)) return false;
-                }
-                return true;
-            }
-            return (data.breed === null || data.breed === undefined || typeof data.prediction === "string") && Array.isArray(data.top5);
+                && top5.length > 0 && top5[0].breed === breed && top5[0].confidence === confidence;
         }
-        if (data.status === "success" && ["DOG", "UNCERTAIN", "NOT_DOG"].includes(data.decision)) {
-            return true;
-        }
-        if (data.prediction && validPrediction(data.prediction) && Array.isArray(data.top5)
-            && data.top5.length === 5 && data.top5.every(validPrediction)) {
-            const top5 = data.top5;
-            return new Set(top5.map(item => item.index)).size === 5
-                && top5.every((item, index) => index === 0 || item.confidence <= top5[index - 1].confidence)
-                && top5[0].index === data.prediction.index
+        // Preserve legacy responses without a decision, but never turn an
+        // explicit error or unknown status into a successful DOG prediction.
+        if ((!status || status === "SUCCESS") && validPrediction(data.prediction) && top5.length === 5) {
+            return top5[0].index === data.prediction.index
                 && top5[0].breed === data.prediction.breed
                 && top5[0].confidence === data.prediction.confidence;
         }

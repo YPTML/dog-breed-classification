@@ -67,9 +67,18 @@ def load_classes(path: Path) -> set[str]:
     return set(names)
 
 
-def validate_manifest(rows: list[dict], root: Path, classes: set[str]) -> None:
+def validate_manifest(
+    rows: list[dict],
+    root: Path,
+    classes: set[str],
+    *,
+    ood_root: Path | None = None,
+    ood_hard_root: Path | None = None,
+) -> None:
     """Reject duplicate identities/paths, invalid classes and OOD leakage."""
     root = Path(root).resolve()
+    ood_root = (root / "data/ood" if ood_root is None else root / ood_root).resolve()
+    ood_hard_root = (root / "data/ood_hard" if ood_hard_root is None else root / ood_hard_root).resolve()
     seen_ids, seen_paths = set(), set()
     ood_hashes, train_hashes = set(), set()
     for row in rows:
@@ -90,16 +99,16 @@ def validate_manifest(rows: list[dict], root: Path, classes: set[str]) -> None:
         if not path.is_file():
             raise FileNotFoundError(f"Missing file: {row['path']}")
         if row["distribution"] == "ood":
-            is_regular = (len(relative.parts) >= 5 and relative.parts[:2] == ("data", "ood")
-                          and relative.parts[2] in {"calibration", "test"}
-                          and relative.parts[3] in OOD_REGULAR_CATEGORIES)
-            is_hard = (len(relative.parts) >= 4 and relative.parts[:2] == ("data", "ood_hard")
-                       and relative.parts[2] in OOD_HARD_CATEGORIES)
-            expected_split = relative.parts[2] if is_regular else "hard" if is_hard else ""
+            regular_parts = path.relative_to(ood_root).parts if path.is_relative_to(ood_root) else ()
+            hard_parts = path.relative_to(ood_hard_root).parts if path.is_relative_to(ood_hard_root) else ()
+            is_regular = (len(regular_parts) >= 3 and regular_parts[0] in {"calibration", "test"}
+                          and regular_parts[1] in OOD_REGULAR_CATEGORIES)
+            is_hard = len(hard_parts) >= 2 and hard_parts[0] in OOD_HARD_CATEGORIES
+            expected_split = regular_parts[0] if is_regular else "hard" if is_hard else ""
             valid_class = (row["label"] == row["breed"] == "" and row["ood_category"] in
                            (OOD_REGULAR_CATEGORIES | OOD_HARD_CATEGORIES)
                            and row["split"] == expected_split and bool(row["source"])
-                           and row["ood_category"] == (relative.parts[3] if is_regular else relative.parts[2] if is_hard else ""))
+                           and row["ood_category"] == (regular_parts[1] if is_regular else hard_parts[0] if is_hard else ""))
             if not valid_class:
                 raise ValueError(f"Invalid OOD metadata or layout for {image_id}: {row}")
             if row["sha256"]:

@@ -15,6 +15,10 @@ const prediction = () => {
     }));
     return { prediction: { ...top5[0] }, top5 };
 };
+const threeStatePrediction = (status = "DOG") => {
+    const data = prediction();
+    return { ...data, status, breed: data.prediction.breed, confidence: data.prediction.confidence };
+};
 function deferred() {
     let resolve, reject;
     const promise = new Promise((yes, no) => { resolve = yes; reject = no; });
@@ -327,7 +331,23 @@ const malformed = [
     ["unsorted top five", () => { const data = prediction(); data.top5[2].confidence = 0.4; return data; }],
     ["empty breed", () => { const data = prediction(); data.top5[2].breed = " "; return data; }],
     ["out-of-range index", () => { const data = prediction(); data.top5[2].index = 120; return data; }],
-    ["mismatched top one", () => { const data = prediction(); data.prediction.index = 10; return data; }]
+    ["mismatched top one", () => { const data = prediction(); data.prediction.index = 10; return data; }],
+    ["numeric status", () => ({ ...prediction(), status: 123 })],
+    ["object final status", () => ({ ...prediction(), final_status: {} })],
+    ["unknown status", () => ({ ...prediction(), status: "error" })],
+    ["DOG without breed or confidence", () => ({ status: "DOG", top5: [] })],
+    ["UNCERTAIN without breed or confidence", () => ({ status: "UNCERTAIN", top5: [] })],
+    ["DOG with a string prediction", () => ({ status: "DOG", prediction: "not a prediction", top5: [] })],
+    ["DOG with empty top five", () => ({ ...threeStatePrediction(), top5: [] })],
+    ["DOG with mismatched top breed", () => ({ ...threeStatePrediction(), breed: "wrong_breed" })],
+    ["UNCERTAIN with mismatched top confidence", () => ({ ...threeStatePrediction("UNCERTAIN"), confidence: 0.9 })],
+    ["DOG with more than five rows", () => {
+        const data = threeStatePrediction();
+        data.top5.push({ index: 5, breed: "breed_5", confidence: 0.01 });
+        return data;
+    }],
+    ["UNCERTAIN with invalid OOD score", () => ({ ...threeStatePrediction("UNCERTAIN"), ood_score: "broken" })],
+    ["NOT_DOG with malformed hidden rows", () => ({ status: "NOT_DOG", breed: null, top5: [null] })]
 ];
 for (const [name, makeData] of malformed) {
     test(`malformed API: ${name} never renders misleading results`, async () => {
@@ -444,4 +464,17 @@ test("OE V2 NOT_DOG response contract suppresses breed and Top-5 while retaining
     assert.equal(hidden(h.elements.top5Container), true);
     assert.equal(h.elements.resultNote.textContent, "No dog was confidently detected.");
     assert.equal(h.elements.resultNote.classList.contains("decision-note-not-dog"), true);
+});
+
+test("NOT_DOG may omit breed predictions without displaying an empty result", async () => {
+    const h = harness();
+    h.select(file());
+    const pending = h.click();
+    h.respond(0, { status: "success", decision: "NOT_DOG", breed: null, top5: [] });
+    await pending;
+    assert.equal(hidden(h.elements.errorContainer), true);
+    assert.equal(hidden(h.elements.resultContainer), false);
+    assert.equal(hidden(h.elements.top1Container), true);
+    assert.equal(hidden(h.elements.top5Container), true);
+    assert.equal(h.elements.resultNote.textContent, "No dog was confidently detected.");
 });

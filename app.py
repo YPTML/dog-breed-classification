@@ -20,7 +20,10 @@ from src.inference.oe_v2_predictor import (
     UNCERTAIN_MESSAGE,
     EXPECTED_NUM_CLASSES,
 )
-from src.inference.preprocessing import preprocess_image as preprocess_inference_image
+from src.inference.preprocessing import (
+    InvalidImageError,
+    preprocess_image as preprocess_inference_image,
+)
 
 # Configure logging
 logging.basicConfig(
@@ -267,15 +270,13 @@ def predict():
         file_bytes = file.read()
         if not file_bytes:
             return jsonify({"error": "Empty image file"}), 400
-    except (UnidentifiedImageError, ValueError, OSError, SyntaxError,
-            Image.DecompressionBombWarning, Image.DecompressionBombError):
-        logger.info("Rejected invalid, unsupported, or oversized image.")
-        return jsonify({"error": "Invalid or unsupported image"}), 400
+    except OSError:
+        logger.exception("Image upload read failed.")
+        return jsonify({"error": "Inference failed"}), 500
 
     try:
         result = predictor.predict(file_bytes)
-    except (UnidentifiedImageError, ValueError, OSError, SyntaxError,
-            Image.DecompressionBombWarning, Image.DecompressionBombError):
+    except InvalidImageError:
         logger.info("Rejected invalid, unsupported, or oversized image.")
         return jsonify({"error": "Invalid or unsupported image"}), 400
     except Exception:

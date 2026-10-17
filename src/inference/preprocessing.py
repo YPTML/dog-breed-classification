@@ -19,6 +19,10 @@ MAX_IMAGE_PIXELS = 20_000_000
 ALLOWED_IMAGE_FORMATS = ("JPEG", "PNG", "WEBP")
 
 
+class InvalidImageError(ValueError):
+    """The supplied image cannot be safely decoded for inference."""
+
+
 def preprocess_image(
     file_bytes: bytes, *, max_image_pixels: int = MAX_IMAGE_PIXELS
 ) -> np.ndarray:
@@ -30,13 +34,13 @@ def preprocess_image(
     """
 
     if not isinstance(file_bytes, (bytes, bytearray, memoryview)) or not file_bytes:
-        raise ValueError("file_bytes must contain image data")
+        raise InvalidImageError("file_bytes must contain image data")
     with warnings.catch_warnings():
         warnings.simplefilter("error", Image.DecompressionBombWarning)
         try:
             with Image.open(io.BytesIO(file_bytes), formats=ALLOWED_IMAGE_FORMATS) as source:
                 if source.width * source.height > max_image_pixels:
-                    raise ValueError("Image dimensions exceed the local decode limit.")
+                    raise InvalidImageError("Image dimensions exceed the local decode limit.")
                 source.verify()
             with Image.open(io.BytesIO(file_bytes), formats=ALLOWED_IMAGE_FORMATS) as source:
                 source.load()
@@ -52,7 +56,7 @@ def preprocess_image(
                     else:
                         pixels = tf.convert_to_tensor(np.asarray(source.convert("RGB")))
                 except tf.errors.InvalidArgumentError as exc:
-                    raise ValueError("Invalid or unsupported image") from exc
+                    raise InvalidImageError("Invalid or unsupported image") from exc
                 # Orient decoded pixels without introducing a second JPEG codec.
                 if orientation == 2:
                     pixels = tf.image.flip_left_right(pixels)
@@ -69,8 +73,15 @@ def preprocess_image(
                 elif orientation == 8:
                     pixels = tf.image.rot90(pixels, 1)
                 result = tf.image.resize(pixels, IMAGE_SIZE, method="bilinear", antialias=False).numpy()[None, ...]
-        except (UnidentifiedImageError, OSError, SyntaxError) as exc:
-            raise ValueError("Invalid or unsupported image") from exc
+        except (
+            UnidentifiedImageError,
+            ValueError,
+            OSError,
+            SyntaxError,
+            Image.DecompressionBombWarning,
+            Image.DecompressionBombError,
+        ) as exc:
+            raise InvalidImageError("Invalid or unsupported image") from exc
     return result
 
 

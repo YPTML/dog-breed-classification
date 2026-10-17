@@ -1,0 +1,3226 @@
+{
+  "fixtures_evaluated": 32,
+  "contract_failures": 0,
+  "group_decisions": {
+    "vehicles": {
+      "NOT_DOG": 6
+    },
+    "other animals": {
+      "NOT_DOG": 5,
+      "UNCERTAIN": 1
+    },
+    "household objects": {
+      "NOT_DOG": 6
+    },
+    "humans": {
+      "NOT_DOG": 4,
+      "UNCERTAIN": 2
+    },
+    "hard OOD": {
+      "UNCERTAIN": 8
+    }
+  },
+  "results": [
+    {
+      "path": "data/ood/test/bicycle/regression_11_bicycle.jpg",
+      "group": "vehicles",
+      "ood_category": "bicycle",
+      "sha256": "1c995f2eb56eff9ff7d97c987ffdd0e997042cdc84b128448ea877d97fea74ce",
+      "contract": "PASS",
+      "decision": "NOT_DOG",
+      "raw_ood_score": 0.533831775188446,
+      "top1_breed": "shih-tzu",
+      "confidence": 0.15061843395233154,
+      "T_uncertain": 0.343358,
+      "T_not_dog": 0.457513,
+      "response": {
+        "T_not_dog": 0.457513,
+        "T_uncertain": 0.343358,
+        "breed": "shih-tzu",
+        "confidence": 0.15061843395233154,
+        "decision": "NOT_DOG",
+        "final_status": "NOT_DOG",
+        "is_dog": false,
+        "margin": 0.07262098044157028,
+        "message": "No dog was confidently detected.",
+        "ood_score": 0.533831775188446,
+        "prediction": {
+          "breed": "shih-tzu",
+          "confidence": 0.15061843395233154
+        },
+        "probability_margin": 0.07262098044157028,
+        "raw_ood_score": 0.533831775188446,
+        "status": "NOT_DOG",
+        "t_not_dog": 0.457513,
+        "t_uncertain": 0.343358,
+        "top1_breed": "shih-tzu",
+        "top1_confidence": 0.15061843395233154,
+        "top5": [
+          {
+            "breed": "shih-tzu",
+            "confidence": 0.15061843395233154,
+            "index": 100,
+            "rank": 1
+          },
+          {
+            "breed": "bluetick",
+            "confidence": 0.07799745351076126,
+            "index": 15,
+            "rank": 2
+          },
+          {
+            "breed": "siberian_husky",
+            "confidence": 0.062289755791425705,
+            "index": 101,
+            "rank": 3
+          },
+          {
+            "breed": "english_setter",
+            "confidence": 0.04349861294031143,
+            "index": 40,
+            "rank": 4
+          },
+          {
+            "breed": "brabancon_griffon",
+            "confidence": 0.04118790104985237,
+            "index": 22,
+            "rank": 5
+          }
+        ],
+        "top5_predictions": [
+          {
+            "breed": "shih-tzu",
+            "confidence": 0.15061843395233154,
+            "index": 100,
+            "rank": 1
+          },
+          {
+            "breed": "bluetick",
+            "confidence": 0.07799745351076126,
+            "index": 15,
+            "rank": 2
+          },
+          {
+            "breed": "siberian_husky",
+            "confidence": 0.062289755791425705,
+            "index": 101,
+            "rank": 3
+          },
+          {
+            "breed": "english_setter",
+            "confidence": 0.04349861294031143,
+            "index": 40,
+            "rank": 4
+          },
+          {
+            "breed": "brabancon_griffon",
+            "confidence": 0.04118790104985237,
+            "index": 22,
+            "rank": 5
+          }
+        ]
+      }
+    },
+    {
+      "path": "data/ood/test/bicycle/regression_12_bicycle.jpg",
+      "group": "vehicles",
+      "ood_category": "bicycle",
+      "sha256": "292233d716600bdb4e13577eb6d953f359208c3166715ed55885476418143b65",
+      "contract": "PASS",
+      "decision": "NOT_DOG",
+      "raw_ood_score": 0.5099348425865173,
+      "top1_breed": "airedale",
+      "confidence": 0.1074732169508934,
+      "T_uncertain": 0.343358,
+      "T_not_dog": 0.457513,
+      "response": {
+        "T_not_dog": 0.457513,
+        "T_uncertain": 0.343358,
+        "breed": "airedale",
+        "confidence": 0.1074732169508934,
+        "decision": "NOT_DOG",
+        "final_status": "NOT_DOG",
+        "is_dog": false,
+        "margin": 0.0289619117975235,
+        "message": "No dog was confidently detected.",
+        "ood_score": 0.5099348425865173,
+        "prediction": {
+          "breed": "airedale",
+          "confidence": 0.1074732169508934
+        },
+        "probability_margin": 0.0289619117975235,
+        "raw_ood_score": 0.5099348425865173,
+        "status": "NOT_DOG",
+        "t_not_dog": 0.457513,
+        "t_uncertain": 0.343358,
+        "top1_breed": "airedale",
+        "top1_confidence": 0.1074732169508934,
+        "top5": [
+          {
+            "breed": "airedale",
+            "confidence": 0.1074732169508934,
+            "index": 3,
+            "rank": 1
+          },
+          {
+            "breed": "weimaraner",
+            "confidence": 0.0785113051533699,
+            "index": 114,
+            "rank": 2
+          },
+          {
+            "breed": "newfoundland",
+            "confidence": 0.06670790165662766,
+            "index": 78,
+            "rank": 3
+          },
+          {
+            "breed": "labrador_retriever",
+            "confidence": 0.05614669620990753,
+            "index": 67,
+            "rank": 4
+          },
+          {
+            "breed": "eskimo_dog",
+            "confidence": 0.03577017784118652,
+            "index": 43,
+            "rank": 5
+          }
+        ],
+        "top5_predictions": [
+          {
+            "breed": "airedale",
+            "confidence": 0.1074732169508934,
+            "index": 3,
+            "rank": 1
+          },
+          {
+            "breed": "weimaraner",
+            "confidence": 0.0785113051533699,
+            "index": 114,
+            "rank": 2
+          },
+          {
+            "breed": "newfoundland",
+            "confidence": 0.06670790165662766,
+            "index": 78,
+            "rank": 3
+          },
+          {
+            "breed": "labrador_retriever",
+            "confidence": 0.05614669620990753,
+            "index": 67,
+            "rank": 4
+          },
+          {
+            "breed": "eskimo_dog",
+            "confidence": 0.03577017784118652,
+            "index": 43,
+            "rank": 5
+          }
+        ]
+      }
+    },
+    {
+      "path": "data/ood/test/bird/regression_06_bird.jpg",
+      "group": "other animals",
+      "ood_category": "bird",
+      "sha256": "b0fcae6c7c76f0821a457168136817ca2cc61feb73ceeb5e4696595aac75ec0a",
+      "contract": "PASS",
+      "decision": "NOT_DOG",
+      "raw_ood_score": 0.5933831930160522,
+      "top1_breed": "silky_terrier",
+      "confidence": 0.062168221920728683,
+      "T_uncertain": 0.343358,
+      "T_not_dog": 0.457513,
+      "response": {
+        "T_not_dog": 0.457513,
+        "T_uncertain": 0.343358,
+        "breed": "silky_terrier",
+        "confidence": 0.062168221920728683,
+        "decision": "NOT_DOG",
+        "final_status": "NOT_DOG",
+        "is_dog": false,
+        "margin": 0.005749106407165527,
+        "message": "No dog was confidently detected.",
+        "ood_score": 0.5933831930160522,
+        "prediction": {
+          "breed": "silky_terrier",
+          "confidence": 0.062168221920728683
+        },
+        "probability_margin": 0.005749106407165527,
+        "raw_ood_score": 0.5933831930160522,
+        "status": "NOT_DOG",
+        "t_not_dog": 0.457513,
+        "t_uncertain": 0.343358,
+        "top1_breed": "silky_terrier",
+        "top1_confidence": 0.062168221920728683,
+        "top5": [
+          {
+            "breed": "silky_terrier",
+            "confidence": 0.062168221920728683,
+            "index": 102,
+            "rank": 1
+          },
+          {
+            "breed": "whippet",
+            "confidence": 0.056419115513563156,
+            "index": 117,
+            "rank": 2
+          },
+          {
+            "breed": "pug",
+            "confidence": 0.04494289308786392,
+            "index": 88,
+            "rank": 3
+          },
+          {
+            "breed": "toy_poodle",
+            "confidence": 0.04098820313811302,
+            "index": 110,
+            "rank": 4
+          },
+          {
+            "breed": "cardigan",
+            "confidence": 0.03302343189716339,
+            "index": 27,
+            "rank": 5
+          }
+        ],
+        "top5_predictions": [
+          {
+            "breed": "silky_terrier",
+            "confidence": 0.062168221920728683,
+            "index": 102,
+            "rank": 1
+          },
+          {
+            "breed": "whippet",
+            "confidence": 0.056419115513563156,
+            "index": 117,
+            "rank": 2
+          },
+          {
+            "breed": "pug",
+            "confidence": 0.04494289308786392,
+            "index": 88,
+            "rank": 3
+          },
+          {
+            "breed": "toy_poodle",
+            "confidence": 0.04098820313811302,
+            "index": 110,
+            "rank": 4
+          },
+          {
+            "breed": "cardigan",
+            "confidence": 0.03302343189716339,
+            "index": 27,
+            "rank": 5
+          }
+        ]
+      }
+    },
+    {
+      "path": "data/ood/test/bottle/regression_coca_cola_glass_bottle.jpg",
+      "group": "household objects",
+      "ood_category": "bottle",
+      "sha256": "28cde1b4bb497de426f20686117c327a8c15c3d5477d768a4501065fa47a0474",
+      "contract": "PASS",
+      "decision": "NOT_DOG",
+      "raw_ood_score": 0.5759038031101227,
+      "top1_breed": "clumber",
+      "confidence": 0.05270548164844513,
+      "T_uncertain": 0.343358,
+      "T_not_dog": 0.457513,
+      "response": {
+        "T_not_dog": 0.457513,
+        "T_uncertain": 0.343358,
+        "breed": "clumber",
+        "confidence": 0.05270548164844513,
+        "decision": "NOT_DOG",
+        "final_status": "NOT_DOG",
+        "is_dog": false,
+        "margin": 0.002134077250957489,
+        "message": "No dog was confidently detected.",
+        "ood_score": 0.5759038031101227,
+        "prediction": {
+          "breed": "clumber",
+          "confidence": 0.05270548164844513
+        },
+        "probability_margin": 0.002134077250957489,
+        "raw_ood_score": 0.5759038031101227,
+        "status": "NOT_DOG",
+        "t_not_dog": 0.457513,
+        "t_uncertain": 0.343358,
+        "top1_breed": "clumber",
+        "top1_confidence": 0.05270548164844513,
+        "top5": [
+          {
+            "breed": "clumber",
+            "confidence": 0.05270548164844513,
+            "index": 31,
+            "rank": 1
+          },
+          {
+            "breed": "dhole",
+            "confidence": 0.05057140439748764,
+            "index": 36,
+            "rank": 2
+          },
+          {
+            "breed": "irish_terrier",
+            "confidence": 0.045365557074546814,
+            "index": 57,
+            "rank": 3
+          },
+          {
+            "breed": "boxer",
+            "confidence": 0.044907767325639725,
+            "index": 21,
+            "rank": 4
+          },
+          {
+            "breed": "redbone",
+            "confidence": 0.039179086685180664,
+            "index": 89,
+            "rank": 5
+          }
+        ],
+        "top5_predictions": [
+          {
+            "breed": "clumber",
+            "confidence": 0.05270548164844513,
+            "index": 31,
+            "rank": 1
+          },
+          {
+            "breed": "dhole",
+            "confidence": 0.05057140439748764,
+            "index": 36,
+            "rank": 2
+          },
+          {
+            "breed": "irish_terrier",
+            "confidence": 0.045365557074546814,
+            "index": 57,
+            "rank": 3
+          },
+          {
+            "breed": "boxer",
+            "confidence": 0.044907767325639725,
+            "index": 21,
+            "rank": 4
+          },
+          {
+            "breed": "redbone",
+            "confidence": 0.039179086685180664,
+            "index": 89,
+            "rank": 5
+          }
+        ]
+      }
+    },
+    {
+      "path": "data/ood/test/bus/regression_10_bus.jpg",
+      "group": "vehicles",
+      "ood_category": "bus",
+      "sha256": "4112e02c71ecc6a0b10bbe086a5b146fa2f263f1c0d9a191842a01860add1cf6",
+      "contract": "PASS",
+      "decision": "NOT_DOG",
+      "raw_ood_score": 0.5243851840496063,
+      "top1_breed": "italian_greyhound",
+      "confidence": 0.055523503571748734,
+      "T_uncertain": 0.343358,
+      "T_not_dog": 0.457513,
+      "response": {
+        "T_not_dog": 0.457513,
+        "T_uncertain": 0.343358,
+        "breed": "italian_greyhound",
+        "confidence": 0.055523503571748734,
+        "decision": "NOT_DOG",
+        "final_status": "NOT_DOG",
+        "is_dog": false,
+        "margin": 0.004543110728263855,
+        "message": "No dog was confidently detected.",
+        "ood_score": 0.5243851840496063,
+        "prediction": {
+          "breed": "italian_greyhound",
+          "confidence": 0.055523503571748734
+        },
+        "probability_margin": 0.004543110728263855,
+        "raw_ood_score": 0.5243851840496063,
+        "status": "NOT_DOG",
+        "t_not_dog": 0.457513,
+        "t_uncertain": 0.343358,
+        "top1_breed": "italian_greyhound",
+        "top1_confidence": 0.055523503571748734,
+        "top5": [
+          {
+            "breed": "italian_greyhound",
+            "confidence": 0.055523503571748734,
+            "index": 60,
+            "rank": 1
+          },
+          {
+            "breed": "toy_poodle",
+            "confidence": 0.05098039284348488,
+            "index": 110,
+            "rank": 2
+          },
+          {
+            "breed": "bedlington_terrier",
+            "confidence": 0.04972340539097786,
+            "index": 10,
+            "rank": 3
+          },
+          {
+            "breed": "great_dane",
+            "confidence": 0.04004577919840813,
+            "index": 51,
+            "rank": 4
+          },
+          {
+            "breed": "weimaraner",
+            "confidence": 0.03870410472154617,
+            "index": 114,
+            "rank": 5
+          }
+        ],
+        "top5_predictions": [
+          {
+            "breed": "italian_greyhound",
+            "confidence": 0.055523503571748734,
+            "index": 60,
+            "rank": 1
+          },
+          {
+            "breed": "toy_poodle",
+            "confidence": 0.05098039284348488,
+            "index": 110,
+            "rank": 2
+          },
+          {
+            "breed": "bedlington_terrier",
+            "confidence": 0.04972340539097786,
+            "index": 10,
+            "rank": 3
+          },
+          {
+            "breed": "great_dane",
+            "confidence": 0.04004577919840813,
+            "index": 51,
+            "rank": 4
+          },
+          {
+            "breed": "weimaraner",
+            "confidence": 0.03870410472154617,
+            "index": 114,
+            "rank": 5
+          }
+        ]
+      }
+    },
+    {
+      "path": "data/ood/test/car/regression_07_car.jpg",
+      "group": "vehicles",
+      "ood_category": "car",
+      "sha256": "dbfa523848af4c1346661a9c4f88becfc8ef119d103104a1a1cea05b5ae12786",
+      "contract": "PASS",
+      "decision": "NOT_DOG",
+      "raw_ood_score": 0.5804229378700256,
+      "top1_breed": "chesapeake_bay_retriever",
+      "confidence": 0.09794566035270691,
+      "T_uncertain": 0.343358,
+      "T_not_dog": 0.457513,
+      "response": {
+        "T_not_dog": 0.457513,
+        "T_uncertain": 0.343358,
+        "breed": "chesapeake_bay_retriever",
+        "confidence": 0.09794566035270691,
+        "decision": "NOT_DOG",
+        "final_status": "NOT_DOG",
+        "is_dog": false,
+        "margin": 0.04515156149864197,
+        "message": "No dog was confidently detected.",
+        "ood_score": 0.5804229378700256,
+        "prediction": {
+          "breed": "chesapeake_bay_retriever",
+          "confidence": 0.09794566035270691
+        },
+        "probability_margin": 0.04515156149864197,
+        "raw_ood_score": 0.5804229378700256,
+        "status": "NOT_DOG",
+        "t_not_dog": 0.457513,
+        "t_uncertain": 0.343358,
+        "top1_breed": "chesapeake_bay_retriever",
+        "top1_confidence": 0.09794566035270691,
+        "top5": [
+          {
+            "breed": "chesapeake_bay_retriever",
+            "confidence": 0.09794566035270691,
+            "index": 28,
+            "rank": 1
+          },
+          {
+            "breed": "borzoi",
+            "confidence": 0.05279409885406494,
+            "index": 18,
+            "rank": 2
+          },
+          {
+            "breed": "collie",
+            "confidence": 0.023744739592075348,
+            "index": 33,
+            "rank": 3
+          },
+          {
+            "breed": "greater_swiss_mountain_dog",
+            "confidence": 0.02260134369134903,
+            "index": 53,
+            "rank": 4
+          },
+          {
+            "breed": "kelpie",
+            "confidence": 0.022469814866781235,
+            "index": 63,
+            "rank": 5
+          }
+        ],
+        "top5_predictions": [
+          {
+            "breed": "chesapeake_bay_retriever",
+            "confidence": 0.09794566035270691,
+            "index": 28,
+            "rank": 1
+          },
+          {
+            "breed": "borzoi",
+            "confidence": 0.05279409885406494,
+            "index": 18,
+            "rank": 2
+          },
+          {
+            "breed": "collie",
+            "confidence": 0.023744739592075348,
+            "index": 33,
+            "rank": 3
+          },
+          {
+            "breed": "greater_swiss_mountain_dog",
+            "confidence": 0.02260134369134903,
+            "index": 53,
+            "rank": 4
+          },
+          {
+            "breed": "kelpie",
+            "confidence": 0.022469814866781235,
+            "index": 63,
+            "rank": 5
+          }
+        ]
+      }
+    },
+    {
+      "path": "data/ood/test/car/regression_08_car.jpg",
+      "group": "vehicles",
+      "ood_category": "car",
+      "sha256": "1286bdb8f2ba98e2378921b4050f3035674a95f8895991abc1f0f83358a64def",
+      "contract": "PASS",
+      "decision": "NOT_DOG",
+      "raw_ood_score": 0.508354514837265,
+      "top1_breed": "great_dane",
+      "confidence": 0.15428058803081512,
+      "T_uncertain": 0.343358,
+      "T_not_dog": 0.457513,
+      "response": {
+        "T_not_dog": 0.457513,
+        "T_uncertain": 0.343358,
+        "breed": "great_dane",
+        "confidence": 0.15428058803081512,
+        "decision": "NOT_DOG",
+        "final_status": "NOT_DOG",
+        "is_dog": false,
+        "margin": 0.10580698028206825,
+        "message": "No dog was confidently detected.",
+        "ood_score": 0.508354514837265,
+        "prediction": {
+          "breed": "great_dane",
+          "confidence": 0.15428058803081512
+        },
+        "probability_margin": 0.10580698028206825,
+        "raw_ood_score": 0.508354514837265,
+        "status": "NOT_DOG",
+        "t_not_dog": 0.457513,
+        "t_uncertain": 0.343358,
+        "top1_breed": "great_dane",
+        "top1_confidence": 0.15428058803081512,
+        "top5": [
+          {
+            "breed": "great_dane",
+            "confidence": 0.15428058803081512,
+            "index": 51,
+            "rank": 1
+          },
+          {
+            "breed": "sussex_spaniel",
+            "confidence": 0.04847360774874687,
+            "index": 107,
+            "rank": 2
+          },
+          {
+            "breed": "golden_retriever",
+            "confidence": 0.0287181306630373,
+            "index": 49,
+            "rank": 3
+          },
+          {
+            "breed": "komondor",
+            "confidence": 0.02275719866156578,
+            "index": 65,
+            "rank": 4
+          },
+          {
+            "breed": "italian_greyhound",
+            "confidence": 0.022665493190288544,
+            "index": 60,
+            "rank": 5
+          }
+        ],
+        "top5_predictions": [
+          {
+            "breed": "great_dane",
+            "confidence": 0.15428058803081512,
+            "index": 51,
+            "rank": 1
+          },
+          {
+            "breed": "sussex_spaniel",
+            "confidence": 0.04847360774874687,
+            "index": 107,
+            "rank": 2
+          },
+          {
+            "breed": "golden_retriever",
+            "confidence": 0.0287181306630373,
+            "index": 49,
+            "rank": 3
+          },
+          {
+            "breed": "komondor",
+            "confidence": 0.02275719866156578,
+            "index": 65,
+            "rank": 4
+          },
+          {
+            "breed": "italian_greyhound",
+            "confidence": 0.022665493190288544,
+            "index": 60,
+            "rank": 5
+          }
+        ]
+      }
+    },
+    {
+      "path": "data/ood/test/cat/regression_01_cat.jpg",
+      "group": "other animals",
+      "ood_category": "cat",
+      "sha256": "e9827bf7fd23399632ac647d45dcaec0ceb988373526cf78c8743a6df31ba500",
+      "contract": "PASS",
+      "decision": "UNCERTAIN",
+      "raw_ood_score": 0.41929513216018677,
+      "top1_breed": "pomeranian",
+      "confidence": 0.4786084294319153,
+      "T_uncertain": 0.343358,
+      "T_not_dog": 0.457513,
+      "response": {
+        "T_not_dog": 0.457513,
+        "T_uncertain": 0.343358,
+        "breed": "pomeranian",
+        "confidence": 0.4786084294319153,
+        "decision": "UNCERTAIN",
+        "final_status": "UNCERTAIN",
+        "is_dog": null,
+        "margin": 0.27227331697940826,
+        "message": "The image is ambiguous or outside the reliable dog-breed region.",
+        "ood_score": 0.41929513216018677,
+        "prediction": {
+          "breed": "pomeranian",
+          "confidence": 0.4786084294319153
+        },
+        "probability_margin": 0.27227331697940826,
+        "raw_ood_score": 0.41929513216018677,
+        "status": "UNCERTAIN",
+        "t_not_dog": 0.457513,
+        "t_uncertain": 0.343358,
+        "top1_breed": "pomeranian",
+        "top1_confidence": 0.4786084294319153,
+        "top5": [
+          {
+            "breed": "pomeranian",
+            "confidence": 0.4786084294319153,
+            "index": 87,
+            "rank": 1
+          },
+          {
+            "breed": "yorkshire_terrier",
+            "confidence": 0.20633511245250702,
+            "index": 119,
+            "rank": 2
+          },
+          {
+            "breed": "lakeland_terrier",
+            "confidence": 0.18772557377815247,
+            "index": 68,
+            "rank": 3
+          },
+          {
+            "breed": "chow",
+            "confidence": 0.027545137330889702,
+            "index": 30,
+            "rank": 4
+          },
+          {
+            "breed": "bernese_mountain_dog",
+            "confidence": 0.02162240818142891,
+            "index": 11,
+            "rank": 5
+          }
+        ],
+        "top5_predictions": [
+          {
+            "breed": "pomeranian",
+            "confidence": 0.4786084294319153,
+            "index": 87,
+            "rank": 1
+          },
+          {
+            "breed": "yorkshire_terrier",
+            "confidence": 0.20633511245250702,
+            "index": 119,
+            "rank": 2
+          },
+          {
+            "breed": "lakeland_terrier",
+            "confidence": 0.18772557377815247,
+            "index": 68,
+            "rank": 3
+          },
+          {
+            "breed": "chow",
+            "confidence": 0.027545137330889702,
+            "index": 30,
+            "rank": 4
+          },
+          {
+            "breed": "bernese_mountain_dog",
+            "confidence": 0.02162240818142891,
+            "index": 11,
+            "rank": 5
+          }
+        ]
+      }
+    },
+    {
+      "path": "data/ood/test/chair/regression_chair_from_wood.jpg",
+      "group": "household objects",
+      "ood_category": "chair",
+      "sha256": "4bf2f007fe9f0633abf0c6c741e17e5d7c96de70b569cfed9cbcb0678dda2142",
+      "contract": "PASS",
+      "decision": "NOT_DOG",
+      "raw_ood_score": 0.5080907344818115,
+      "top1_breed": "basenji",
+      "confidence": 0.09490064531564713,
+      "T_uncertain": 0.343358,
+      "T_not_dog": 0.457513,
+      "response": {
+        "T_not_dog": 0.457513,
+        "T_uncertain": 0.343358,
+        "breed": "basenji",
+        "confidence": 0.09490064531564713,
+        "decision": "NOT_DOG",
+        "final_status": "NOT_DOG",
+        "is_dog": false,
+        "margin": 0.03322906419634819,
+        "message": "No dog was confidently detected.",
+        "ood_score": 0.5080907344818115,
+        "prediction": {
+          "breed": "basenji",
+          "confidence": 0.09490064531564713
+        },
+        "probability_margin": 0.03322906419634819,
+        "raw_ood_score": 0.5080907344818115,
+        "status": "NOT_DOG",
+        "t_not_dog": 0.457513,
+        "t_uncertain": 0.343358,
+        "top1_breed": "basenji",
+        "top1_confidence": 0.09490064531564713,
+        "top5": [
+          {
+            "breed": "basenji",
+            "confidence": 0.09490064531564713,
+            "index": 7,
+            "rank": 1
+          },
+          {
+            "breed": "scottish_deerhound",
+            "confidence": 0.061671581119298935,
+            "index": 97,
+            "rank": 2
+          },
+          {
+            "breed": "bluetick",
+            "confidence": 0.04618344455957413,
+            "index": 15,
+            "rank": 3
+          },
+          {
+            "breed": "afghan_hound",
+            "confidence": 0.04489745572209358,
+            "index": 1,
+            "rank": 4
+          },
+          {
+            "breed": "lakeland_terrier",
+            "confidence": 0.0440157949924469,
+            "index": 68,
+            "rank": 5
+          }
+        ],
+        "top5_predictions": [
+          {
+            "breed": "basenji",
+            "confidence": 0.09490064531564713,
+            "index": 7,
+            "rank": 1
+          },
+          {
+            "breed": "scottish_deerhound",
+            "confidence": 0.061671581119298935,
+            "index": 97,
+            "rank": 2
+          },
+          {
+            "breed": "bluetick",
+            "confidence": 0.04618344455957413,
+            "index": 15,
+            "rank": 3
+          },
+          {
+            "breed": "afghan_hound",
+            "confidence": 0.04489745572209358,
+            "index": 1,
+            "rank": 4
+          },
+          {
+            "breed": "lakeland_terrier",
+            "confidence": 0.0440157949924469,
+            "index": 68,
+            "rank": 5
+          }
+        ]
+      }
+    },
+    {
+      "path": "data/ood/test/chair/regression_wooden_chair.jpg",
+      "group": "household objects",
+      "ood_category": "chair",
+      "sha256": "c3952277bbea4b0fd0214988791fec6943d6cfe75e8f50c82d1d4959dd96bf84",
+      "contract": "PASS",
+      "decision": "NOT_DOG",
+      "raw_ood_score": 0.6095627844333649,
+      "top1_breed": "italian_greyhound",
+      "confidence": 0.07335401326417923,
+      "T_uncertain": 0.343358,
+      "T_not_dog": 0.457513,
+      "response": {
+        "T_not_dog": 0.457513,
+        "T_uncertain": 0.343358,
+        "breed": "italian_greyhound",
+        "confidence": 0.07335401326417923,
+        "decision": "NOT_DOG",
+        "final_status": "NOT_DOG",
+        "is_dog": false,
+        "margin": 0.0308070108294487,
+        "message": "No dog was confidently detected.",
+        "ood_score": 0.6095627844333649,
+        "prediction": {
+          "breed": "italian_greyhound",
+          "confidence": 0.07335401326417923
+        },
+        "probability_margin": 0.0308070108294487,
+        "raw_ood_score": 0.6095627844333649,
+        "status": "NOT_DOG",
+        "t_not_dog": 0.457513,
+        "t_uncertain": 0.343358,
+        "top1_breed": "italian_greyhound",
+        "top1_confidence": 0.07335401326417923,
+        "top5": [
+          {
+            "breed": "italian_greyhound",
+            "confidence": 0.07335401326417923,
+            "index": 60,
+            "rank": 1
+          },
+          {
+            "breed": "chihuahua",
+            "confidence": 0.04254700243473053,
+            "index": 29,
+            "rank": 2
+          },
+          {
+            "breed": "basenji",
+            "confidence": 0.03638911992311478,
+            "index": 7,
+            "rank": 3
+          },
+          {
+            "breed": "kelpie",
+            "confidence": 0.035475440323352814,
+            "index": 63,
+            "rank": 4
+          },
+          {
+            "breed": "miniature_pinscher",
+            "confidence": 0.03308887034654617,
+            "index": 75,
+            "rank": 5
+          }
+        ],
+        "top5_predictions": [
+          {
+            "breed": "italian_greyhound",
+            "confidence": 0.07335401326417923,
+            "index": 60,
+            "rank": 1
+          },
+          {
+            "breed": "chihuahua",
+            "confidence": 0.04254700243473053,
+            "index": 29,
+            "rank": 2
+          },
+          {
+            "breed": "basenji",
+            "confidence": 0.03638911992311478,
+            "index": 7,
+            "rank": 3
+          },
+          {
+            "breed": "kelpie",
+            "confidence": 0.035475440323352814,
+            "index": 63,
+            "rank": 4
+          },
+          {
+            "breed": "miniature_pinscher",
+            "confidence": 0.03308887034654617,
+            "index": 75,
+            "rank": 5
+          }
+        ]
+      }
+    },
+    {
+      "path": "data/ood/test/elephant/regression_05_elephant.jpg",
+      "group": "other animals",
+      "ood_category": "elephant",
+      "sha256": "0db6bacb155e8fa1ec8ea6d2f9a25a5acfe88f35176559fd807aa41e504796d8",
+      "contract": "PASS",
+      "decision": "NOT_DOG",
+      "raw_ood_score": 0.5944784283638,
+      "top1_breed": "curly-coated_retriever",
+      "confidence": 0.10798358172178268,
+      "T_uncertain": 0.343358,
+      "T_not_dog": 0.457513,
+      "response": {
+        "T_not_dog": 0.457513,
+        "T_uncertain": 0.343358,
+        "breed": "curly-coated_retriever",
+        "confidence": 0.10798358172178268,
+        "decision": "NOT_DOG",
+        "final_status": "NOT_DOG",
+        "is_dog": false,
+        "margin": 0.05872400850057602,
+        "message": "No dog was confidently detected.",
+        "ood_score": 0.5944784283638,
+        "prediction": {
+          "breed": "curly-coated_retriever",
+          "confidence": 0.10798358172178268
+        },
+        "probability_margin": 0.05872400850057602,
+        "raw_ood_score": 0.5944784283638,
+        "status": "NOT_DOG",
+        "t_not_dog": 0.457513,
+        "t_uncertain": 0.343358,
+        "top1_breed": "curly-coated_retriever",
+        "top1_confidence": 0.10798358172178268,
+        "top5": [
+          {
+            "breed": "curly-coated_retriever",
+            "confidence": 0.10798358172178268,
+            "index": 34,
+            "rank": 1
+          },
+          {
+            "breed": "giant_schnauzer",
+            "confidence": 0.049259573221206665,
+            "index": 48,
+            "rank": 2
+          },
+          {
+            "breed": "chesapeake_bay_retriever",
+            "confidence": 0.04512815549969673,
+            "index": 28,
+            "rank": 3
+          },
+          {
+            "breed": "pug",
+            "confidence": 0.033945098519325256,
+            "index": 88,
+            "rank": 4
+          },
+          {
+            "breed": "great_dane",
+            "confidence": 0.028256146237254143,
+            "index": 51,
+            "rank": 5
+          }
+        ],
+        "top5_predictions": [
+          {
+            "breed": "curly-coated_retriever",
+            "confidence": 0.10798358172178268,
+            "index": 34,
+            "rank": 1
+          },
+          {
+            "breed": "giant_schnauzer",
+            "confidence": 0.049259573221206665,
+            "index": 48,
+            "rank": 2
+          },
+          {
+            "breed": "chesapeake_bay_retriever",
+            "confidence": 0.04512815549969673,
+            "index": 28,
+            "rank": 3
+          },
+          {
+            "breed": "pug",
+            "confidence": 0.033945098519325256,
+            "index": 88,
+            "rank": 4
+          },
+          {
+            "breed": "great_dane",
+            "confidence": 0.028256146237254143,
+            "index": 51,
+            "rank": 5
+          }
+        ]
+      }
+    },
+    {
+      "path": "data/ood/test/horse/regression_02_horse.jpg",
+      "group": "other animals",
+      "ood_category": "horse",
+      "sha256": "354eee79e8a41d0dee118e5fd53f5beb5b75d1f5b22267f6581858914f20745f",
+      "contract": "PASS",
+      "decision": "NOT_DOG",
+      "raw_ood_score": 0.5545897483825684,
+      "top1_breed": "dingo",
+      "confidence": 0.12228459864854813,
+      "T_uncertain": 0.343358,
+      "T_not_dog": 0.457513,
+      "response": {
+        "T_not_dog": 0.457513,
+        "T_uncertain": 0.343358,
+        "breed": "dingo",
+        "confidence": 0.12228459864854813,
+        "decision": "NOT_DOG",
+        "final_status": "NOT_DOG",
+        "is_dog": false,
+        "margin": 0.00801657885313034,
+        "message": "No dog was confidently detected.",
+        "ood_score": 0.5545897483825684,
+        "prediction": {
+          "breed": "dingo",
+          "confidence": 0.12228459864854813
+        },
+        "probability_margin": 0.00801657885313034,
+        "raw_ood_score": 0.5545897483825684,
+        "status": "NOT_DOG",
+        "t_not_dog": 0.457513,
+        "t_uncertain": 0.343358,
+        "top1_breed": "dingo",
+        "top1_confidence": 0.12228459864854813,
+        "top5": [
+          {
+            "breed": "dingo",
+            "confidence": 0.12228459864854813,
+            "index": 37,
+            "rank": 1
+          },
+          {
+            "breed": "rhodesian_ridgeback",
+            "confidence": 0.11426801979541779,
+            "index": 90,
+            "rank": 2
+          },
+          {
+            "breed": "great_dane",
+            "confidence": 0.09429360926151276,
+            "index": 51,
+            "rank": 3
+          },
+          {
+            "breed": "ibizan_hound",
+            "confidence": 0.055148009210824966,
+            "index": 55,
+            "rank": 4
+          },
+          {
+            "breed": "airedale",
+            "confidence": 0.052975140511989594,
+            "index": 3,
+            "rank": 5
+          }
+        ],
+        "top5_predictions": [
+          {
+            "breed": "dingo",
+            "confidence": 0.12228459864854813,
+            "index": 37,
+            "rank": 1
+          },
+          {
+            "breed": "rhodesian_ridgeback",
+            "confidence": 0.11426801979541779,
+            "index": 90,
+            "rank": 2
+          },
+          {
+            "breed": "great_dane",
+            "confidence": 0.09429360926151276,
+            "index": 51,
+            "rank": 3
+          },
+          {
+            "breed": "ibizan_hound",
+            "confidence": 0.055148009210824966,
+            "index": 55,
+            "rank": 4
+          },
+          {
+            "breed": "airedale",
+            "confidence": 0.052975140511989594,
+            "index": 3,
+            "rank": 5
+          }
+        ]
+      }
+    },
+    {
+      "path": "data/ood/test/humans/regression_a_man_doing_isometric_walking.jpg",
+      "group": "humans",
+      "ood_category": "humans",
+      "sha256": "5a1f93e3c5e86467224803aa87c26d7f3f825edc0f0fbad54ad11e65b45c27aa",
+      "contract": "PASS",
+      "decision": "NOT_DOG",
+      "raw_ood_score": 0.5110573172569275,
+      "top1_breed": "labrador_retriever",
+      "confidence": 0.16376478970050812,
+      "T_uncertain": 0.343358,
+      "T_not_dog": 0.457513,
+      "response": {
+        "T_not_dog": 0.457513,
+        "T_uncertain": 0.343358,
+        "breed": "labrador_retriever",
+        "confidence": 0.16376478970050812,
+        "decision": "NOT_DOG",
+        "final_status": "NOT_DOG",
+        "is_dog": false,
+        "margin": 0.07933901995420456,
+        "message": "No dog was confidently detected.",
+        "ood_score": 0.5110573172569275,
+        "prediction": {
+          "breed": "labrador_retriever",
+          "confidence": 0.16376478970050812
+        },
+        "probability_margin": 0.07933901995420456,
+        "raw_ood_score": 0.5110573172569275,
+        "status": "NOT_DOG",
+        "t_not_dog": 0.457513,
+        "t_uncertain": 0.343358,
+        "top1_breed": "labrador_retriever",
+        "top1_confidence": 0.16376478970050812,
+        "top5": [
+          {
+            "breed": "labrador_retriever",
+            "confidence": 0.16376478970050812,
+            "index": 67,
+            "rank": 1
+          },
+          {
+            "breed": "staffordshire_bullterrier",
+            "confidence": 0.08442576974630356,
+            "index": 104,
+            "rank": 2
+          },
+          {
+            "breed": "italian_greyhound",
+            "confidence": 0.05847008898854256,
+            "index": 60,
+            "rank": 3
+          },
+          {
+            "breed": "vizsla",
+            "confidence": 0.05120886489748955,
+            "index": 112,
+            "rank": 4
+          },
+          {
+            "breed": "greater_swiss_mountain_dog",
+            "confidence": 0.043923452496528625,
+            "index": 53,
+            "rank": 5
+          }
+        ],
+        "top5_predictions": [
+          {
+            "breed": "labrador_retriever",
+            "confidence": 0.16376478970050812,
+            "index": 67,
+            "rank": 1
+          },
+          {
+            "breed": "staffordshire_bullterrier",
+            "confidence": 0.08442576974630356,
+            "index": 104,
+            "rank": 2
+          },
+          {
+            "breed": "italian_greyhound",
+            "confidence": 0.05847008898854256,
+            "index": 60,
+            "rank": 3
+          },
+          {
+            "breed": "vizsla",
+            "confidence": 0.05120886489748955,
+            "index": 112,
+            "rank": 4
+          },
+          {
+            "breed": "greater_swiss_mountain_dog",
+            "confidence": 0.043923452496528625,
+            "index": 53,
+            "rank": 5
+          }
+        ]
+      }
+    },
+    {
+      "path": "data/ood/test/humans/regression_boy_walking_contraluz.jpg",
+      "group": "humans",
+      "ood_category": "humans",
+      "sha256": "68ee6c9963618bf020dc82400d56dec86e047e2a10ecee4428d0265089f05fc4",
+      "contract": "PASS",
+      "decision": "UNCERTAIN",
+      "raw_ood_score": 0.4527946710586548,
+      "top1_breed": "flat-coated_retriever",
+      "confidence": 0.2771192789077759,
+      "T_uncertain": 0.343358,
+      "T_not_dog": 0.457513,
+      "response": {
+        "T_not_dog": 0.457513,
+        "T_uncertain": 0.343358,
+        "breed": "flat-coated_retriever",
+        "confidence": 0.2771192789077759,
+        "decision": "UNCERTAIN",
+        "final_status": "UNCERTAIN",
+        "is_dog": null,
+        "margin": 0.1495949923992157,
+        "message": "The image is ambiguous or outside the reliable dog-breed region.",
+        "ood_score": 0.4527946710586548,
+        "prediction": {
+          "breed": "flat-coated_retriever",
+          "confidence": 0.2771192789077759
+        },
+        "probability_margin": 0.1495949923992157,
+        "raw_ood_score": 0.4527946710586548,
+        "status": "UNCERTAIN",
+        "t_not_dog": 0.457513,
+        "t_uncertain": 0.343358,
+        "top1_breed": "flat-coated_retriever",
+        "top1_confidence": 0.2771192789077759,
+        "top5": [
+          {
+            "breed": "flat-coated_retriever",
+            "confidence": 0.2771192789077759,
+            "index": 44,
+            "rank": 1
+          },
+          {
+            "breed": "giant_schnauzer",
+            "confidence": 0.12752428650856018,
+            "index": 48,
+            "rank": 2
+          },
+          {
+            "breed": "labrador_retriever",
+            "confidence": 0.09735401719808578,
+            "index": 67,
+            "rank": 3
+          },
+          {
+            "breed": "standard_poodle",
+            "confidence": 0.0947289764881134,
+            "index": 105,
+            "rank": 4
+          },
+          {
+            "breed": "kelpie",
+            "confidence": 0.06190700829029083,
+            "index": 63,
+            "rank": 5
+          }
+        ],
+        "top5_predictions": [
+          {
+            "breed": "flat-coated_retriever",
+            "confidence": 0.2771192789077759,
+            "index": 44,
+            "rank": 1
+          },
+          {
+            "breed": "giant_schnauzer",
+            "confidence": 0.12752428650856018,
+            "index": 48,
+            "rank": 2
+          },
+          {
+            "breed": "labrador_retriever",
+            "confidence": 0.09735401719808578,
+            "index": 67,
+            "rank": 3
+          },
+          {
+            "breed": "standard_poodle",
+            "confidence": 0.0947289764881134,
+            "index": 105,
+            "rank": 4
+          },
+          {
+            "breed": "kelpie",
+            "confidence": 0.06190700829029083,
+            "index": 63,
+            "rank": 5
+          }
+        ]
+      }
+    },
+    {
+      "path": "data/ood/test/humans/regression_farmer_at_harvest.jpg",
+      "group": "humans",
+      "ood_category": "humans",
+      "sha256": "9bee4558896ba099f2f56bb8dc758b785442532d9584d6bc5024e5b3afae3ca3",
+      "contract": "PASS",
+      "decision": "UNCERTAIN",
+      "raw_ood_score": 0.4210888147354126,
+      "top1_breed": "welsh_springer_spaniel",
+      "confidence": 0.10315912961959839,
+      "T_uncertain": 0.343358,
+      "T_not_dog": 0.457513,
+      "response": {
+        "T_not_dog": 0.457513,
+        "T_uncertain": 0.343358,
+        "breed": "welsh_springer_spaniel",
+        "confidence": 0.10315912961959839,
+        "decision": "UNCERTAIN",
+        "final_status": "UNCERTAIN",
+        "is_dog": null,
+        "margin": 0.024469055235385895,
+        "message": "The image is ambiguous or outside the reliable dog-breed region.",
+        "ood_score": 0.4210888147354126,
+        "prediction": {
+          "breed": "welsh_springer_spaniel",
+          "confidence": 0.10315912961959839
+        },
+        "probability_margin": 0.024469055235385895,
+        "raw_ood_score": 0.4210888147354126,
+        "status": "UNCERTAIN",
+        "t_not_dog": 0.457513,
+        "t_uncertain": 0.343358,
+        "top1_breed": "welsh_springer_spaniel",
+        "top1_confidence": 0.10315912961959839,
+        "top5": [
+          {
+            "breed": "welsh_springer_spaniel",
+            "confidence": 0.10315912961959839,
+            "index": 115,
+            "rank": 1
+          },
+          {
+            "breed": "airedale",
+            "confidence": 0.0786900743842125,
+            "index": 3,
+            "rank": 2
+          },
+          {
+            "breed": "sussex_spaniel",
+            "confidence": 0.06953546404838562,
+            "index": 107,
+            "rank": 3
+          },
+          {
+            "breed": "irish_wolfhound",
+            "confidence": 0.06381954997777939,
+            "index": 59,
+            "rank": 4
+          },
+          {
+            "breed": "chesapeake_bay_retriever",
+            "confidence": 0.059689003974199295,
+            "index": 28,
+            "rank": 5
+          }
+        ],
+        "top5_predictions": [
+          {
+            "breed": "welsh_springer_spaniel",
+            "confidence": 0.10315912961959839,
+            "index": 115,
+            "rank": 1
+          },
+          {
+            "breed": "airedale",
+            "confidence": 0.0786900743842125,
+            "index": 3,
+            "rank": 2
+          },
+          {
+            "breed": "sussex_spaniel",
+            "confidence": 0.06953546404838562,
+            "index": 107,
+            "rank": 3
+          },
+          {
+            "breed": "irish_wolfhound",
+            "confidence": 0.06381954997777939,
+            "index": 59,
+            "rank": 4
+          },
+          {
+            "breed": "chesapeake_bay_retriever",
+            "confidence": 0.059689003974199295,
+            "index": 28,
+            "rank": 5
+          }
+        ]
+      }
+    },
+    {
+      "path": "data/ood/test/humans/regression_mike_martin_basketball_player.jpg",
+      "group": "humans",
+      "ood_category": "humans",
+      "sha256": "d5adffa9527ae201cfcc2bcb25d1568174e21f4edf9261ad347f6e1c233c9f20",
+      "contract": "PASS",
+      "decision": "NOT_DOG",
+      "raw_ood_score": 0.5398559868335724,
+      "top1_breed": "pug",
+      "confidence": 0.04592324048280716,
+      "T_uncertain": 0.343358,
+      "T_not_dog": 0.457513,
+      "response": {
+        "T_not_dog": 0.457513,
+        "T_uncertain": 0.343358,
+        "breed": "pug",
+        "confidence": 0.04592324048280716,
+        "decision": "NOT_DOG",
+        "final_status": "NOT_DOG",
+        "is_dog": false,
+        "margin": 0.0009693801403045654,
+        "message": "No dog was confidently detected.",
+        "ood_score": 0.5398559868335724,
+        "prediction": {
+          "breed": "pug",
+          "confidence": 0.04592324048280716
+        },
+        "probability_margin": 0.0009693801403045654,
+        "raw_ood_score": 0.5398559868335724,
+        "status": "NOT_DOG",
+        "t_not_dog": 0.457513,
+        "t_uncertain": 0.343358,
+        "top1_breed": "pug",
+        "top1_confidence": 0.04592324048280716,
+        "top5": [
+          {
+            "breed": "pug",
+            "confidence": 0.04592324048280716,
+            "index": 88,
+            "rank": 1
+          },
+          {
+            "breed": "leonberg",
+            "confidence": 0.044953860342502594,
+            "index": 69,
+            "rank": 2
+          },
+          {
+            "breed": "miniature_schnauzer",
+            "confidence": 0.03928535804152489,
+            "index": 77,
+            "rank": 3
+          },
+          {
+            "breed": "saluki",
+            "confidence": 0.032131027430295944,
+            "index": 93,
+            "rank": 4
+          },
+          {
+            "breed": "golden_retriever",
+            "confidence": 0.032072216272354126,
+            "index": 49,
+            "rank": 5
+          }
+        ],
+        "top5_predictions": [
+          {
+            "breed": "pug",
+            "confidence": 0.04592324048280716,
+            "index": 88,
+            "rank": 1
+          },
+          {
+            "breed": "leonberg",
+            "confidence": 0.044953860342502594,
+            "index": 69,
+            "rank": 2
+          },
+          {
+            "breed": "miniature_schnauzer",
+            "confidence": 0.03928535804152489,
+            "index": 77,
+            "rank": 3
+          },
+          {
+            "breed": "saluki",
+            "confidence": 0.032131027430295944,
+            "index": 93,
+            "rank": 4
+          },
+          {
+            "breed": "golden_retriever",
+            "confidence": 0.032072216272354126,
+            "index": 49,
+            "rank": 5
+          }
+        ]
+      }
+    },
+    {
+      "path": "data/ood/test/humans/regression_nishapurian_oldman_walking.jpg",
+      "group": "humans",
+      "ood_category": "humans",
+      "sha256": "7c6230aa66d8ed956c270387f08aa694e84b70375cf617afffae1352f52730fd",
+      "contract": "PASS",
+      "decision": "NOT_DOG",
+      "raw_ood_score": 0.4653778076171875,
+      "top1_breed": "french_bulldog",
+      "confidence": 0.06721965968608856,
+      "T_uncertain": 0.343358,
+      "T_not_dog": 0.457513,
+      "response": {
+        "T_not_dog": 0.457513,
+        "T_uncertain": 0.343358,
+        "breed": "french_bulldog",
+        "confidence": 0.06721965968608856,
+        "decision": "NOT_DOG",
+        "final_status": "NOT_DOG",
+        "is_dog": false,
+        "margin": 0.005546726286411285,
+        "message": "No dog was confidently detected.",
+        "ood_score": 0.4653778076171875,
+        "prediction": {
+          "breed": "french_bulldog",
+          "confidence": 0.06721965968608856
+        },
+        "probability_margin": 0.005546726286411285,
+        "raw_ood_score": 0.4653778076171875,
+        "status": "NOT_DOG",
+        "t_not_dog": 0.457513,
+        "t_uncertain": 0.343358,
+        "top1_breed": "french_bulldog",
+        "top1_confidence": 0.06721965968608856,
+        "top5": [
+          {
+            "breed": "french_bulldog",
+            "confidence": 0.06721965968608856,
+            "index": 45,
+            "rank": 1
+          },
+          {
+            "breed": "boston_bull",
+            "confidence": 0.06167293339967728,
+            "index": 19,
+            "rank": 2
+          },
+          {
+            "breed": "scotch_terrier",
+            "confidence": 0.05368860810995102,
+            "index": 96,
+            "rank": 3
+          },
+          {
+            "breed": "bedlington_terrier",
+            "confidence": 0.048123087733983994,
+            "index": 10,
+            "rank": 4
+          },
+          {
+            "breed": "great_pyrenees",
+            "confidence": 0.04012212157249451,
+            "index": 52,
+            "rank": 5
+          }
+        ],
+        "top5_predictions": [
+          {
+            "breed": "french_bulldog",
+            "confidence": 0.06721965968608856,
+            "index": 45,
+            "rank": 1
+          },
+          {
+            "breed": "boston_bull",
+            "confidence": 0.06167293339967728,
+            "index": 19,
+            "rank": 2
+          },
+          {
+            "breed": "scotch_terrier",
+            "confidence": 0.05368860810995102,
+            "index": 96,
+            "rank": 3
+          },
+          {
+            "breed": "bedlington_terrier",
+            "confidence": 0.048123087733983994,
+            "index": 10,
+            "rank": 4
+          },
+          {
+            "breed": "great_pyrenees",
+            "confidence": 0.04012212157249451,
+            "index": 52,
+            "rank": 5
+          }
+        ]
+      }
+    },
+    {
+      "path": "data/ood/test/humans/regression_woman_cooking_in_a_pot.jpg",
+      "group": "humans",
+      "ood_category": "humans",
+      "sha256": "00a8036b5b1b7918ad2b559138da59a6a55b2e04355fde365489a687da33bcf2",
+      "contract": "PASS",
+      "decision": "NOT_DOG",
+      "raw_ood_score": 0.4761938452720642,
+      "top1_breed": "boxer",
+      "confidence": 0.20208503305912018,
+      "T_uncertain": 0.343358,
+      "T_not_dog": 0.457513,
+      "response": {
+        "T_not_dog": 0.457513,
+        "T_uncertain": 0.343358,
+        "breed": "boxer",
+        "confidence": 0.20208503305912018,
+        "decision": "NOT_DOG",
+        "final_status": "NOT_DOG",
+        "is_dog": false,
+        "margin": 0.00912979245185852,
+        "message": "No dog was confidently detected.",
+        "ood_score": 0.4761938452720642,
+        "prediction": {
+          "breed": "boxer",
+          "confidence": 0.20208503305912018
+        },
+        "probability_margin": 0.00912979245185852,
+        "raw_ood_score": 0.4761938452720642,
+        "status": "NOT_DOG",
+        "t_not_dog": 0.457513,
+        "t_uncertain": 0.343358,
+        "top1_breed": "boxer",
+        "top1_confidence": 0.20208503305912018,
+        "top5": [
+          {
+            "breed": "boxer",
+            "confidence": 0.20208503305912018,
+            "index": 21,
+            "rank": 1
+          },
+          {
+            "breed": "borzoi",
+            "confidence": 0.19295524060726166,
+            "index": 18,
+            "rank": 2
+          },
+          {
+            "breed": "brittany_spaniel",
+            "confidence": 0.0560765378177166,
+            "index": 24,
+            "rank": 3
+          },
+          {
+            "breed": "whippet",
+            "confidence": 0.04984792694449425,
+            "index": 117,
+            "rank": 4
+          },
+          {
+            "breed": "miniature_schnauzer",
+            "confidence": 0.047021474689245224,
+            "index": 77,
+            "rank": 5
+          }
+        ],
+        "top5_predictions": [
+          {
+            "breed": "boxer",
+            "confidence": 0.20208503305912018,
+            "index": 21,
+            "rank": 1
+          },
+          {
+            "breed": "borzoi",
+            "confidence": 0.19295524060726166,
+            "index": 18,
+            "rank": 2
+          },
+          {
+            "breed": "brittany_spaniel",
+            "confidence": 0.0560765378177166,
+            "index": 24,
+            "rank": 3
+          },
+          {
+            "breed": "whippet",
+            "confidence": 0.04984792694449425,
+            "index": 117,
+            "rank": 4
+          },
+          {
+            "breed": "miniature_schnauzer",
+            "confidence": 0.047021474689245224,
+            "index": 77,
+            "rank": 5
+          }
+        ]
+      }
+    },
+    {
+      "path": "data/ood/test/laptop/regression_laptop.jpg",
+      "group": "household objects",
+      "ood_category": "laptop",
+      "sha256": "ddbbb05c418b4574517c2c7c7f75f50faa85298739cdd45a3642259569fa5d92",
+      "contract": "PASS",
+      "decision": "NOT_DOG",
+      "raw_ood_score": 0.5901626348495483,
+      "top1_breed": "toy_poodle",
+      "confidence": 0.08679433166980743,
+      "T_uncertain": 0.343358,
+      "T_not_dog": 0.457513,
+      "response": {
+        "T_not_dog": 0.457513,
+        "T_uncertain": 0.343358,
+        "breed": "toy_poodle",
+        "confidence": 0.08679433166980743,
+        "decision": "NOT_DOG",
+        "final_status": "NOT_DOG",
+        "is_dog": false,
+        "margin": 0.0016330406069755554,
+        "message": "No dog was confidently detected.",
+        "ood_score": 0.5901626348495483,
+        "prediction": {
+          "breed": "toy_poodle",
+          "confidence": 0.08679433166980743
+        },
+        "probability_margin": 0.0016330406069755554,
+        "raw_ood_score": 0.5901626348495483,
+        "status": "NOT_DOG",
+        "t_not_dog": 0.457513,
+        "t_uncertain": 0.343358,
+        "top1_breed": "toy_poodle",
+        "top1_confidence": 0.08679433166980743,
+        "top5": [
+          {
+            "breed": "toy_poodle",
+            "confidence": 0.08679433166980743,
+            "index": 110,
+            "rank": 1
+          },
+          {
+            "breed": "old_english_sheepdog",
+            "confidence": 0.08516129106283188,
+            "index": 82,
+            "rank": 2
+          },
+          {
+            "breed": "miniature_poodle",
+            "confidence": 0.06918131560087204,
+            "index": 76,
+            "rank": 3
+          },
+          {
+            "breed": "basset",
+            "confidence": 0.041742824018001556,
+            "index": 8,
+            "rank": 4
+          },
+          {
+            "breed": "standard_poodle",
+            "confidence": 0.0319909043610096,
+            "index": 105,
+            "rank": 5
+          }
+        ],
+        "top5_predictions": [
+          {
+            "breed": "toy_poodle",
+            "confidence": 0.08679433166980743,
+            "index": 110,
+            "rank": 1
+          },
+          {
+            "breed": "old_english_sheepdog",
+            "confidence": 0.08516129106283188,
+            "index": 82,
+            "rank": 2
+          },
+          {
+            "breed": "miniature_poodle",
+            "confidence": 0.06918131560087204,
+            "index": 76,
+            "rank": 3
+          },
+          {
+            "breed": "basset",
+            "confidence": 0.041742824018001556,
+            "index": 8,
+            "rank": 4
+          },
+          {
+            "breed": "standard_poodle",
+            "confidence": 0.0319909043610096,
+            "index": 105,
+            "rank": 5
+          }
+        ]
+      }
+    },
+    {
+      "path": "data/ood/test/laptop/regression_laptop_pc.jpg",
+      "group": "household objects",
+      "ood_category": "laptop",
+      "sha256": "93554a0e21d26c797dcbbfaabdc01c007403e9ac53b0ab21faeb22e42d5720c0",
+      "contract": "PASS",
+      "decision": "NOT_DOG",
+      "raw_ood_score": 0.6257510185241699,
+      "top1_breed": "eskimo_dog",
+      "confidence": 0.039901379495859146,
+      "T_uncertain": 0.343358,
+      "T_not_dog": 0.457513,
+      "response": {
+        "T_not_dog": 0.457513,
+        "T_uncertain": 0.343358,
+        "breed": "eskimo_dog",
+        "confidence": 0.039901379495859146,
+        "decision": "NOT_DOG",
+        "final_status": "NOT_DOG",
+        "is_dog": false,
+        "margin": 0.000404946506023407,
+        "message": "No dog was confidently detected.",
+        "ood_score": 0.6257510185241699,
+        "prediction": {
+          "breed": "eskimo_dog",
+          "confidence": 0.039901379495859146
+        },
+        "probability_margin": 0.000404946506023407,
+        "raw_ood_score": 0.6257510185241699,
+        "status": "NOT_DOG",
+        "t_not_dog": 0.457513,
+        "t_uncertain": 0.343358,
+        "top1_breed": "eskimo_dog",
+        "top1_confidence": 0.039901379495859146,
+        "top5": [
+          {
+            "breed": "eskimo_dog",
+            "confidence": 0.039901379495859146,
+            "index": 43,
+            "rank": 1
+          },
+          {
+            "breed": "standard_poodle",
+            "confidence": 0.03949643298983574,
+            "index": 105,
+            "rank": 2
+          },
+          {
+            "breed": "bull_mastiff",
+            "confidence": 0.03351149335503578,
+            "index": 25,
+            "rank": 3
+          },
+          {
+            "breed": "miniature_poodle",
+            "confidence": 0.03245186060667038,
+            "index": 76,
+            "rank": 4
+          },
+          {
+            "breed": "beagle",
+            "confidence": 0.03217121586203575,
+            "index": 9,
+            "rank": 5
+          }
+        ],
+        "top5_predictions": [
+          {
+            "breed": "eskimo_dog",
+            "confidence": 0.039901379495859146,
+            "index": 43,
+            "rank": 1
+          },
+          {
+            "breed": "standard_poodle",
+            "confidence": 0.03949643298983574,
+            "index": 105,
+            "rank": 2
+          },
+          {
+            "breed": "bull_mastiff",
+            "confidence": 0.03351149335503578,
+            "index": 25,
+            "rank": 3
+          },
+          {
+            "breed": "miniature_poodle",
+            "confidence": 0.03245186060667038,
+            "index": 76,
+            "rank": 4
+          },
+          {
+            "breed": "beagle",
+            "confidence": 0.03217121586203575,
+            "index": 9,
+            "rank": 5
+          }
+        ]
+      }
+    },
+    {
+      "path": "data/ood/test/motorcycle/regression_09_motorcycle.jpg",
+      "group": "vehicles",
+      "ood_category": "motorcycle",
+      "sha256": "b0cb0b0dee2386a369e724aa97427b227495e6db1e1f06be5277e3bdf73e1e3a",
+      "contract": "PASS",
+      "decision": "NOT_DOG",
+      "raw_ood_score": 0.5162445902824402,
+      "top1_breed": "pembroke",
+      "confidence": 0.08317368477582932,
+      "T_uncertain": 0.343358,
+      "T_not_dog": 0.457513,
+      "response": {
+        "T_not_dog": 0.457513,
+        "T_uncertain": 0.343358,
+        "breed": "pembroke",
+        "confidence": 0.08317368477582932,
+        "decision": "NOT_DOG",
+        "final_status": "NOT_DOG",
+        "is_dog": false,
+        "margin": 0.028164200484752655,
+        "message": "No dog was confidently detected.",
+        "ood_score": 0.5162445902824402,
+        "prediction": {
+          "breed": "pembroke",
+          "confidence": 0.08317368477582932
+        },
+        "probability_margin": 0.028164200484752655,
+        "raw_ood_score": 0.5162445902824402,
+        "status": "NOT_DOG",
+        "t_not_dog": 0.457513,
+        "t_uncertain": 0.343358,
+        "top1_breed": "pembroke",
+        "top1_confidence": 0.08317368477582932,
+        "top5": [
+          {
+            "breed": "pembroke",
+            "confidence": 0.08317368477582932,
+            "index": 86,
+            "rank": 1
+          },
+          {
+            "breed": "scotch_terrier",
+            "confidence": 0.05500948429107666,
+            "index": 96,
+            "rank": 2
+          },
+          {
+            "breed": "collie",
+            "confidence": 0.044035542756319046,
+            "index": 33,
+            "rank": 3
+          },
+          {
+            "breed": "italian_greyhound",
+            "confidence": 0.03680935874581337,
+            "index": 60,
+            "rank": 4
+          },
+          {
+            "breed": "shetland_sheepdog",
+            "confidence": 0.03313226252794266,
+            "index": 99,
+            "rank": 5
+          }
+        ],
+        "top5_predictions": [
+          {
+            "breed": "pembroke",
+            "confidence": 0.08317368477582932,
+            "index": 86,
+            "rank": 1
+          },
+          {
+            "breed": "scotch_terrier",
+            "confidence": 0.05500948429107666,
+            "index": 96,
+            "rank": 2
+          },
+          {
+            "breed": "collie",
+            "confidence": 0.044035542756319046,
+            "index": 33,
+            "rank": 3
+          },
+          {
+            "breed": "italian_greyhound",
+            "confidence": 0.03680935874581337,
+            "index": 60,
+            "rank": 4
+          },
+          {
+            "breed": "shetland_sheepdog",
+            "confidence": 0.03313226252794266,
+            "index": 99,
+            "rank": 5
+          }
+        ]
+      }
+    },
+    {
+      "path": "data/ood/test/phone/regression_nokia_3310_phone.jpg",
+      "group": "household objects",
+      "ood_category": "phone",
+      "sha256": "dc3fef087c8238977ee0890e71775cd1ba5335989b4b28c1dabe11b49f1c2b86",
+      "contract": "PASS",
+      "decision": "NOT_DOG",
+      "raw_ood_score": 0.5440559387207031,
+      "top1_breed": "american_staffordshire_terrier",
+      "confidence": 0.2573601007461548,
+      "T_uncertain": 0.343358,
+      "T_not_dog": 0.457513,
+      "response": {
+        "T_not_dog": 0.457513,
+        "T_uncertain": 0.343358,
+        "breed": "american_staffordshire_terrier",
+        "confidence": 0.2573601007461548,
+        "decision": "NOT_DOG",
+        "final_status": "NOT_DOG",
+        "is_dog": false,
+        "margin": 0.2006610482931137,
+        "message": "No dog was confidently detected.",
+        "ood_score": 0.5440559387207031,
+        "prediction": {
+          "breed": "american_staffordshire_terrier",
+          "confidence": 0.2573601007461548
+        },
+        "probability_margin": 0.2006610482931137,
+        "raw_ood_score": 0.5440559387207031,
+        "status": "NOT_DOG",
+        "t_not_dog": 0.457513,
+        "t_uncertain": 0.343358,
+        "top1_breed": "american_staffordshire_terrier",
+        "top1_confidence": 0.2573601007461548,
+        "top5": [
+          {
+            "breed": "american_staffordshire_terrier",
+            "confidence": 0.2573601007461548,
+            "index": 4,
+            "rank": 1
+          },
+          {
+            "breed": "cocker_spaniel",
+            "confidence": 0.05669905245304108,
+            "index": 32,
+            "rank": 2
+          },
+          {
+            "breed": "miniature_schnauzer",
+            "confidence": 0.03976066783070564,
+            "index": 77,
+            "rank": 3
+          },
+          {
+            "breed": "pomeranian",
+            "confidence": 0.022798165678977966,
+            "index": 87,
+            "rank": 4
+          },
+          {
+            "breed": "border_terrier",
+            "confidence": 0.019886108115315437,
+            "index": 17,
+            "rank": 5
+          }
+        ],
+        "top5_predictions": [
+          {
+            "breed": "american_staffordshire_terrier",
+            "confidence": 0.2573601007461548,
+            "index": 4,
+            "rank": 1
+          },
+          {
+            "breed": "cocker_spaniel",
+            "confidence": 0.05669905245304108,
+            "index": 32,
+            "rank": 2
+          },
+          {
+            "breed": "miniature_schnauzer",
+            "confidence": 0.03976066783070564,
+            "index": 77,
+            "rank": 3
+          },
+          {
+            "breed": "pomeranian",
+            "confidence": 0.022798165678977966,
+            "index": 87,
+            "rank": 4
+          },
+          {
+            "breed": "border_terrier",
+            "confidence": 0.019886108115315437,
+            "index": 17,
+            "rank": 5
+          }
+        ]
+      }
+    },
+    {
+      "path": "data/ood/test/rabbit/regression_03_rabbit.jpg",
+      "group": "other animals",
+      "ood_category": "rabbit",
+      "sha256": "8c241b8c28a6c4d45f9d88c9ba08f0e7f5a79d865ba5faed2142ea9f04ee7520",
+      "contract": "PASS",
+      "decision": "NOT_DOG",
+      "raw_ood_score": 0.5028927326202393,
+      "top1_breed": "miniature_pinscher",
+      "confidence": 0.1374608874320984,
+      "T_uncertain": 0.343358,
+      "T_not_dog": 0.457513,
+      "response": {
+        "T_not_dog": 0.457513,
+        "T_uncertain": 0.343358,
+        "breed": "miniature_pinscher",
+        "confidence": 0.1374608874320984,
+        "decision": "NOT_DOG",
+        "final_status": "NOT_DOG",
+        "is_dog": false,
+        "margin": 0.038170598447322845,
+        "message": "No dog was confidently detected.",
+        "ood_score": 0.5028927326202393,
+        "prediction": {
+          "breed": "miniature_pinscher",
+          "confidence": 0.1374608874320984
+        },
+        "probability_margin": 0.038170598447322845,
+        "raw_ood_score": 0.5028927326202393,
+        "status": "NOT_DOG",
+        "t_not_dog": 0.457513,
+        "t_uncertain": 0.343358,
+        "top1_breed": "miniature_pinscher",
+        "top1_confidence": 0.1374608874320984,
+        "top5": [
+          {
+            "breed": "miniature_pinscher",
+            "confidence": 0.1374608874320984,
+            "index": 75,
+            "rank": 1
+          },
+          {
+            "breed": "cardigan",
+            "confidence": 0.09929028898477554,
+            "index": 27,
+            "rank": 2
+          },
+          {
+            "breed": "border_terrier",
+            "confidence": 0.08853129297494888,
+            "index": 17,
+            "rank": 3
+          },
+          {
+            "breed": "miniature_poodle",
+            "confidence": 0.041363395750522614,
+            "index": 76,
+            "rank": 4
+          },
+          {
+            "breed": "scotch_terrier",
+            "confidence": 0.035031821578741074,
+            "index": 96,
+            "rank": 5
+          }
+        ],
+        "top5_predictions": [
+          {
+            "breed": "miniature_pinscher",
+            "confidence": 0.1374608874320984,
+            "index": 75,
+            "rank": 1
+          },
+          {
+            "breed": "cardigan",
+            "confidence": 0.09929028898477554,
+            "index": 27,
+            "rank": 2
+          },
+          {
+            "breed": "border_terrier",
+            "confidence": 0.08853129297494888,
+            "index": 17,
+            "rank": 3
+          },
+          {
+            "breed": "miniature_poodle",
+            "confidence": 0.041363395750522614,
+            "index": 76,
+            "rank": 4
+          },
+          {
+            "breed": "scotch_terrier",
+            "confidence": 0.035031821578741074,
+            "index": 96,
+            "rank": 5
+          }
+        ]
+      }
+    },
+    {
+      "path": "data/ood/test/sheep/regression_04_sheep.jpg",
+      "group": "other animals",
+      "ood_category": "sheep",
+      "sha256": "49988fdd60a324fc6fe6cff0068b2a4bef59d92b08cf14882620a5a441a809ff",
+      "contract": "PASS",
+      "decision": "NOT_DOG",
+      "raw_ood_score": 0.5193052887916565,
+      "top1_breed": "komondor",
+      "confidence": 0.1370970606803894,
+      "T_uncertain": 0.343358,
+      "T_not_dog": 0.457513,
+      "response": {
+        "T_not_dog": 0.457513,
+        "T_uncertain": 0.343358,
+        "breed": "komondor",
+        "confidence": 0.1370970606803894,
+        "decision": "NOT_DOG",
+        "final_status": "NOT_DOG",
+        "is_dog": false,
+        "margin": 0.03971649706363678,
+        "message": "No dog was confidently detected.",
+        "ood_score": 0.5193052887916565,
+        "prediction": {
+          "breed": "komondor",
+          "confidence": 0.1370970606803894
+        },
+        "probability_margin": 0.03971649706363678,
+        "raw_ood_score": 0.5193052887916565,
+        "status": "NOT_DOG",
+        "t_not_dog": 0.457513,
+        "t_uncertain": 0.343358,
+        "top1_breed": "komondor",
+        "top1_confidence": 0.1370970606803894,
+        "top5": [
+          {
+            "breed": "komondor",
+            "confidence": 0.1370970606803894,
+            "index": 65,
+            "rank": 1
+          },
+          {
+            "breed": "groenendael",
+            "confidence": 0.09738056361675262,
+            "index": 54,
+            "rank": 2
+          },
+          {
+            "breed": "scotch_terrier",
+            "confidence": 0.07079096138477325,
+            "index": 96,
+            "rank": 3
+          },
+          {
+            "breed": "schipperke",
+            "confidence": 0.06013097986578941,
+            "index": 95,
+            "rank": 4
+          },
+          {
+            "breed": "west_highland_white_terrier",
+            "confidence": 0.05669615417718887,
+            "index": 116,
+            "rank": 5
+          }
+        ],
+        "top5_predictions": [
+          {
+            "breed": "komondor",
+            "confidence": 0.1370970606803894,
+            "index": 65,
+            "rank": 1
+          },
+          {
+            "breed": "groenendael",
+            "confidence": 0.09738056361675262,
+            "index": 54,
+            "rank": 2
+          },
+          {
+            "breed": "scotch_terrier",
+            "confidence": 0.07079096138477325,
+            "index": 96,
+            "rank": 3
+          },
+          {
+            "breed": "schipperke",
+            "confidence": 0.06013097986578941,
+            "index": 95,
+            "rank": 4
+          },
+          {
+            "breed": "west_highland_white_terrier",
+            "confidence": 0.05669615417718887,
+            "index": 116,
+            "rank": 5
+          }
+        ]
+      }
+    },
+    {
+      "path": "data/ood_hard/coyote/regression_coyote_yellowstone.jpg",
+      "group": "hard OOD",
+      "ood_category": "coyote",
+      "sha256": "3e4966642d74d6be03c12d933ca0a75dbe01fe14f33a1688ad753df66de688de",
+      "contract": "PASS",
+      "decision": "UNCERTAIN",
+      "raw_ood_score": 0.44405174255371094,
+      "top1_breed": "dhole",
+      "confidence": 0.259522944688797,
+      "T_uncertain": 0.343358,
+      "T_not_dog": 0.457513,
+      "response": {
+        "T_not_dog": 0.457513,
+        "T_uncertain": 0.343358,
+        "breed": "dhole",
+        "confidence": 0.259522944688797,
+        "decision": "UNCERTAIN",
+        "final_status": "UNCERTAIN",
+        "is_dog": null,
+        "margin": 0.17433075606822968,
+        "message": "The image is ambiguous or outside the reliable dog-breed region.",
+        "ood_score": 0.44405174255371094,
+        "prediction": {
+          "breed": "dhole",
+          "confidence": 0.259522944688797
+        },
+        "probability_margin": 0.17433075606822968,
+        "raw_ood_score": 0.44405174255371094,
+        "status": "UNCERTAIN",
+        "t_not_dog": 0.457513,
+        "t_uncertain": 0.343358,
+        "top1_breed": "dhole",
+        "top1_confidence": 0.259522944688797,
+        "top5": [
+          {
+            "breed": "dhole",
+            "confidence": 0.259522944688797,
+            "index": 36,
+            "rank": 1
+          },
+          {
+            "breed": "irish_wolfhound",
+            "confidence": 0.08519218862056732,
+            "index": 59,
+            "rank": 2
+          },
+          {
+            "breed": "bluetick",
+            "confidence": 0.08292233943939209,
+            "index": 15,
+            "rank": 3
+          },
+          {
+            "breed": "eskimo_dog",
+            "confidence": 0.06011730805039406,
+            "index": 43,
+            "rank": 4
+          },
+          {
+            "breed": "scottish_deerhound",
+            "confidence": 0.059305619448423386,
+            "index": 97,
+            "rank": 5
+          }
+        ],
+        "top5_predictions": [
+          {
+            "breed": "dhole",
+            "confidence": 0.259522944688797,
+            "index": 36,
+            "rank": 1
+          },
+          {
+            "breed": "irish_wolfhound",
+            "confidence": 0.08519218862056732,
+            "index": 59,
+            "rank": 2
+          },
+          {
+            "breed": "bluetick",
+            "confidence": 0.08292233943939209,
+            "index": 15,
+            "rank": 3
+          },
+          {
+            "breed": "eskimo_dog",
+            "confidence": 0.06011730805039406,
+            "index": 43,
+            "rank": 4
+          },
+          {
+            "breed": "scottish_deerhound",
+            "confidence": 0.059305619448423386,
+            "index": 97,
+            "rank": 5
+          }
+        ]
+      }
+    },
+    {
+      "path": "data/ood_hard/coyote/regression_coyote_yellowstone_snow.jpg",
+      "group": "hard OOD",
+      "ood_category": "coyote",
+      "sha256": "bd16d7ec58fa324385464948c75e0164fd640f31b82547ef244a1a70f029aa4a",
+      "contract": "PASS",
+      "decision": "UNCERTAIN",
+      "raw_ood_score": 0.4399217367172241,
+      "top1_breed": "siberian_husky",
+      "confidence": 0.1800900548696518,
+      "T_uncertain": 0.343358,
+      "T_not_dog": 0.457513,
+      "response": {
+        "T_not_dog": 0.457513,
+        "T_uncertain": 0.343358,
+        "breed": "siberian_husky",
+        "confidence": 0.1800900548696518,
+        "decision": "UNCERTAIN",
+        "final_status": "UNCERTAIN",
+        "is_dog": null,
+        "margin": 0.06674165278673172,
+        "message": "The image is ambiguous or outside the reliable dog-breed region.",
+        "ood_score": 0.4399217367172241,
+        "prediction": {
+          "breed": "siberian_husky",
+          "confidence": 0.1800900548696518
+        },
+        "probability_margin": 0.06674165278673172,
+        "raw_ood_score": 0.4399217367172241,
+        "status": "UNCERTAIN",
+        "t_not_dog": 0.457513,
+        "t_uncertain": 0.343358,
+        "top1_breed": "siberian_husky",
+        "top1_confidence": 0.1800900548696518,
+        "top5": [
+          {
+            "breed": "siberian_husky",
+            "confidence": 0.1800900548696518,
+            "index": 101,
+            "rank": 1
+          },
+          {
+            "breed": "saluki",
+            "confidence": 0.11334840208292007,
+            "index": 93,
+            "rank": 2
+          },
+          {
+            "breed": "english_setter",
+            "confidence": 0.09616360068321228,
+            "index": 40,
+            "rank": 3
+          },
+          {
+            "breed": "border_terrier",
+            "confidence": 0.08683730661869049,
+            "index": 17,
+            "rank": 4
+          },
+          {
+            "breed": "african_hunting_dog",
+            "confidence": 0.08234389126300812,
+            "index": 2,
+            "rank": 5
+          }
+        ],
+        "top5_predictions": [
+          {
+            "breed": "siberian_husky",
+            "confidence": 0.1800900548696518,
+            "index": 101,
+            "rank": 1
+          },
+          {
+            "breed": "saluki",
+            "confidence": 0.11334840208292007,
+            "index": 93,
+            "rank": 2
+          },
+          {
+            "breed": "english_setter",
+            "confidence": 0.09616360068321228,
+            "index": 40,
+            "rank": 3
+          },
+          {
+            "breed": "border_terrier",
+            "confidence": 0.08683730661869049,
+            "index": 17,
+            "rank": 4
+          },
+          {
+            "breed": "african_hunting_dog",
+            "confidence": 0.08234389126300812,
+            "index": 2,
+            "rank": 5
+          }
+        ]
+      }
+    },
+    {
+      "path": "data/ood_hard/fox/regression_fox_portrait.jpg",
+      "group": "hard OOD",
+      "ood_category": "fox",
+      "sha256": "42cae7aaddbeceb78de33b55ee2125b57895380889f96440e6ccbf3cf7742014",
+      "contract": "PASS",
+      "decision": "UNCERTAIN",
+      "raw_ood_score": 0.4529809355735779,
+      "top1_breed": "pembroke",
+      "confidence": 0.26451200246810913,
+      "T_uncertain": 0.343358,
+      "T_not_dog": 0.457513,
+      "response": {
+        "T_not_dog": 0.457513,
+        "T_uncertain": 0.343358,
+        "breed": "pembroke",
+        "confidence": 0.26451200246810913,
+        "decision": "UNCERTAIN",
+        "final_status": "UNCERTAIN",
+        "is_dog": null,
+        "margin": 0.037289321422576904,
+        "message": "The image is ambiguous or outside the reliable dog-breed region.",
+        "ood_score": 0.4529809355735779,
+        "prediction": {
+          "breed": "pembroke",
+          "confidence": 0.26451200246810913
+        },
+        "probability_margin": 0.037289321422576904,
+        "raw_ood_score": 0.4529809355735779,
+        "status": "UNCERTAIN",
+        "t_not_dog": 0.457513,
+        "t_uncertain": 0.343358,
+        "top1_breed": "pembroke",
+        "top1_confidence": 0.26451200246810913,
+        "top5": [
+          {
+            "breed": "pembroke",
+            "confidence": 0.26451200246810913,
+            "index": 86,
+            "rank": 1
+          },
+          {
+            "breed": "dhole",
+            "confidence": 0.22722268104553223,
+            "index": 36,
+            "rank": 2
+          },
+          {
+            "breed": "dingo",
+            "confidence": 0.20486198365688324,
+            "index": 37,
+            "rank": 3
+          },
+          {
+            "breed": "pomeranian",
+            "confidence": 0.07113522291183472,
+            "index": 87,
+            "rank": 4
+          },
+          {
+            "breed": "chihuahua",
+            "confidence": 0.022820012643933296,
+            "index": 29,
+            "rank": 5
+          }
+        ],
+        "top5_predictions": [
+          {
+            "breed": "pembroke",
+            "confidence": 0.26451200246810913,
+            "index": 86,
+            "rank": 1
+          },
+          {
+            "breed": "dhole",
+            "confidence": 0.22722268104553223,
+            "index": 36,
+            "rank": 2
+          },
+          {
+            "breed": "dingo",
+            "confidence": 0.20486198365688324,
+            "index": 37,
+            "rank": 3
+          },
+          {
+            "breed": "pomeranian",
+            "confidence": 0.07113522291183472,
+            "index": 87,
+            "rank": 4
+          },
+          {
+            "breed": "chihuahua",
+            "confidence": 0.022820012643933296,
+            "index": 29,
+            "rank": 5
+          }
+        ]
+      }
+    },
+    {
+      "path": "data/ood_hard/fox/regression_fox_rautas_snow.jpg",
+      "group": "hard OOD",
+      "ood_category": "fox",
+      "sha256": "0e7398424e5273e9b6c0b69d2d87c45512b9804865a67f67fb77fcc8dccbf5e4",
+      "contract": "PASS",
+      "decision": "UNCERTAIN",
+      "raw_ood_score": 0.41722434759140015,
+      "top1_breed": "pembroke",
+      "confidence": 0.5218762159347534,
+      "T_uncertain": 0.343358,
+      "T_not_dog": 0.457513,
+      "response": {
+        "T_not_dog": 0.457513,
+        "T_uncertain": 0.343358,
+        "breed": "pembroke",
+        "confidence": 0.5218762159347534,
+        "decision": "UNCERTAIN",
+        "final_status": "UNCERTAIN",
+        "is_dog": null,
+        "margin": 0.28562916815280914,
+        "message": "The image is ambiguous or outside the reliable dog-breed region.",
+        "ood_score": 0.41722434759140015,
+        "prediction": {
+          "breed": "pembroke",
+          "confidence": 0.5218762159347534
+        },
+        "probability_margin": 0.28562916815280914,
+        "raw_ood_score": 0.41722434759140015,
+        "status": "UNCERTAIN",
+        "t_not_dog": 0.457513,
+        "t_uncertain": 0.343358,
+        "top1_breed": "pembroke",
+        "top1_confidence": 0.5218762159347534,
+        "top5": [
+          {
+            "breed": "pembroke",
+            "confidence": 0.5218762159347534,
+            "index": 86,
+            "rank": 1
+          },
+          {
+            "breed": "dhole",
+            "confidence": 0.23624704778194427,
+            "index": 36,
+            "rank": 2
+          },
+          {
+            "breed": "shetland_sheepdog",
+            "confidence": 0.036265984177589417,
+            "index": 99,
+            "rank": 3
+          },
+          {
+            "breed": "dingo",
+            "confidence": 0.032537370920181274,
+            "index": 37,
+            "rank": 4
+          },
+          {
+            "breed": "cardigan",
+            "confidence": 0.01861419901251793,
+            "index": 27,
+            "rank": 5
+          }
+        ],
+        "top5_predictions": [
+          {
+            "breed": "pembroke",
+            "confidence": 0.5218762159347534,
+            "index": 86,
+            "rank": 1
+          },
+          {
+            "breed": "dhole",
+            "confidence": 0.23624704778194427,
+            "index": 36,
+            "rank": 2
+          },
+          {
+            "breed": "shetland_sheepdog",
+            "confidence": 0.036265984177589417,
+            "index": 99,
+            "rank": 3
+          },
+          {
+            "breed": "dingo",
+            "confidence": 0.032537370920181274,
+            "index": 37,
+            "rank": 4
+          },
+          {
+            "breed": "cardigan",
+            "confidence": 0.01861419901251793,
+            "index": 27,
+            "rank": 5
+          }
+        ]
+      }
+    },
+    {
+      "path": "data/ood_hard/hyena/regression_hyena_kongkham_portrait.jpg",
+      "group": "hard OOD",
+      "ood_category": "hyena",
+      "sha256": "0cefadafc28473be6720c4b5dc34c7373e6d0b46ab7c961203910f1791bb100c",
+      "contract": "PASS",
+      "decision": "UNCERTAIN",
+      "raw_ood_score": 0.3464123010635376,
+      "top1_breed": "african_hunting_dog",
+      "confidence": 0.9441259503364563,
+      "T_uncertain": 0.343358,
+      "T_not_dog": 0.457513,
+      "response": {
+        "T_not_dog": 0.457513,
+        "T_uncertain": 0.343358,
+        "breed": "african_hunting_dog",
+        "confidence": 0.9441259503364563,
+        "decision": "UNCERTAIN",
+        "final_status": "UNCERTAIN",
+        "is_dog": null,
+        "margin": 0.930360778234899,
+        "message": "The image is ambiguous or outside the reliable dog-breed region.",
+        "ood_score": 0.3464123010635376,
+        "prediction": {
+          "breed": "african_hunting_dog",
+          "confidence": 0.9441259503364563
+        },
+        "probability_margin": 0.930360778234899,
+        "raw_ood_score": 0.3464123010635376,
+        "status": "UNCERTAIN",
+        "t_not_dog": 0.457513,
+        "t_uncertain": 0.343358,
+        "top1_breed": "african_hunting_dog",
+        "top1_confidence": 0.9441259503364563,
+        "top5": [
+          {
+            "breed": "african_hunting_dog",
+            "confidence": 0.9441259503364563,
+            "index": 2,
+            "rank": 1
+          },
+          {
+            "breed": "dhole",
+            "confidence": 0.013765172101557255,
+            "index": 36,
+            "rank": 2
+          },
+          {
+            "breed": "border_terrier",
+            "confidence": 0.007332706358283758,
+            "index": 17,
+            "rank": 3
+          },
+          {
+            "breed": "cairn",
+            "confidence": 0.003929559141397476,
+            "index": 26,
+            "rank": 4
+          },
+          {
+            "breed": "dingo",
+            "confidence": 0.003479988779872656,
+            "index": 37,
+            "rank": 5
+          }
+        ],
+        "top5_predictions": [
+          {
+            "breed": "african_hunting_dog",
+            "confidence": 0.9441259503364563,
+            "index": 2,
+            "rank": 1
+          },
+          {
+            "breed": "dhole",
+            "confidence": 0.013765172101557255,
+            "index": 36,
+            "rank": 2
+          },
+          {
+            "breed": "border_terrier",
+            "confidence": 0.007332706358283758,
+            "index": 17,
+            "rank": 3
+          },
+          {
+            "breed": "cairn",
+            "confidence": 0.003929559141397476,
+            "index": 26,
+            "rank": 4
+          },
+          {
+            "breed": "dingo",
+            "confidence": 0.003479988779872656,
+            "index": 37,
+            "rank": 5
+          }
+        ]
+      }
+    },
+    {
+      "path": "data/ood_hard/hyena/regression_hyena_lubaya_portrait.jpg",
+      "group": "hard OOD",
+      "ood_category": "hyena",
+      "sha256": "e04fa4da45bfe084b67161f1cee3b873cd11a010bf7bc5fe8272e082a92a9884",
+      "contract": "PASS",
+      "decision": "UNCERTAIN",
+      "raw_ood_score": 0.45312410593032837,
+      "top1_breed": "african_hunting_dog",
+      "confidence": 0.7276198267936707,
+      "T_uncertain": 0.343358,
+      "T_not_dog": 0.457513,
+      "response": {
+        "T_not_dog": 0.457513,
+        "T_uncertain": 0.343358,
+        "breed": "african_hunting_dog",
+        "confidence": 0.7276198267936707,
+        "decision": "UNCERTAIN",
+        "final_status": "UNCERTAIN",
+        "is_dog": null,
+        "margin": 0.5962184816598892,
+        "message": "The image is ambiguous or outside the reliable dog-breed region.",
+        "ood_score": 0.45312410593032837,
+        "prediction": {
+          "breed": "african_hunting_dog",
+          "confidence": 0.7276198267936707
+        },
+        "probability_margin": 0.5962184816598892,
+        "raw_ood_score": 0.45312410593032837,
+        "status": "UNCERTAIN",
+        "t_not_dog": 0.457513,
+        "t_uncertain": 0.343358,
+        "top1_breed": "african_hunting_dog",
+        "top1_confidence": 0.7276198267936707,
+        "top5": [
+          {
+            "breed": "african_hunting_dog",
+            "confidence": 0.7276198267936707,
+            "index": 2,
+            "rank": 1
+          },
+          {
+            "breed": "dhole",
+            "confidence": 0.13140134513378143,
+            "index": 36,
+            "rank": 2
+          },
+          {
+            "breed": "border_terrier",
+            "confidence": 0.06967170536518097,
+            "index": 17,
+            "rank": 3
+          },
+          {
+            "breed": "dingo",
+            "confidence": 0.021541090682148933,
+            "index": 37,
+            "rank": 4
+          },
+          {
+            "breed": "norwegian_elkhound",
+            "confidence": 0.0055792853236198425,
+            "index": 80,
+            "rank": 5
+          }
+        ],
+        "top5_predictions": [
+          {
+            "breed": "african_hunting_dog",
+            "confidence": 0.7276198267936707,
+            "index": 2,
+            "rank": 1
+          },
+          {
+            "breed": "dhole",
+            "confidence": 0.13140134513378143,
+            "index": 36,
+            "rank": 2
+          },
+          {
+            "breed": "border_terrier",
+            "confidence": 0.06967170536518097,
+            "index": 17,
+            "rank": 3
+          },
+          {
+            "breed": "dingo",
+            "confidence": 0.021541090682148933,
+            "index": 37,
+            "rank": 4
+          },
+          {
+            "breed": "norwegian_elkhound",
+            "confidence": 0.0055792853236198425,
+            "index": 80,
+            "rank": 5
+          }
+        ]
+      }
+    },
+    {
+      "path": "data/ood_hard/wolf/regression_wolf_european_portrait.jpg",
+      "group": "hard OOD",
+      "ood_category": "wolf",
+      "sha256": "6036f23f8f405c189bd0c50147a80dc7c7cf6b42c2869011e03438d5df55eba4",
+      "contract": "PASS",
+      "decision": "UNCERTAIN",
+      "raw_ood_score": 0.4453672766685486,
+      "top1_breed": "dhole",
+      "confidence": 0.5995656251907349,
+      "T_uncertain": 0.343358,
+      "T_not_dog": 0.457513,
+      "response": {
+        "T_not_dog": 0.457513,
+        "T_uncertain": 0.343358,
+        "breed": "dhole",
+        "confidence": 0.5995656251907349,
+        "decision": "UNCERTAIN",
+        "final_status": "UNCERTAIN",
+        "is_dog": null,
+        "margin": 0.5084753930568695,
+        "message": "The image is ambiguous or outside the reliable dog-breed region.",
+        "ood_score": 0.4453672766685486,
+        "prediction": {
+          "breed": "dhole",
+          "confidence": 0.5995656251907349
+        },
+        "probability_margin": 0.5084753930568695,
+        "raw_ood_score": 0.4453672766685486,
+        "status": "UNCERTAIN",
+        "t_not_dog": 0.457513,
+        "t_uncertain": 0.343358,
+        "top1_breed": "dhole",
+        "top1_confidence": 0.5995656251907349,
+        "top5": [
+          {
+            "breed": "dhole",
+            "confidence": 0.5995656251907349,
+            "index": 36,
+            "rank": 1
+          },
+          {
+            "breed": "dingo",
+            "confidence": 0.09109023213386536,
+            "index": 37,
+            "rank": 2
+          },
+          {
+            "breed": "eskimo_dog",
+            "confidence": 0.07521869987249374,
+            "index": 43,
+            "rank": 3
+          },
+          {
+            "breed": "norwegian_elkhound",
+            "confidence": 0.04057087004184723,
+            "index": 80,
+            "rank": 4
+          },
+          {
+            "breed": "norwich_terrier",
+            "confidence": 0.025701122358441353,
+            "index": 81,
+            "rank": 5
+          }
+        ],
+        "top5_predictions": [
+          {
+            "breed": "dhole",
+            "confidence": 0.5995656251907349,
+            "index": 36,
+            "rank": 1
+          },
+          {
+            "breed": "dingo",
+            "confidence": 0.09109023213386536,
+            "index": 37,
+            "rank": 2
+          },
+          {
+            "breed": "eskimo_dog",
+            "confidence": 0.07521869987249374,
+            "index": 43,
+            "rank": 3
+          },
+          {
+            "breed": "norwegian_elkhound",
+            "confidence": 0.04057087004184723,
+            "index": 80,
+            "rank": 4
+          },
+          {
+            "breed": "norwich_terrier",
+            "confidence": 0.025701122358441353,
+            "index": 81,
+            "rank": 5
+          }
+        ]
+      }
+    },
+    {
+      "path": "data/ood_hard/wolf/regression_wolf_gary_kramer.jpg",
+      "group": "hard OOD",
+      "ood_category": "wolf",
+      "sha256": "5957fdada403e55023d7bc7f79cc24b6cf5a8e48eab7ab4a58090a0656780261",
+      "contract": "PASS",
+      "decision": "UNCERTAIN",
+      "raw_ood_score": 0.4056445360183716,
+      "top1_breed": "dhole",
+      "confidence": 0.42132019996643066,
+      "T_uncertain": 0.343358,
+      "T_not_dog": 0.457513,
+      "response": {
+        "T_not_dog": 0.457513,
+        "T_uncertain": 0.343358,
+        "breed": "dhole",
+        "confidence": 0.42132019996643066,
+        "decision": "UNCERTAIN",
+        "final_status": "UNCERTAIN",
+        "is_dog": null,
+        "margin": 0.2875497490167618,
+        "message": "The image is ambiguous or outside the reliable dog-breed region.",
+        "ood_score": 0.4056445360183716,
+        "prediction": {
+          "breed": "dhole",
+          "confidence": 0.42132019996643066
+        },
+        "probability_margin": 0.2875497490167618,
+        "raw_ood_score": 0.4056445360183716,
+        "status": "UNCERTAIN",
+        "t_not_dog": 0.457513,
+        "t_uncertain": 0.343358,
+        "top1_breed": "dhole",
+        "top1_confidence": 0.42132019996643066,
+        "top5": [
+          {
+            "breed": "dhole",
+            "confidence": 0.42132019996643066,
+            "index": 36,
+            "rank": 1
+          },
+          {
+            "breed": "norwegian_elkhound",
+            "confidence": 0.13377045094966888,
+            "index": 80,
+            "rank": 2
+          },
+          {
+            "breed": "dingo",
+            "confidence": 0.10180917382240295,
+            "index": 37,
+            "rank": 3
+          },
+          {
+            "breed": "eskimo_dog",
+            "confidence": 0.06209539249539375,
+            "index": 43,
+            "rank": 4
+          },
+          {
+            "breed": "malamute",
+            "confidence": 0.058568041771650314,
+            "index": 71,
+            "rank": 5
+          }
+        ],
+        "top5_predictions": [
+          {
+            "breed": "dhole",
+            "confidence": 0.42132019996643066,
+            "index": 36,
+            "rank": 1
+          },
+          {
+            "breed": "norwegian_elkhound",
+            "confidence": 0.13377045094966888,
+            "index": 80,
+            "rank": 2
+          },
+          {
+            "breed": "dingo",
+            "confidence": 0.10180917382240295,
+            "index": 37,
+            "rank": 3
+          },
+          {
+            "breed": "eskimo_dog",
+            "confidence": 0.06209539249539375,
+            "index": 43,
+            "rank": 4
+          },
+          {
+            "breed": "malamute",
+            "confidence": 0.058568041771650314,
+            "index": 71,
+            "rank": 5
+          }
+        ]
+      }
+    }
+  ],
+  "note": "Semantic errors are retained; existing tests assert runtime contract, not perfect OOD accuracy."
+}

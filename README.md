@@ -25,7 +25,7 @@ The active runtime bundle is `outputs/deployment_oe_v2/`. Its checked-in manifes
 - OOD detector: cosine distance to class centroids
 - decision thresholds: `T_uncertain = 0.343358`, `T_not_dog = 0.457513`
 
-The application verifies the model and centroid SHA-256 values recorded in the code before loading them. The model is a single 120-class classifier; OOD handling is a separate inference decision layer, not a 121st class.
+The application verifies the model, centroid, and class-name mapping SHA-256 values recorded in the code before loading them. The model is a single 120-class classifier; OOD handling is a separate inference decision layer, not a 121st class.
 
 `outputs/deployment_ready/model_manifest.json` describes the earlier dense MobileNetV2 transfer-learning artifact. It records a 224×224 RGB input, an ImageNet-initialized frozen MobileNetV2 backbone, a 120-class softmax output, validation accuracy of 0.8239, and internal test accuracy of 0.8201. These are historical values from the stored manifest, not newly reproduced results.
 

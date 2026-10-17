@@ -1,0 +1,161 @@
+{
+  "schema_version": 1,
+  "audit_target": "phu_quoc_ridgeback",
+  "breed_name": "phu_quoc_ridgeback",
+  "source_directory": "data/new_breeds_v3/phu_quoc_ridgeback",
+  "metadata_source": "metadata/phu_quoc_ridgeback_wikimedia.csv",
+  "total_images": 31,
+  "expected_images": 31,
+  "validation_summary": {
+    "total_evaluated": 31,
+    "valid_count": 31,
+    "invalid_count": 0,
+    "non_zero_file_size_count": 31,
+    "width_gt_zero_count": 31,
+    "height_gt_zero_count": 31,
+    "rgb_convertible_count": 31,
+    "corrupted_image_count": 0
+  },
+  "aggregate_metrics": {
+    "width": {
+      "count": 31,
+      "min": 500.0,
+      "max": 1540.0,
+      "mean": 1010.2258064516129,
+      "median": 1200.0,
+      "std": 331.4067483960068,
+      "p25": 588.0,
+      "p50": 1200.0,
+      "p75": 1280.0,
+      "p95": 1330.0
+    },
+    "height": {
+      "count": 31,
+      "min": 370.0,
+      "max": 1785.0,
+      "mean": 1137.0645161290322,
+      "median": 1200.0,
+      "std": 356.183256157138,
+      "p25": 960.0,
+      "p50": 1200.0,
+      "p75": 1291.5,
+      "p95": 1727.0
+    },
+    "file_size_bytes": {
+      "count": 31,
+      "min": 77680.0,
+      "max": 986056.0,
+      "mean": 450410.5806451613,
+      "median": 412813.0,
+      "std": 231365.02424297665,
+      "p25": 307969.5,
+      "p50": 412813.0,
+      "p75": 600451.5,
+      "p95": 857038.0
+    },
+    "aspect_ratio": {
+      "count": 31,
+      "min": 0.45,
+      "max": 2.2222222222222223,
+      "mean": 0.9962856540176286,
+      "median": 0.8913649025069638,
+      "std": 0.49541193498470754,
+      "p25": 0.67167473049826,
+      "p50": 0.8913649025069638,
+      "p75": 1.2576106421079558,
+      "p95": 2.0
+    },
+    "orientation": {
+      "landscape": 12,
+      "portrait": 18,
+      "square": 1
+    }
+  },
+  "exact_duplicates": {
+    "total_unique_sha256": 31,
+    "within_breed_duplicates": 0,
+    "duplicate_groups": []
+  },
+  "perceptual_duplicates": {
+    "hash_type": "dHash_64bit_lanczos",
+    "hamming_threshold_used": 4,
+    "total_families": 31,
+    "multi_item_families": 0,
+    "near_duplicate_pairs_le_2": 0,
+    "near_duplicate_pairs_le_4": 0,
+    "near_duplicate_pairs_le_6": 0,
+    "near_duplicate_pairs_le_8": 0,
+    "minimum_internal_hamming_distance": 16
+  },
+  "visual_review_summary": {
+    "total_evaluated": 31,
+    "keep_count": 12,
+    "review_count": 10,
+    "reject_candidate_count": 9,
+    "flag_distribution": {
+      "REVIEW": 10,
+      "REJECT_CANDIDATE": 9,
+      "KEEP": 12
+    }
+  },
+  "license_audit": {
+    "total_evaluated": 31,
+    "missing_license_count": 0,
+    "missing_artist_count": 0,
+    "missing_source_url_count": 0,
+    "missing_license_url_count": 2,
+    "public_domain_count": 2,
+    "license_distribution": {
+      "CC BY 3.0": 6,
+      "CC0": 4,
+      "CC BY-SA 4.0": 15,
+      "CC BY-SA 3.0": 3,
+      "Public domain": 2,
+      "CC BY 2.0": 1
+    },
+    "artist_distribution": {
+      "Ng\u00f4 Trung": 7,
+      "Imapi.sys": 1,
+      "Nguyenthang109": 9,
+      "Ph\u01b0\u01a1ng Huy": 3,
+      "C63lc61": 2,
+      "Nishanth Duraisamy": 1,
+      "Ph\u00f3 Nh\u00e1y": 1,
+      "Stefan from Dresden, Germany": 1,
+      "Chuancheng": 1,
+      "L\u01b0u Ly at Vietnamese Wikipedia": 1,
+      "Fox Frank": 1,
+      "not specified (except those with signature on image)": 1,
+      "Frank Fox": 2
+    }
+  },
+  "cross_dataset_leakage": {
+    "new_vs_old_splits_v2": {
+      "total_old_splits_count": 10216,
+      "exact_sha256_overlap_count": 0,
+      "exact_sha256_overlap_files": [],
+      "perceptual_overlap_hamming_le_2": 0,
+      "perceptual_overlap_hamming_le_4": 0,
+      "perceptual_overlap_hamming_le_6": 0,
+      "perceptual_overlap_hamming_le_8": 0,
+      "minimum_observed_hamming_distance": 12
+    },
+    "new_vs_new_breeds_v3": {
+      "dataset_count": 800,
+      "exact_sha256_overlap_count": 0,
+      "exact_sha256_overlap_files": [],
+      "perceptual_overlap_hamming_le_2": 0,
+      "perceptual_overlap_hamming_le_4": 0,
+      "perceptual_overlap_hamming_le_6": 0,
+      "perceptual_overlap_hamming_le_8": 0,
+      "minimum_observed_hamming_distance": 13
+    }
+  },
+  "contact_sheet": {
+    "relative_path": "outputs/reports/phu_quoc_ridgeback_contact_sheet.png",
+    "total_slots": 36,
+    "rendered_thumbnails": 31,
+    "grid": "6x6"
+  },
+  "audit_verdict": "PHU_QUOC_RIDGEBACK_AUDIT_READY"
+}

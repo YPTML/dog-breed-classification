@@ -2,7 +2,7 @@
 
 Run with ``python -m src.test_local_app`` in the project's virtual environment.
 The production model is loaded normally once; edge cases replace only the Python
-model reference with a mock. No dataset is read and no model artifact is written.
+unified inference model with a mock. No dataset is read and no model artifact is written.
 """
 
 import io
@@ -15,6 +15,7 @@ from flask import request
 from PIL import Image, PngImagePlugin
 
 import app as backend
+import src.inference.oe_v2_predictor as runtime_predictor
 
 
 def image_bytes(image_format="PNG", mode="RGB", size=(16, 12), color=None):
@@ -42,11 +43,13 @@ def multipart_bytes(payload, filename="synthetic.png", mime="image/png"):
 
 
 def model_returning(probabilities=None):
-    """Return a callable model stand-in with NumPy-compatible probabilities."""
+    """Return the unified model outputs: class probabilities and embeddings."""
     if probabilities is None:
         probabilities = np.zeros((1, 120), dtype=np.float32)
         probabilities[0, [17, 4, 33, 82, 119]] = [0.5, 0.2, 0.15, 0.1, 0.05]
-    model = Mock(return_value=probabilities)
+    features = np.zeros((1, 1280), dtype=np.float32)
+    features[0, 0] = 1.0
+    model = Mock(return_value=(probabilities, features))
     model.name = "mobilenet_v2_transfer"
     return model
 
@@ -78,7 +81,7 @@ class TestLocalApp(unittest.TestCase):
 
     def test_health_does_not_infer(self):
         model = model_returning()
-        with patch.object(backend, "model", model):
+        with patch.object(backend.predictor, "inference_model", model):
             response = self.client.get("/health")
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.get_json()["num_classes"], 120)
@@ -87,7 +90,7 @@ class TestLocalApp(unittest.TestCase):
 
     def test_frontend_routes_do_not_infer(self):
         model = model_returning()
-        with patch.object(backend, "model", model):
+        with patch.object(backend.predictor, "inference_model", model):
             for path, content_type in (
                 ("/", "text/html"),
                 ("/static/style.css", "text/css"),
@@ -102,7 +105,7 @@ class TestLocalApp(unittest.TestCase):
 
     def test_missing_empty_and_wrong_field_never_infer(self):
         model = model_returning()
-        with patch.object(backend, "model", model):
+        with patch.object(backend.predictor, "inference_model", model):
             response = self.client.post(
                 "/predict", data={"other": (io.BytesIO(image_bytes()), "wrong.png")}
             )
@@ -146,7 +149,7 @@ class TestLocalApp(unittest.TestCase):
 
     def test_valid_bytes_override_filename_and_mime(self):
         model = model_returning()
-        with patch.object(backend, "model", model):
+        with patch.object(backend.predictor, "inference_model", model):
             for filename, mime in (
                 ("photo.txt", "text/plain"),
                 ("../../outside.exe", "application/octet-stream"),
@@ -155,12 +158,12 @@ class TestLocalApp(unittest.TestCase):
                 with self.subTest(filename=filename, mime=mime):
                     response = self.post_image(image_bytes(), filename, mime)
                     self.assertEqual(response.status_code, 200)
-                    self.assertEqual(response.get_json()["prediction"]["index"], 17)
+                    self.assertEqual(response.get_json()["prediction"]["breed"], backend.class_names[17])
         self.assertEqual(model.call_count, 3)
 
     def test_unsupported_decoded_formats_rejected(self):
         model = model_returning()
-        with patch.object(backend, "model", model):
+        with patch.object(backend.predictor, "inference_model", model):
             for image_format in ("GIF", "BMP", "TIFF"):
                 with self.subTest(image_format=image_format):
                     self.assert_json_error(
@@ -185,7 +188,7 @@ class TestLocalApp(unittest.TestCase):
             "png_corrupt_chunk": bytes(corrupt_png),
         }
         model = model_returning()
-        with patch.object(backend, "model", model):
+        with patch.object(backend.predictor, "inference_model", model):
             for name, payload in cases.items():
                 with self.subTest(case=name):
                     self.assert_json_error(
@@ -211,9 +214,9 @@ class TestLocalApp(unittest.TestCase):
     def test_dimension_cap_rejects_before_pixel_decode(self):
         payload = image_bytes(size=(11, 10))
         model = model_returning()
-        with patch.object(backend, "MAX_IMAGE_PIXELS", 100), patch.object(
+        with patch.object(runtime_predictor, "MAX_IMAGE_PIXELS", 100), patch.object(
             PngImagePlugin.PngImageFile, "load", side_effect=AssertionError("full decode happened")
-        ) as decode, patch.object(backend, "model", model):
+        ) as decode, patch.object(backend.predictor, "inference_model", model):
             self.assert_json_error(
                 self.post_image(payload), 400, "Invalid or unsupported image"
             )
@@ -225,8 +228,8 @@ class TestLocalApp(unittest.TestCase):
         payloads = [image_bytes(size=(11, 10)), image_bytes(size=(21, 10))]
         model = model_returning()
         with patch.object(Image, "MAX_IMAGE_PIXELS", 100), patch.object(
-            backend, "MAX_IMAGE_PIXELS", 10000
-        ), patch.object(backend, "model", model):
+            runtime_predictor, "MAX_IMAGE_PIXELS", 10000
+        ), patch.object(backend.predictor, "inference_model", model):
             for payload in payloads:
                 with self.subTest(compressed_bytes=len(payload)):
                     self.assert_json_error(
@@ -236,7 +239,7 @@ class TestLocalApp(unittest.TestCase):
 
     def test_inference_rejects_wrong_input_shape(self):
         model = model_returning()
-        with patch.object(backend, "model", model):
+        with patch.object(backend.predictor, "inference_model", model):
             for shape in ((224, 224, 3), (2, 224, 224, 3), (1, 223, 224, 3), (1, 224, 224, 4)):
                 with self.subTest(shape=shape), self.assertRaises((ValueError, RuntimeError, TypeError)):
                     backend.predict_image(np.zeros(shape, np.float32))
@@ -244,7 +247,7 @@ class TestLocalApp(unittest.TestCase):
 
     def test_inference_rejects_wrong_input_dtype(self):
         model = model_returning()
-        with patch.object(backend, "model", model):
+        with patch.object(backend.predictor, "inference_model", model):
             for dtype in (np.float64, np.uint8, np.int32):
                 with self.subTest(dtype=dtype), self.assertRaises((ValueError, RuntimeError, TypeError)):
                     backend.predict_image(np.zeros((1, 224, 224, 3), dtype))
@@ -252,7 +255,7 @@ class TestLocalApp(unittest.TestCase):
 
     def test_inference_rejects_invalid_input_pixels(self):
         model = model_returning()
-        with patch.object(backend, "model", model):
+        with patch.object(backend.predictor, "inference_model", model):
             for value in (np.nan, np.inf, -np.inf, -1, 256):
                 array = np.zeros((1, 224, 224, 3), np.float32)
                 array[0, 0, 0, 0] = value
@@ -264,7 +267,7 @@ class TestLocalApp(unittest.TestCase):
         for shape in ((120,), (1, 119), (2, 120), (1, 120, 1), (0, 120)):
             probabilities = np.full(shape, 1 / 120, dtype=np.float32)
             with self.subTest(shape=shape), patch.object(
-                backend, "model", model_returning(probabilities)
+                backend.predictor, "inference_model", model_returning(probabilities)
             ), self.assertLogs(backend.logger, level="ERROR"):
                 self.assert_json_error(self.post_image(image_bytes()), 500, "Inference failed")
 
@@ -273,7 +276,7 @@ class TestLocalApp(unittest.TestCase):
             probabilities = np.full((1, 120), 1 / 120, dtype=np.float32)
             probabilities[0, 17] = value
             with self.subTest(value=value), patch.object(
-                backend, "model", model_returning(probabilities)
+                backend.predictor, "inference_model", model_returning(probabilities)
             ), self.assertLogs(backend.logger, level="ERROR"):
                 self.assert_json_error(self.post_image(image_bytes()), 500, "Inference failed")
 
@@ -286,17 +289,17 @@ class TestLocalApp(unittest.TestCase):
         }
         for name, probabilities in cases.items():
             with self.subTest(case=name), patch.object(
-                backend, "model", model_returning(probabilities)
+                backend.predictor, "inference_model", model_returning(probabilities)
             ), self.assertLogs(backend.logger, level="ERROR"):
                 self.assert_json_error(self.post_image(image_bytes()), 500, "Inference failed")
 
     def test_valid_inference_contract_and_ranking(self):
         model = model_returning()
         array = np.full((1, 224, 224, 3), 200, np.float32)
-        with patch.object(backend, "model", model):
+        with patch.object(backend.predictor, "inference_model", model):
             top1, top5 = backend.predict_image(array)
         model.assert_called_once()
-        self.assertIs(model.call_args.args[0], array)
+        self.assertIs(model.call_args.args[0][0], array)
         self.assertEqual(model.call_args.kwargs, {"training": False})
         self.assertEqual(top1, top5[0])
         self.assertEqual([item["index"] for item in top5], [17, 4, 33, 82, 119])
@@ -311,7 +314,7 @@ class TestLocalApp(unittest.TestCase):
 
     def test_probability_ties_have_consistent_top1_and_top5(self):
         probabilities = np.full((1, 120), 1 / 120, np.float32)
-        with patch.object(backend, "model", model_returning(probabilities)):
+        with patch.object(backend.predictor, "inference_model", model_returning(probabilities)):
             top1, top5 = backend.predict_image(np.zeros((1, 224, 224, 3), np.float32))
         self.assertEqual(top1, top5[0])
         self.assertEqual([item["index"] for item in top5], [0, 1, 2, 3, 4])
@@ -320,7 +323,7 @@ class TestLocalApp(unittest.TestCase):
         secret = "private E:\\sensitive\\model.keras environment-details"
         model = model_returning()
         model.side_effect = RuntimeError(secret)
-        with patch.object(backend, "model", model), self.assertLogs(backend.logger, level="ERROR"):
+        with patch.object(backend.predictor, "inference_model", model), self.assertLogs(backend.logger, level="ERROR"):
             response = self.post_image(image_bytes())
         self.assert_json_error(response, 500, "Inference failed")
         self.assertNotIn(secret, response.get_data(as_text=True))
@@ -334,7 +337,7 @@ class TestLocalApp(unittest.TestCase):
 
     def test_malformed_request_returns_json_400(self):
         model = model_returning()
-        with patch.object(backend, "model", model):
+        with patch.object(backend.predictor, "inference_model", model):
             response = self.client.post(
                 "/predict", data=b"truncated multipart body", content_type="multipart/form-data"
             )
@@ -346,7 +349,7 @@ class TestLocalApp(unittest.TestCase):
         body, content_type = multipart_bytes(payload)
         self.assertGreater(len(body), len(payload))
         model = model_returning()
-        with patch.object(backend, "model", model):
+        with patch.object(backend.predictor, "inference_model", model):
             with patch.dict(backend.app.config, {"MAX_CONTENT_LENGTH": len(body)}):
                 response = self.client.post("/predict", data=body, content_type=content_type)
                 self.assertEqual(response.status_code, 200)
@@ -374,7 +377,7 @@ class TestLocalApp(unittest.TestCase):
 
     def test_local_host_and_browser_origin_guards(self):
         model = model_returning()
-        with patch.object(backend, "model", model):
+        with patch.object(backend.predictor, "inference_model", model):
             response = self.client.get("/health", base_url="http://attacker.invalid:5000")
             self.assert_json_error(response, 400)
             for headers in (

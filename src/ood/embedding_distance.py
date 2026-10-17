@@ -497,12 +497,9 @@ def _id_validation_dataset(batch_size: int, split_name: str = "val") -> Any:
 
 
 def _preprocess_any_image(path: Any) -> Any:
-    tf = _tensorflow()
-    contents = tf.io.read_file(path)
-    image = tf.io.decode_image(contents, channels=3, expand_animations=False)
-    image = tf.image.resize(image, (224, 224))
-    image = tf.cast(image, tf.float32)
-    return tf.ensure_shape(image, (224, 224, 3))
+    from .image_loading import preprocess_ood_image
+
+    return preprocess_ood_image(path)
 
 
 def _ood_calibration_dataset(directory: Path, batch_size: int) -> tuple[Any | None, int]:

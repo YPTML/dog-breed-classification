@@ -46,6 +46,7 @@ DEFAULT_CLASS_NAMES_PATH = (
 # EXPECTED INTEGRITY CONSTANTS
 EXPECTED_MODEL_SHA256 = "e4508564a9389250e265cae6ea6fed0e1a0edf8497d62cd9c8a44342bdd45e61"
 EXPECTED_CENTROIDS_SHA256 = "d4588ee2cff5d8cbe3b670ca99507ae97f7f07b75822d1e247200e7c481e85cb"
+EXPECTED_CLASS_NAMES_SHA256 = "ccd8b9207be5ac03ab2941bdc69a2256cf88fc8fd0acccf64e2cc6100381f8fc"
 EXPECTED_NUM_CLASSES = 120
 EXPECTED_EMBEDDING_DIM = 1280
 EXPECTED_CENTROID_SHAPE = (120, 1280)
@@ -69,6 +70,17 @@ def compute_file_sha256(path: Path) -> str:
     return h.hexdigest()
 
 
+def compute_class_names_sha256(class_names: Mapping[int, str]) -> str:
+    """Hash the semantic class mapping independently of JSON line endings."""
+
+    canonical = json.dumps(
+        {str(index): class_names[index] for index in sorted(class_names)},
+        ensure_ascii=False,
+        separators=(",", ":"),
+    ).encode("utf-8")
+    return hashlib.sha256(canonical).hexdigest()
+
+
 def decide_tri_state(
     score: float,
     t_uncertain: float = LOCKED_T_UNCERTAIN,
@@ -80,6 +92,10 @@ def decide_tri_state(
     0.343358 <= score < 0.457513 => UNCERTAIN
     score >= 0.457513 => NOT_DOG
     """
+    if not np.isfinite([score, t_uncertain, t_not_dog]).all():
+        raise ValueError("OOD score and thresholds must be finite.")
+    if t_uncertain >= t_not_dog:
+        raise ValueError("T_UNCERTAIN must be less than T_NOT_DOG.")
     if score < t_uncertain:
         return "DOG"
     elif score < t_not_dog:
@@ -146,6 +162,19 @@ class OEV2Predictor:
             raise RuntimeError(
                 f"Class names count mismatch: expected {EXPECTED_NUM_CLASSES}, got {len(self.class_names)}"
             )
+        if set(self.class_names) != set(range(EXPECTED_NUM_CLASSES)):
+            raise RuntimeError("Class name indices must be consecutive and start at 0.")
+        if any(not name.strip() for name in self.class_names.values()):
+            raise RuntimeError("Class names must be non-empty.")
+        if len(set(self.class_names.values())) != EXPECTED_NUM_CLASSES:
+            raise RuntimeError("Class names must be unique.")
+        if verify_integrity:
+            actual_class_names_sha = compute_class_names_sha256(self.class_names)
+            if actual_class_names_sha != EXPECTED_CLASS_NAMES_SHA256:
+                raise RuntimeError(
+                    "Class names SHA256 integrity mismatch: "
+                    f"expected {EXPECTED_CLASS_NAMES_SHA256}, got {actual_class_names_sha}"
+                )
 
         # 3. Load Centroids
         self.centroids = np.load(self.centroids_path).astype(np.float32)
@@ -153,8 +182,12 @@ class OEV2Predictor:
             raise RuntimeError(
                 f"Centroids shape mismatch: expected {EXPECTED_CENTROID_SHAPE}, got {self.centroids.shape}"
             )
+        if not np.isfinite(self.centroids).all():
+            raise RuntimeError("Class centroids must contain only finite values.")
         # Ensure centroids are L2-normalized
         c_norms = np.linalg.norm(self.centroids, axis=-1, keepdims=True)
+        if not np.isfinite(c_norms).all() or np.any(c_norms == 0):
+            raise RuntimeError("Class centroids must have finite, non-zero norms.")
         if np.any(np.abs(c_norms - 1.0) > 1e-4):
             logger.info("Normalizing class centroids to unit sphere.")
             self.centroids = self.centroids / np.maximum(c_norms, 1e-12)
@@ -233,21 +266,39 @@ class OEV2Predictor:
 
         # Single forward pass through unified model
         probs_tensor, feats_tensor = self.inference_model([image_batch], training=False)
-        probs = np.asarray(probs_tensor)[0]  # (120,)
-        feats = np.asarray(feats_tensor)[0]  # (1280,)
+        probabilities = np.asarray(probs_tensor)
+        features = np.asarray(feats_tensor)
+        if probabilities.shape != (1, EXPECTED_NUM_CLASSES):
+            raise RuntimeError(
+                f"Model probabilities must have shape (1, {EXPECTED_NUM_CLASSES}); got {probabilities.shape}."
+            )
+        if features.shape != (1, EXPECTED_EMBEDDING_DIM):
+            raise RuntimeError(
+                f"Model features must have shape (1, {EXPECTED_EMBEDDING_DIM}); got {features.shape}."
+            )
+        probs = probabilities[0]
+        feats = features[0]
 
         # Validate finiteness
         if not np.isfinite(probs).all() or not np.isfinite(feats).all():
             raise RuntimeError("Model generated non-finite probabilities or features.")
+        if np.any(probs < 0) or np.any(probs > 1) or not np.isclose(
+            probs.sum(dtype=np.float64), 1.0, atol=1e-4, rtol=0.0
+        ):
+            raise RuntimeError("Model probabilities must be in [0, 1] and sum to 1.")
 
         # Compute Cosine OOD Score: S_cosine = 1.0 - max_k(norm(feat) . centroid_k)
         feat_norm = np.linalg.norm(feats)
+        if not np.isfinite(feat_norm):
+            raise RuntimeError("Model feature norm must be finite.")
         if feat_norm > 0:
             norm_feat = feats / feat_norm
         else:
             norm_feat = np.zeros_like(feats)
 
         cos_sims = norm_feat @ self.centroids.T  # (120,)
+        if not np.isfinite(cos_sims).all():
+            raise RuntimeError("Cosine OOD similarities must be finite.")
         max_sim = float(np.max(cos_sims))
         ood_score = float(1.0 - max_sim)
 

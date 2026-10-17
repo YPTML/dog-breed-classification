@@ -508,14 +508,10 @@ def _ood_dataset(root: Path, batch_size: int) -> tuple[Any | None, int]:
     if not paths:
         return None, 0
 
-    def decode(path: Any) -> Any:
-        image = tf.io.decode_image(tf.io.read_file(path), channels=3, expand_animations=False)
-        image = tf.image.resize(image, (224, 224))
-        image = tf.cast(image, tf.float32)
-        return tf.ensure_shape(image, (224, 224, 3))
+    from .image_loading import preprocess_ood_image
 
     dataset = tf.data.Dataset.from_tensor_slices([str(path) for path in paths])
-    dataset = dataset.map(decode, num_parallel_calls=tf.data.AUTOTUNE)
+    dataset = dataset.map(preprocess_ood_image, num_parallel_calls=tf.data.AUTOTUNE)
     return dataset.batch(batch_size, drop_remainder=False).prefetch(tf.data.AUTOTUNE), len(paths)
 
 

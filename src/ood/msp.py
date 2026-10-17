@@ -252,19 +252,11 @@ def _build_ood_dataset(paths: list[Path], batch_size: int) -> Any:
 
     import tensorflow as tf
 
-    from src.preprocessing import IMAGE_CHANNELS, IMAGE_HEIGHT, IMAGE_WIDTH
-
-    def preprocess(path: Any) -> Any:
-        image = tf.io.decode_image(
-            tf.io.read_file(path), channels=IMAGE_CHANNELS, expand_animations=False
-        )
-        image = tf.image.resize(image, (IMAGE_HEIGHT, IMAGE_WIDTH))
-        image = tf.cast(image, tf.float32)
-        return tf.ensure_shape(image, (IMAGE_HEIGHT, IMAGE_WIDTH, IMAGE_CHANNELS))
+    from .image_loading import preprocess_ood_image
 
     return (
         tf.data.Dataset.from_tensor_slices([str(path) for path in paths])
-        .map(preprocess, num_parallel_calls=tf.data.AUTOTUNE)
+        .map(preprocess_ood_image, num_parallel_calls=tf.data.AUTOTUNE)
         .batch(batch_size, drop_remainder=False)
         .prefetch(tf.data.AUTOTUNE)
     )

@@ -184,15 +184,7 @@ def _load_model_and_predictions(
     if not ood_images:
         return id_probabilities, np.empty((0, id_probabilities.shape[1]), dtype=np.float64)
 
-    def preprocess_ood_image(path: Any) -> Any:
-        """Decode common image formats and match the model input contract."""
-
-        image = tf.io.read_file(path)
-        image = tf.image.decode_image(image, channels=3, expand_animations=False)
-        image = tf.image.resize(image, (224, 224))
-        image = tf.cast(image, tf.float32)
-        image.set_shape((224, 224, 3))
-        return image
+    from .image_loading import preprocess_ood_image
 
     ood_paths = tf.data.Dataset.from_tensor_slices([str(path) for path in ood_images])
     ood_dataset = (
