@@ -44,6 +44,9 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     function clearResults() {
+        if (typeof CustomEvent === "function" && typeof document.dispatchEvent === "function") {
+            document.dispatchEvent(new CustomEvent("prediction:result", { detail: null }));
+        }
         resultContainer.classList.add("hidden");
         top1Container.classList.remove("hidden");
         top5Container.classList.remove("hidden");
@@ -234,6 +237,9 @@ document.addEventListener("DOMContentLoaded", () => {
         }
         resultContainer.classList.remove("hidden");
         const status = getStatus(data);
+        if (typeof CustomEvent === "function" && typeof document.dispatchEvent === "function") {
+            document.dispatchEvent(new CustomEvent("prediction:result", { detail: { ...data, status } }));
+        }
 
         if (status === "NOT_DOG") {
             top1Container.classList.add("hidden");

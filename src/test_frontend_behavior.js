@@ -27,7 +27,7 @@ function deferred() {
 
 function harness(missingId = null) {
     const requests = [], createdUrls = [], revokedUrls = [], loaders = [], timers = new Map();
-    const windowEvents = {}, errors = [];
+    const windowEvents = {}, errors = [], predictionEvents = [];
     let focused = null, pickerFiles = [], timerId = 0;
     class Element {
         constructor(tag = "div") {
@@ -82,10 +82,12 @@ function harness(missingId = null) {
         document: {
             getElementById: id => elements[id],
             createElement: tag => new Element(tag),
-            addEventListener: (name, callback) => { if (name === "DOMContentLoaded") callback(); }
+            addEventListener: (name, callback) => { if (name === "DOMContentLoaded") callback(); },
+            dispatchEvent: event => { if (event.type === "prediction:result") predictionEvents.push(event.detail); }
         },
         window: { addEventListener: (name, callback) => { windowEvents[name] = callback; } },
         Image: PreviewImage, FormData: UploadForm, AbortController,
+        CustomEvent: class { constructor(type, options) { this.type = type; this.detail = options.detail; } },
         URL: {
             createObjectURL: () => { const url = `blob:test/${createdUrls.length}`; createdUrls.push(url); return url; },
             revokeObjectURL: url => revokedUrls.push(url)
@@ -101,7 +103,7 @@ function harness(missingId = null) {
         console: { error: message => errors.push(message) }
     });
     return {
-        elements, requests, createdUrls, revokedUrls, loaders, timers, errors,
+        elements, requests, createdUrls, revokedUrls, loaders, timers, errors, predictionEvents,
         focused: () => focused,
         select: selected => { pickerFiles = selected ? [selected] : []; elements.imageInput.emit("change"); },
         drop: files => elements.fileLabel.emit("drop", { dataTransfer: { files } }),
@@ -477,4 +479,18 @@ test("NOT_DOG may omit breed predictions without displaying an empty result", as
     assert.equal(hidden(h.elements.top1Container), true);
     assert.equal(hidden(h.elements.top5Container), true);
     assert.equal(h.elements.resultNote.textContent, "No dog was confidently detected.");
+});
+
+
+test("RAG receives exact inference score and clears context when image is reset", async () => {
+    const h = harness();
+    h.select(file());
+    const pending = h.click();
+    const data = {...threeStatePrediction("UNCERTAIN"), ood_score: 0.387654321};
+    h.respond(0, data);
+    await pending;
+    assert.equal(h.predictionEvents.at(-1).ood_score, data.ood_score);
+    assert.equal(h.predictionEvents.at(-1).status, "UNCERTAIN");
+    h.clear();
+    assert.equal(h.predictionEvents.at(-1), null);
 });

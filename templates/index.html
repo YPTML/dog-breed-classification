@@ -109,6 +109,85 @@
                 </div>
             </div>
         </section>
+
+        <!-- Model Q&A Section (Hỏi đáp về mô hình) -->
+        <section id="ragSection" class="card rag-card" aria-labelledby="ragHeading">
+            <div class="rag-header-row">
+                <div class="rag-title-group">
+                    <h2 id="ragHeading" class="section-heading">Hỏi đáp về mô hình</h2>
+                    <span class="rag-badge" id="ragStatusBadge">Đang kiểm tra kho tài liệu</span>
+                </div>
+                <p class="rag-subtitle">Tra cứu tài liệu, mã nguồn, dữ liệu thực nghiệm và paper trong dự án. Mỗi câu trả lời có nguồn để kiểm tra.</p>
+                <p id="ragCoverage" class="rag-subtitle" aria-live="polite"></p>
+            </div>
+
+            <!-- Active Prediction Context Pill -->
+            <div id="ragPredictionContext" class="rag-context-pill hidden">
+                <span class="context-icon" aria-hidden="true">🐶</span>
+                <span id="ragContextText" class="context-text">Đang liên hệ với ảnh vừa dự đoán: <strong id="ragContextBreed"></strong> (<span id="ragContextConf"></span>, <span id="ragContextStatus"></span>)</span>
+                <button type="button" id="ragClearContextBtn" class="rag-chip-btn" title="Hủy liên kết với kết quả ảnh này">✕ Hủy liên kết</button>
+            </div>
+
+            <!-- Suggested Questions -->
+            <div class="rag-suggestions" aria-label="Gợi ý câu hỏi thực tế">
+                <span class="suggestion-label">Câu hỏi mẫu:</span>
+                <div class="rag-chips-wrapper">
+                    <button type="button" class="rag-chip" data-question="Mô hình dùng cho mục đích gì?">Mục đích mô hình?</button>
+                    <button type="button" class="rag-chip" data-question="Có những paper nào đã được lập chỉ mục?">Paper đã đọc?</button>
+                    <button type="button" class="rag-chip" data-question="Quy trình huấn luyện mô hình như thế nào?">Quy trình huấn luyện?</button>
+                    <button type="button" class="rag-chip" data-question="Mô hình hỗ trợ bao nhiêu giống?">120 giống hỗ trợ?</button>
+                    <button type="button" class="rag-chip" data-question="DOG có nghĩa là tên giống chắc chắn đúng không?">DOG có chắc đúng?</button>
+                    <button type="button" class="rag-chip" data-question="Giống nào đang có F1 thấp nhất và có bao nhiêu ảnh test?">F1 thấp nhất?</button>
+                    <button type="button" class="rag-chip" data-question="Top-1 khác Top-5 như thế nào?">Top-1 vs Top-5?</button>
+                    <button type="button" class="rag-chip" data-question="Mô hình xử lý Shiba Inu ra sao trong lần đánh giá đã lưu?">Xử lý Shiba Inu?</button>
+                    <button type="button" class="rag-chip" data-question="Ảnh nhỏ ảnh hưởng kết quả thế nào?">Ảnh nhỏ / nén?</button>
+                    <button type="button" class="rag-chip" data-question="Ngưỡng OOD hiện tại lấy từ đâu?">Ngưỡng OOD?</button>
+                    <button type="button" class="rag-chip" data-question="Có bằng chứng mô hình nhận diện được chó Phú Quốc không?">Chó Phú Quốc?</button>
+                </div>
+            </div>
+
+            <!-- Chat History -->
+            <div id="ragChatHistory" class="rag-chat-history" role="log" aria-live="polite">
+                <div class="rag-message rag-message-assistant">
+                    <div class="rag-message-header">
+                        <span class="sender-name">Trợ lý mô hình</span>
+                        <span class="rag-msg-badge">Nguồn trong dự án</span>
+                    </div>
+                    <div class="rag-message-body">
+                        Xin chào! Bạn có thể đặt câu hỏi về mô hình phân loại giống chó (kiến trúc MobileNetV2, tiền xử lý, cơ chế OOD, độ trễ, tập dữ liệu kiểm thử, ma trận nhầm lẫn hoặc các lỗi đã sửa). Mỗi câu trả lời đều có nguồn đối chiếu cụ thể từ dự án.
+                    </div>
+                </div>
+            </div>
+
+            <!-- Loading Indicator -->
+            <div id="ragLoading" class="rag-loading hidden" aria-live="polite">
+                <div class="spinner-small" aria-hidden="true"></div>
+                <span class="rag-loading-text">Đang truy xuất và đối chiếu tài liệu...</span>
+            </div>
+
+            <!-- Error Box with Retry -->
+            <div id="ragErrorBox" class="rag-error-box hidden" role="alert">
+                <span class="error-icon" aria-hidden="true">⚠️</span>
+                <span id="ragErrorText" class="error-text">Lỗi truy vấn</span>
+                <button type="button" id="ragRetryBtn" class="btn btn-secondary rag-retry-btn">Thử lại</button>
+            </div>
+
+            <!-- Input Form -->
+            <form id="ragForm" class="rag-form" onsubmit="return false;">
+                <div class="rag-input-group">
+                    <input
+                        type="text"
+                        id="ragInput"
+                        class="rag-input"
+                        placeholder="Nhập câu hỏi bằng tiếng Việt (ví dụ: Giống nào có F1 thấp nhất?)..."
+                        autocomplete="off"
+                        aria-label="Câu hỏi về mô hình"
+                    />
+                    <button type="submit" id="ragSendBtn" class="btn btn-primary rag-send-btn">Gửi</button>
+                    <button type="button" id="ragClearChatBtn" class="btn btn-secondary rag-clear-btn" title="Xóa lịch sử trao đổi">Xóa chat</button>
+                </div>
+            </form>
+        </section>
     </main>
 
     <footer class="app-footer">
@@ -116,5 +195,6 @@
     </footer>
 
     <script src="{{ url_for('static', filename='app.js') }}"></script>
+    <script src="{{ url_for('static', filename='rag.js') }}"></script>
 </body>
 </html>

@@ -1,0 +1,93 @@
+# RAG Configuration for Dog Breed Classification Knowledge Base
+
+knowledge_base:
+  index_dir: "outputs/rag_index"
+  # Windows: keep random SQLite reads on the local system drive.
+  use_local_appdata: true
+  version: "2026-10-17-v2"
+  discover_project: true
+  max_file_bytes: 52428800
+  allowlist_files:
+    # Documentation & Reports
+    - "README.md"
+    - "DEPLOYMENT.md"
+    - "BUGFIX_REPORT.md"
+    - "CLASS_AUDIT_REPORT.md"
+    - "FINAL_QA_REPORT.md"
+    - "OOD_FIXTURE_COVERAGE_REPORT.md"
+    - "SOURCE_CODE_AUDIT_REPORT_2026-10-16.md"
+    # Configurations
+    - "configs/ood.yaml"
+    # Quality Evaluation 2026-10-16
+    - "outputs/quality_evaluation_2026-10-16/REPORT_VI.md"
+    - "outputs/quality_evaluation_2026-10-16/summary.json"
+    - "outputs/quality_evaluation_2026-10-16/per_class_metrics.csv"
+    - "outputs/quality_evaluation_2026-10-16/top_confusions.csv"
+    - "outputs/quality_evaluation_2026-10-16/robustness.csv"
+    - "outputs/quality_evaluation_2026-10-16/image_proxy_analysis.csv"
+    - "outputs/quality_evaluation_2026-10-16/near_duplicate_visual_review.csv"
+    - "outputs/quality_evaluation_2026-10-16/run_command.txt"
+    # Deployed & Historical Artifact Manifests & Calibrations
+    - "outputs/deployment_oe_v2/ood_calibration.json"
+    - "outputs/deployment_oe_v2/model_manifest.json"
+    - "outputs/deployment_oe_v2/class_names.json"
+    - "outputs/deployment_ready/model_manifest.json"
+    # Key Historical Reports & Audits
+    - "outputs/reports/PHU_QUOC_RIDGEBACK_AUDIT.md"
+    - "outputs/reports/OE_V2_OOD_CALIBRATION_REPORT.md"
+    - "outputs/reports/OE_V2_FINAL_EVALUATION_REPORT.md"
+    - "outputs/reports/V3_STAGE_A_TRAINING_REPORT.md"
+    # Metadata
+    - "metadata/phu_quoc_ridgeback_statistics.json"
+    - "metadata/dataset_v3_statistics.json"
+    - "metadata/v3_stage_a_history.csv"
+    # Source Code (Inference, Training, Data, App)
+    - "app.py"
+    - "src/inference/oe_v2_predictor.py"
+    - "src/inference/preprocessing.py"
+    - "src/training/train_oe.py"
+    - "download_phu_quoc_wikimedia.py"
+
+  # Patterns and extensions strictly excluded
+  exclude_patterns:
+    - ".env"
+    - "*.key"
+    - "*secret*"
+    - "*token*"
+    - "*credential*"
+    - ".venv/**"
+    - "__pycache__/**"
+    - ".git/**"
+    - "_audit_tmp/**"
+    - "*.keras"
+    - "*.npy"
+    - "*.png"
+    - "*.jpg"
+    - "*.jpeg"
+    - "*.webp"
+    - "*.zip"
+    - "*.pyc"
+    - "data/train/**"
+    - "data/test/**"
+
+chunking:
+  markdown_max_tokens: 500
+  code_max_tokens: 400
+  overlap_tokens: 50
+
+retrieval:
+  top_k: 4
+  min_relevance_score: 0.15
+  local_query_rewrite: true
+  # SQLite FTS5/BM25 + structured lookup; no dense embedding is configured.
+
+llm:
+  # Provider options: "gemini", "openrouter", "openai", "ollama", "offline_grounded"
+  provider: "ollama"
+  ollama_model: "qwen3:4b-instruct"
+  ollama_base: "http://127.0.0.1:11434"
+  model: "gemini-2.5-flash"
+  openrouter_model: "google/gemini-2.5-flash"
+  temperature: 0.1
+  max_tokens: 1024
+  timeout_seconds: 20

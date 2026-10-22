@@ -27,7 +27,11 @@ The active runtime bundle is `outputs/deployment_oe_v2/`. Its checked-in manifes
 
 The application verifies the model, centroid, and class-name mapping SHA-256 values recorded in the code before loading them. The model is a single 120-class classifier; OOD handling is a separate inference decision layer, not a 121st class.
 
+### Historical baseline
+
 `outputs/deployment_ready/model_manifest.json` describes the earlier dense MobileNetV2 transfer-learning artifact. It records a 224×224 RGB input, an ImageNet-initialized frozen MobileNetV2 backbone, a 120-class softmax output, validation accuracy of 0.8239, and internal test accuracy of 0.8201. These are historical values from the stored manifest, not newly reproduced results.
+
+### Input preprocessing
 
 Input pixels are resized to 224×224 and passed as `float32` values in `[0, 255]`. MobileNetV2 preprocessing is embedded in the model, so callers must not divide pixels by 255 again.
 

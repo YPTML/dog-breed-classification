@@ -228,7 +228,7 @@ def add_response_headers(response):
         "style-src 'self'; script-src 'self'; connect-src 'self'; "
         "object-src 'none'; base-uri 'none'; frame-ancestors 'none'; form-action 'self'"
     )
-    if request.path in ("/health", "/predict"):
+    if request.path in ("/health", "/predict", "/api/rag/query", "/api/rag/status"):
         response.headers["Cache-Control"] = "no-store"
     return response
 
@@ -288,6 +288,73 @@ def predict():
     except Exception:
         logger.exception("Prediction response formatting failed.")
         return jsonify({"error": "Inference failed"}), 500
+
+
+# ---------------------------------------------------------------------------
+# RAG Q&A Endpoints
+# ---------------------------------------------------------------------------
+@app.route("/api/rag/status", methods=["GET"])
+def rag_status():
+    """Returns RAG operational status, index metadata, and LLM configuration."""
+    try:
+        from src.rag import get_rag_pipeline
+        rag = get_rag_pipeline()
+        return jsonify(rag.get_status()), 200
+    except Exception:
+        logger.exception("Failed to retrieve RAG status.")
+        return jsonify({"error": "Failed to get RAG status"}), 500
+
+
+@app.route("/api/rag/query", methods=["POST"])
+def rag_query():
+    """RAG question answering endpoint."""
+    if not request.is_json:
+        return jsonify({"error": "Request body must be JSON"}), 400
+
+    data = request.get_json() or {}
+    if not isinstance(data, dict):
+        return jsonify({"error": "JSON body must be an object"}), 400
+    query_text = data.get("query")
+    if not query_text or not isinstance(query_text, str) or not query_text.strip():
+        return jsonify({"error": "Field 'query' must be a non-empty string"}), 400
+
+    history = data.get("history")
+    if history is not None and not isinstance(history, list):
+        return jsonify({"error": "Field 'history' must be a list"}), 400
+    if history and any(not isinstance(t, dict) or t.get('role') not in ('user','assistant') or not isinstance(t.get('content'),str) for t in history):
+        return jsonify({"error": "Invalid history turn"}), 400
+    if len(query_text) > 4000:
+        return jsonify({"error": "Question is too long"}), 400
+
+    last_prediction = data.get("last_prediction")
+    if last_prediction is not None and not isinstance(last_prediction, Mapping):
+        return jsonify({"error": "Field 'last_prediction' must be an object"}), 400
+
+    try:
+        from src.rag import get_rag_pipeline
+        rag = get_rag_pipeline()
+        result = rag.query(
+            question=query_text.strip(),
+            history=history,
+            last_prediction=last_prediction,
+        )
+        return jsonify(result), 200
+    except Exception:
+        logger.exception("RAG query execution failed.")
+        return jsonify({"error": "RAG query execution failed"}), 500
+
+
+@app.route('/api/rag/source', methods=['GET'])
+def rag_source():
+    """Only serve an indexed, redacted excerpt; never an arbitrary filesystem path."""
+    from src.rag import get_rag_pipeline
+    index = get_rag_pipeline().indexer
+    chunk_id = request.args.get('chunk_id', '')
+    chunk = index.get_chunk(chunk_id) if hasattr(index, 'get_chunk') else next((c for c in index.chunks if c.chunk_id==chunk_id),None)
+    if chunk is None:
+        return jsonify({'error':'Source excerpt not found'}),404
+    return jsonify(chunk.to_dict())
+
 
 
 @app.errorhandler(RequestEntityTooLarge)

@@ -1,0 +1,5 @@
+# Optional project/document RAG readers. Install alongside requirements.txt.
+PyYAML>=6,<7
+requests>=2.32,<3
+pypdf>=5,<7
+python-docx>=1.1,<2
